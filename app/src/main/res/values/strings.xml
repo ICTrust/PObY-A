@@ -1,0 +1,133 @@
+<resources>
+    <string name="app_name">PObY-A</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="menu_dashboard">Dashboard</string>
+    <string name="menu_malware_scan">Malware scan</string>
+    <string name="menu_privacy_settings">Privacy Settings</string>
+    <string name="menu_apps_info">Apps Infos</string>
+
+    <!-- Permissions -->
+    <string name="admin_perm_force_lock_desc">This permission is required to set the screen lock policy (timeout, display notifications)</string>
+
+    <!-- Settings -->
+    <!--   screen lock -->
+    <string name="screen_lock_enabled_desc">Screen lock is enabled</string>
+    <string name="screen_lock_enabled_info">Enabling screen lock requires a form of user
+        authentication before interacting with the device. This strengthens application and data
+        protection and overall improves the device security. </string>
+    <string name="screen_lock_enabled_action">You will be redirected to the screen lock settings</string>
+
+    <!--   screen lock timeout -->
+    <string name="lock_screen_lock_after_timeout_desc">Screen timeout is set to 1 minute or less</string>
+    <string name="lock_screen_lock_after_timeout_info">You should set inactivity timeout to avoid unsanctioned usage of the device if you leave it
+        unattended. The inactivity timeout not only blackens your screen after stipulated time
+        period but also kicks in other security features such as screen lock that protect your device
+        when you leave it unattended.</string>
+    <string name="lock_screen_lock_after_timeout_action">This action will set screen timeout to 1 minute</string>
+
+    <!--   show password -->
+    <string name="show_password_desc">Passwords are visible while typing</string>
+    <string name="show_password_info">Keeping device unlock pattern visible during device unlock can reveal the pattern and is
+        vulnerable to shoulder surfing attack.</string>
+    <string name="show_password_action">This action will make passwords pattern invisible</string>
+
+    <!--   Developer options -->
+    <string name="development_settings_enabled_desc">Development settings are enabled</string>
+    <string name="development_settings_enabled_info">Enabling Developer Options allows a user to drastically alter certain very advanced
+        settings on the device. This can severely affect the way device functions and exposes
+        greater and developmental features to the user.</string>
+    <string name="development_settings_enabled_action">You will be redirected to \"Development settings\":\n - Disable \"Developer Options\"</string>
+
+    <!--   SIM card locked -->
+    <string name="sim_card_locked_desc">SIM card lock is enabled</string>
+    <string name="sim_card_locked_info">A SIM card PIN locks the SIM and
+        prevents anyone from removing the SIM card from your device and use it on any other
+        device without knowing the PIN. Also, you might choose to store your contacts and
+        messages on the SIM card and thus it is highly recommended that you safeguard this
+        valuable personal data by setting a custom PIN on the SIM card(s).</string>
+    <string name="sim_card_locked_action">You will be redirected to security settings menu:\n - Choose "SIM card lock" \n - Enable "Lock SIM Card".</string>
+
+    <!--   Auto time enabled -->
+    <string name="auto_time_desc">Network provided time is enabled</string>
+    <string name="auto_time_info">Use network-provided time setting fetches the date and time information from the
+        cellular provider and is generally more accurate and reliable than your own managed and
+        set date and time. Accurate date and time could help in forensics, device recovery through
+        Android Device Manager and maintain application and logs in a time-sync manner.</string>
+    <string name="auto_time_action">You will be redirected to \"Date and time\" settings:\n - Enable \"Use network-provided time\" \n - Enable \"Use network-provided time zone\".</string>
+
+    <!--   Add user when device is locked -->
+    <string name="add_users_when_locked_desc">Add users from lock screen</string>
+    <string name="add_users_when_locked_info">Users and the guest profile can do most of the same things as the device\'s owner, but each
+            profile has its own storage space. Guests could install malicious apps or carry out any other
+            malicious activities that may compromise overall device security. Also, Wi-Fi and Bluetooth
+            connections are shared which could give guests unauthorized access to networks/devices
+            that could compromise data.</string>
+    <string name="add_users_when_locked_action">You will be redirected to \"Multiple users\" settings:\n - Disable \"Add users from lock screen\" .</string>
+
+    <!--   Show notification when device is locked -->
+    <string name="lock_screen_show_notifications_desc">Show notifications on lock screen</string>
+    <string name="lock_screen_show_notifications_info">If the device is lost or is unattended, then disabling notifications do not display any
+        notification information on the locked screen. This information might be private or
+        confidential and thus unwarranted disclosures could be avoided.</string>
+    <string name="lock_screen_show_notifications_action">You will be redirected to \"Notifications\" settings:\n - Set \"Notifications on lock screen\" to "Don't show notifications at all".</string>
+
+    <!--   Location settings -->
+    <string name="location_enabled_desc">Location is enabled</string>
+    <string name="location_enabled_info">Location allows applications such as Maps and Internet websites to gather and use data
+        indicating the user\'s location. The user\'s location is determined using available information
+        from cellular network data, local Wi-Fi networks, Bluetooth and GPS. If the user turns off
+        Location Services, the user will be prompted to turn it back on again the next time any
+        application tries to use this feature.</string>
+    <string name="location_enabled_action">You will be redirected to \"Location\" settings:\n - Disable \"Use location\"</string>
+
+    <!--   Voice assistance -->
+    <string name="voice_interaction_service_desc">Voice assistance enabled</string>
+    <string name="voice_interaction_service_info">Voice assistance allows some applications to listen constantly to everything you say in order to
+        detect the keyword that will start a command.</string>
+    <string name="voice_interaction_service_action">You will be redirected to \"Assistance settings\"\n- Set \"Assist App\" to None</string>
+
+    <!--   Auto-fill service -->
+    <string name="autofill_service_desc">Autofill service enabled</string>
+    <string name="autofill_service_info">Autofill service can present a security risk as it\'s used to automatically fill
+        the contents of the screen on behalf of a given user.</string>
+    <string name="autofill_service_action">You will be redirected to \"Languages &amp; inputs\" \n - Show advanced options \n - Set \"Autofill service\" to \"None\"</string>
+
+    <!--   Bluetooth -->
+    <string name="bluetooth_on_desc">Bluetooth is enabled</string>
+    <string name="bluetooth_on_info">Leaving Bluetooth on can open your device to potential security risks.</string>
+    <string name="bluetooth_on_action">This action will disable Bluetooth</string>
+
+    <!--   Wi-Fi -->
+    <string name="wifi_on_desc">Wi-Fi is enabled</string>
+    <string name="wifi_on_info">Leaving Wi-Fi on can open your device to potential security risks.</string>
+    <string name="wifi_on_action">This action will disable Wi-Fi</string>
+
+    <!--   Debug App -->
+    <string name="debug_app_desc">Application debugging disabled</string>
+    <string name="debug_app_info">Application debugging allows to select an installed App to debug.</string>
+    <string name="debug_app_action">You will be redirected to \"Development settings\" \n - Set \"Select debug app\" to \"Nothing\".</string>
+
+    <!--   ADB -->
+    <string name="adb_enabled_desc">Android Debug Bridge enabled</string>
+    <string name="adb_enabled_info">Application Debug Bridge allows the device to respond to
+        features such as USB debugging and other such features that could be
+        exploited to get malicious access to the device sub-system.</string>
+    <string name="adb_enabled_action">You will be redirected to \"Development settings\"\n- Disable \"USB debugging\".</string>
+
+    <!--    Wi-Fi scan always enabled -->
+    <string name="wifi_scan_always_enabled_desc">Wi-Fi scan always enabled</string>
+    <string name="wifi_scan_always_enabled_info">This feature use geotagged location data of Wi-Fi routers around you to estimate your location, even if Wi-Fi and GPS are turned off.</string>
+    <string name="wifi_scan_always_enabled_action">You will be redirected to \"Scanning settings\"\n- Disable \"Wi-Fi scanning\".</string>
+
+    <!--    Bluetooth scan always enabled -->
+    <string name="ble_scan_always_enabled_desc">Bluetooth scan always enabled</string>
+    <string name="ble_scan_always_enabled_info">This feature use geotagged location data of Bluetooth accessories around you to estimate your location, even if Bluetooth and GPS are turned off.</string>
+    <string name="ble_scan_always_enabled_action">You will be redirected to \"Scanning settings\"\n- Disable \"Bluetooth scanning\".</string>
+
+    <!-- Dump Apps -->
+    <string name="no_desc_perm">This permission has no description</string>
+
+
+</resources>

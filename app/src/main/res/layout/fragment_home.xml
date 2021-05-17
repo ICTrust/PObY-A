@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     tools:context=".fragment.HomeFragment">
+
+   <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical" >
+
+
+      <androidx.recyclerview.widget.RecyclerView
+              android:id="@+id/categoryRecyclerView"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"/>
+
+
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp">
+
+         <androidx.appcompat.widget.AppCompatTextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Overview"
+             android:textSize="18sp"
+             android:layout_marginStart="16dp"
+             android:layout_centerVertical="true"
+             android:textColor="@color/mainTextColor"/>
+
+         <Button
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Today"
+             android:background="@android:color/transparent"
+             android:layout_centerVertical="true"
+             android:layout_alignParentEnd="true"
+             android:layout_marginEnd="16dp"
+             android:textColor="@color/subTextColor"
+             android:textAllCaps="false"
+             android:drawableEnd="@drawable/ic_dropdown"
+             android:drawablePadding="2dp"/>
+
+      </RelativeLayout>
+
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="200dp">
+
+         <com.github.mikephil.charting.charts.LineChart
+             android:layout_width="match_parent"
+             android:layout_height="match_parent" />
+
+         <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Revenue"
+             android:textSize="16sp"
+             android:textColor="@color/colorPrimary"
+             android:layout_alignParentBottom="true"
+             android:layout_alignParentEnd="true"
+             android:layout_marginEnd="26dp"
+             android:layout_marginBottom="26dp"/>
+
+      </RelativeLayout>
+
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/subTextColor"
+          android:alpha="0.3"/>
+      <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/recyclerView"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"/>
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/subTextColor"
+          android:alpha="0.3"/>
+
+      <androidx.appcompat.widget.AppCompatTextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Recent Orders"
+          android:textSize="18sp"
+          android:layout_marginStart="16dp"
+          android:layout_marginTop="10dp"
+          android:textColor="@color/mainTextColor"/>
+
+      <androidx.recyclerview.widget.RecyclerView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp" />
+
+   </LinearLayout>
+
+
+
+
+
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3068cc</color>
+    <color name="colorPrimaryDark">#3068cc</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="hairLineColor">#d6d6d6</color>
+    <color name="mainTextColor">#464646</color>
+    <color name="subTextColor">#b6b9bf</color>
+
+    <color name="doneColor">#26a94e</color>
+
+    <color name="firstColor">#23bfd4</color>
+    <color name="secondColor">#2594df</color>
+    <color name="thirdColor">#2435df</color>
+
+</resources>
