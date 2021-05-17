@@ -270,7 +270,6 @@ public class SettingsHelper implements Callback {
 
     @Override
     public void onResponse(boolean status) {
-        System.out.println("callback called " + status);
         safetyNetEnabled = status;
     }
 
@@ -299,14 +298,7 @@ public class SettingsHelper implements Callback {
     }
 
     public void setScreenTimeOut(){
-        try {
-            System.out.println("TIMEOUT " + Settings.System.getInt(context.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT));
-            dpm.setMaximumTimeToLock(compName, 60000L);
-            System.out.println("TIMEOUT2 " + Settings.System.getInt(context.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT));
-        } catch (Settings.SettingNotFoundException e) {
-            e.printStackTrace();
-        }
-        dpm.setMaximumTimeToLock(compName, 60000);
+        dpm.setMaximumTimeToLock(compName, 60000L);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -465,7 +457,6 @@ public class SettingsHelper implements Callback {
             ActivityCompat.requestPermissions((Activity)context, perms,  PackageManager.PERMISSION_GRANTED);
         }
         if (mBluetoothAdapter.isEnabled()) {
-            System.out.println("");
             mBluetoothAdapter.disable();
         }
     }

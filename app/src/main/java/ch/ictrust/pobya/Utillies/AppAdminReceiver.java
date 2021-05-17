@@ -67,7 +67,6 @@ public class AppAdminReceiver extends DeviceAdminReceiver {
 
     @Override
     public void onPasswordFailed(Context context, Intent intent, UserHandle user){
-        System.out.println("HAHAHAHAHAHA  FAILED");
     }
 
     @Override
