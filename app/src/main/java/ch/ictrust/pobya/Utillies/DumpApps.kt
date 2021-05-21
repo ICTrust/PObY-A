@@ -16,8 +16,8 @@ import java.io.ByteArrayOutputStream
 import kotlin.collections.ArrayList
 
 class DumpApps(context: Context?, dumpSysApps: Boolean) {
-    private var listApps: MutableList<InstalledApp>? = null
 
+    private var listApps: MutableList<InstalledApp>? = null
     private var installedPackages: List<PackageInfo>? = null
     private var packageManager: PackageManager? =
         context?.getApplicationContext()?.getPackageManager()
@@ -34,7 +34,6 @@ class DumpApps(context: Context?, dumpSysApps: Boolean) {
             (PackageManager.GET_PERMISSIONS or PackageManager.GET_META_DATA)
         )
         for (pInfo: PackageInfo in (installedPackages as MutableList<PackageInfo>?)!!) {
-            val grantedPermissions: MutableList<String> = ArrayList()
             val permissionsList: MutableList<PermissionModel> = ArrayList()
             val reqPermissions = pInfo.requestedPermissions
             var state: AppState = AppState.NORMAL
@@ -45,8 +44,6 @@ class DumpApps(context: Context?, dumpSysApps: Boolean) {
             if (reqPermissions != null) {
                 for (i in pInfo.requestedPermissions.indices) {
                     if ((pInfo.requestedPermissionsFlags[i] and PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0) {
-                        if (pInfo.packageName == "com.android.chrome")
-                            grantedPermissions.add(pInfo.requestedPermissions[i])
                         val temp: PermissionModel? = getPermissionByName(pInfo.requestedPermissions[i])
                         if (temp != null)
                             permissionsList.add(temp)
@@ -63,7 +60,7 @@ class DumpApps(context: Context?, dumpSysApps: Boolean) {
                 val bitmapdata = stream.toByteArray()
                 listApps!!.add(
                     InstalledApp(
-                        pInfo.applicationInfo.loadLabel(packageManager).toString(),
+                        pInfo.applicationInfo.loadLabel(packageManager!!).toString(),
                         pInfo.packageName,
                         pInfo.versionCode,
                         bitmapdata,
@@ -166,7 +163,7 @@ class DumpApps(context: Context?, dumpSysApps: Boolean) {
             val name = permissionGroup?.name
             try {
                 for (pInfo: PermissionInfo in packageManager!!.queryPermissionsByGroup(
-                    name,
+                    name.toString(),
                     PackageManager.GET_META_DATA
                 )) {
                     try {
@@ -175,23 +172,23 @@ class DumpApps(context: Context?, dumpSysApps: Boolean) {
                         val permissionGroupPackageName =
                             (if (permissionGroup.packageName == null) "" else permissionGroup.packageName)
                         val permissionGroupLabel =
-                            (if (permissionGroup.loadLabel(packageManager) == null) "" else permissionGroup.loadLabel(
-                                packageManager
+                            (if (permissionGroup.loadLabel(packageManager!!) == null) "" else permissionGroup.loadLabel(
+                                packageManager!!
                             ).toString())
                         val permissionGroupDesc =
-                            (if (permissionGroup.loadDescription(packageManager) == null) "" else permissionGroup.loadDescription(
-                                packageManager
+                            (if (permissionGroup.loadDescription(packageManager!!) == null) "" else permissionGroup.loadDescription(
+                                packageManager!!
                             ).toString())
                         val permissionName = (if (pInfo.name == null) "" else pInfo.name)
                         val permissionPackageName =
                             (if (pInfo.packageName == null) "" else pInfo.packageName)
                         val permissionLabel =
-                            (if (pInfo.loadLabel(packageManager) == null) "" else pInfo.loadLabel(
-                                packageManager
+                            (if (pInfo.loadLabel(packageManager!!) == null) "" else pInfo.loadLabel(
+                                packageManager!!
                             ).toString())
                         val permissionDesc =
-                            (if (pInfo.loadDescription(packageManager) == null) "" else pInfo.loadDescription(
-                                packageManager
+                            (if (pInfo.loadDescription(packageManager!!) == null) "" else pInfo.loadDescription(
+                                packageManager!!
                             ).toString())
                         val perm = PermissionModel(
                                         permissionGroupName,

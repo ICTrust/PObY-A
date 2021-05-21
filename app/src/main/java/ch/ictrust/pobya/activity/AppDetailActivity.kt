@@ -50,7 +50,7 @@ class AppDetailActivity : AppCompatActivity(){
             finish()
         }
 
-        currentApp = intent.getParcelableExtra("app")
+        currentApp = intent.getParcelableExtra("app")!!
 
         val bitmap = BitmapFactory.decodeByteArray(currentApp.icon, 0, currentApp.icon.size)
 
