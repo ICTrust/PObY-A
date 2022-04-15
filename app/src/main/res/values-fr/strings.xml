@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PObY-A</string>
+    <string name="menu_dashboard">Tableau de bord</string>
+    <string name="menu_malware_scan">Scan de virus</string>
+    <string name="menu_privacy_settings">Vie privée</string>
+    <string name="menu_apps_info">Applications</string>
+    <string name="admin_perm_force_lock_desc">Cette autorisation est nécessaire pour définir la politique de verrouillage de l\'écran (délai, affichage des notifications)</string>
+    <string name="screen_lock_enabled_desc">Verrouillage de l\'écran activé</string>
+    <string name="screen_lock_enabled_info">"L'activation du verrouillage de l'écran nécessite une forme d'authentification de l'utilisateur avant de manipuler l'appareil. Cela renforce la protection des applications, des données et améliore globalement le niveau de sécurité de l'appareil. "</string>
+    <string name="screen_lock_enabled_action">Vous serez redirigé vers les paramètres de verrouillage de l\'écran.</string>
+    <string name="lock_screen_lock_after_timeout_desc">Le délai d\'attente de l\'écran est fixé à 1 minute ou moins.</string>
+    <string name="lock_screen_lock_after_timeout_info">Il est recommandé de définir un délai d\'inactivité afin d\'éviter toute utilisation non autorisée de l\'appareil si vous le laissez sans surveillance. Le délai d\'inactivité ne se résume pas à masquer l\'écran après une période donnée         stipulé, mais il active également d\'autres fonctions de sécurité, telles que le verrouillage de l\'écran, qui protègent votre appareil lorsque vous le laissez sans surveillance.</string>
+    <string name="lock_screen_lock_after_timeout_action">Cette action fixera le délai de d\'inactivité de l\'écran à 1 minute.</string>
+    <string name="show_password_desc">Les mots de passe sont visibles pendant la saisie</string>
+    <string name="show_password_info">Garder les mots de passe visibles peut les révéler et vous rendre vulnérable à des attaques d\'ingénieurie social (\"shoulder surfing\").</string>
+    <string name="show_password_action">Cette action rendra les mots de passe in</string>
+    <string name="development_settings_enabled_desc">Les options de développement sont activées</string>
+    <string name="development_settings_enabled_info">L\'activation des options du développeur permet à l\'utilisateur de modifier radicalement certains paramètres très avancés de l\'appareil. Cela peut avoir une incidence considérable sur le fonctionnement de l\'appareil et exposer l\'utilisateur à des fonctionnalités plus importantes et plus évoluées.</string>
+    <string name="development_settings_enabled_action">Vous serez redirigé vers \"Paramètres de développement\" :   - Désactiver les \"Options développeur\".</string>
+    <string name="sim_card_locked_desc">Verouillage de la carte SIM est activé</string>
+    <string name="sim_card_locked_info">Le code PIN de la carte SIM empêche l\'utilisation de celle-ci par une personne tierce sur un autre appareil sans connaitre de code PIN. Les contacts et les messages peuvent être stockéssur la carte SIM. Il est donc fortement recommandé de protéger ces précieuses données personnelles en définissant un code PIN personnalisé sur la ou les cartes SIM.</string>
+    <string name="sim_card_locked_action">Vous serez redirigé vers le menu des paramètres de sécurité :  - Choisissez Verrouillage de la carte SIM   - Activez le verrouillage de la carte SIM.</string>
+    <string name="auto_time_desc">Le temps fourni par le réseau est activé</string>
+    <string name="auto_time_info">Utiliser le réglage de l\'heure fourni par le réseau permet de récupérer les informations de date et d\'heure auprès du fournisseur de téléphonie mobile.\n        fournisseur de téléphonie mobile et sont généralement plus précises et plus fiables que la date et l\'heure que vous gérez et réglez vous-même.\n        que la date et l\'heure que vous gérez et réglez vous-même. La précision de la date et de l\'heure peut être utile dans le cadre de la recherche d\'indices, de la restauration de l\'appareil et de maintenir les applications et les journaux en synchronisation avec l\'heure.</string>
+    <string name="auto_time_action">Vous serez redirigé vers les paramètres \"Date et heure\\ :  - Activez \"Date et heure automatiques\".      - Activez \"Utiliser le fuseau horaire fourni par le réseau\".</string>
+    <string name="add_users_when_locked_desc">Ajouter des utilisateurs depuis l\'écran de verrouillage</string>
+    <string name="add_users_when_locked_info">Les utilisateurs et le profil invité peuvent faire la plupart des mêmes choses que le propriétaire de l\'appareil, mais chaque profil dispose de son propre espace de stockage. Les invités peuvent installer des applications malveillantes ou mener toute autre activité malveillante susceptible de compromettre la sécurité globale de l\'appareil. En outre, les connexions Wi-Fi et Bluetooth sont partagées, ce qui pourrait donner aux invités un accès non autorisé aux réseaux/appareils et compromettre ainsi les données.</string>
+    <string name="add_users_when_locked_action">Vous serez redirigé vers les paramètres des utilisateurs: \n- Désactiver \"Ajouter des utilisateurs à partir de l\'écran de verrouillage\" .</string>
+    <string name="lock_screen_show_notifications_desc">Afficher les notifications sur l\'écran de verrouillage</string>
+    <string name="lock_screen_show_notifications_info">Si l\'appareil est perdu ou n\'est pas surveillé, la désactivation des notifications n\'affiche aucune information de notification sur l\'écran verrouillé. Ces informations peuvent être privées ou confidentielles, ce qui permet d\'éviter les divulgations non désirées.</string>
+
+    <string name="lock_screen_show_notifications_action">Vous allez être redirigé vers les paramètres de \"Notifications\":\n - Définissez \"Notifications sur l\'écran verrouillé\" sur "Ne pas afficher les notifications du tout".</string>
+
+    <string name="location_enabled_desc">La localisation est activée</string>.
+    <string name="location_enabled_info">La localisation permet aux applications telles que Maps et les sites Internet de recueillir et d\'utiliser des données indiquant l\'emplacement de l\'utilisateur. L\'emplacement de l\'utilisateur est déterminé à l\'aide des informations disponibles provenant des données du réseau cellulaire, des réseaux Wi-Fi locaux, de Bluetooth et du GPS. Si l\'utilisateur désactive         les services de localisation, il sera invité à les réactiver la prochaine fois qu\'une application tentera d\'utiliser cette fonction. application tente d\'utiliser cette fonctionnalité.</string>
+    <string name="location_enabled_action">Vous serez redirigé vers les paramètres de \"Location\":\n - Désactiver \"Utiliser la localisation\"</string>
+    .
+
+
+    <string name="voice_interaction_service_desc">Assistance vocale activée</string>.
+    <string name="voice_interaction_service_info">L\'assistance vocale permet à certaines applications d\'écouter en permanence tout ce que vous dites afin de détecter le mot clé qui va lancer une commande.</string>
+    <string name="voice_interaction_service_action">Vous serez redirigé vers \"Paramètres d\'assistance\"\n- Réglez \"Assistance App\" sur None</string>
+    .
+
+    <string name="autofill_service_desc">Service de remplissage automatique activé</string>.
+    <string name="autofill_service_info">Le service de remplissage automatique peut présenter un risque pour la sécurité car il est utilisé pour remplir automatiquement le contenu de l\'écran au nom d\'un utilisateur donné.</string>
+    <string name="autofill_service_action">Vous allez être redirigé vers \"Languages and inputs\":\n - Afficher les options avancées\n - Définir \"Autofill service\" à \"None\"</string>
+
+    <!-- Bluetooth -->
+    <string name="bluetooth_on_desc">Bluetooth est activé</string>
+    <string name="bluetooth_on_info">Laisser Bluetooth activé peut ouvrir votre appareil à des risques potentiels de sécurité.</string>
+    <string name="bluetooth_on_action">Cette action désactivera Bluetooth</string>.
+
+    <!-- Wi-Fi -->
+    <string name="wifi_on_desc">Wi-Fi est activé</string>
+    <string name="wifi_on_info">Laisser le Wi-Fi activé peut ouvrir votre appareil à des risques de sécurité potentiels.</string>
+    <string name="wifi_on_action">Cette action va désactiver le Wi-Fi</string>.
+
+
+    <string name="debug_app_desc">Débogage de l\'application désactivé</string>.
+    <string name="debug_app_info">Le débogage des applications permet de sélectionner une App installée à déboguer.</string>
+    <string name="debug_app_action">Vous serez redirigé vers \"Paramètres de développement\". \n - Définissez \"Select debug app\" sur \"Nothing\".</string>
+
+
+    <string name="adb_enabled_desc">Android Debug Bridge activé</string>
+    <string name="adb_enabled_info">Application Debug Bridge permet à l\'appareil de répondre à des fonctions telles que le débogage USB et d\'autres fonctions de ce type qui pourraient être exploitées pour obtenir un accès malveillant au sous-système du périphérique.</string>
+    <string name="adb_enabled_action">Vous allez être redirigé vers \"Development settings\"\n- Disable \"USB debugging\".</string>
+
+    <!-- Le scan Wi-Fi est toujours activé -->
+    <string name="wifi_scan_always_enabled_desc">Scanner Wi-Fi toujours activé</string>
+    <string name="wifi_scan_always_enabled_info">Cette fonctionnalité utilise les données de localisation géolocalisées des routeurs Wi-Fi autour de vous pour estimer votre position, même si le Wi-Fi et le GPS sont désactivés.</string>
+    <string name="wifi_scan_always_enabled_action">Vous serez redirigé vers \"Scanning settings\"\"- Désactiver \"Wi-Fi scanning\".</string>
+
+    <!-- Scanning Bluetooth toujours activé -->
+    <string name="ble_scan_always_enabled_desc">Bluetooth scan toujours activé</string>
+    <string name="ble_scan_always_enabled_info">Cette fonctionnalité utilise les données de localisation géolocalisées des accessoires Bluetooth autour de vous pour estimer votre position, même si Bluetooth et le GPS sont désactivés.</string>
+    <string name="ble_scan_always_enabled_action">Vous serez redirigé vers \"Scanning settings\"\"- Désactiver \"Bluetooth scanning\".</string>
+
+    <!-- Dump Apps -->
+    <string name="no_desc_perm">Cette permission n\'a pas de description</string>.
+
+</resources>
