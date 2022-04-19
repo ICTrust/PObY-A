@@ -129,14 +129,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         when (item.itemId) {
             R.id.nav_dashboard -> {
-                toolbarTitle.text = "Dashboard"
+                toolbarTitle.text = getString(R.string.menu_malware_scan)+"Dashboard"
                 val transaction = supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.container, DashboardFragment())
                 transaction.addToBackStack(null)
                 transaction.commit()
             }
             R.id.nav_malware_scan -> {
-                toolbarTitle.text = "Malware Scan"
+                toolbarTitle.text = R.string.menu_malware_scan.toString()
                 val transaction = supportFragmentManager.beginTransaction()
                 // Replace the fragment on container
                 transaction.replace(R.id.container, MalwareScanFragment())
@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 transaction.commit()
             }
             R.id.nav_settings_scan -> {
-                toolbarTitle.text = "Privacy Settings"
+                toolbarTitle.text = R.string.menu_privacy_settings.toString()
                 val transaction = supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.container, SettingsScanFragment())
                 transaction.addToBackStack(null)

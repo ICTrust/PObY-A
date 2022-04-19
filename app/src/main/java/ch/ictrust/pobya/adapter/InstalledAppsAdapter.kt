@@ -31,17 +31,17 @@ class InstalledAppsAdapter (private var items : List<InstalledApp>, val context:
             AppState.DANGEROUS -> {
 
                 holder.ivTask.setImageBitmap(BitmapFactory.decodeByteArray(installedApp.icon, 0, installedApp.icon.size));
-                holder.tvStatus.text = "Warning"
+                holder.tvStatus.text = context.getString(R.string.warning)
                 holder.tvStatus.setTextColor(context.resources.getColor(R.color.warningColor))
             }
             AppState.NORMAL -> {
                 holder.ivTask.setImageBitmap(BitmapFactory.decodeByteArray(installedApp.icon, 0, installedApp.icon.size));
-                holder.tvStatus.text = "Normal"
+                holder.tvStatus.text = context.getString(R.string.normal)
                 holder.tvStatus.setTextColor(context.resources.getColor(R.color.doneColor))
             }
             AppState.MEDIUM -> {
                 holder.ivTask.setImageBitmap(BitmapFactory.decodeByteArray(installedApp.icon, 0, installedApp.icon.size));
-                holder.tvStatus.text = "Medium"
+                holder.tvStatus.text = context.getString(R.string.medium)
                 holder.tvStatus.setTextColor(context.resources.getColor(R.color.firstColor))
             }
         }

@@ -49,7 +49,7 @@ class DashboardFragment: Fragment(), ItemClickListener
         categoryList.clear()
 
         val appsCategory = Category()
-        appsCategory.name = "Applications"
+        appsCategory.name = getString(R.string.menu_apps_info)
         appsCategory.image = R.drawable.outline_app_settings_alt_24
         appsCategory.color = "#FFFFFF"
         appsCategory.bgColor = "#FFFFFF"
@@ -57,7 +57,7 @@ class DashboardFragment: Fragment(), ItemClickListener
 
 
         val malwareCategory = Category()
-        malwareCategory.name = "Scanner"
+        malwareCategory.name = getString(R.string.menu_malware_scan)
         malwareCategory.image = R.drawable.outline_radar_24
         malwareCategory.color = "#FFFFFF"
         malwareCategory.bgColor = "#FFFFFF"
@@ -65,7 +65,7 @@ class DashboardFragment: Fragment(), ItemClickListener
 
 
         val privacyCategory = Category()
-        privacyCategory.name = "Privacy"
+        privacyCategory.name = getString(R.string.menu_privacy_settings)
         privacyCategory.image = R.drawable.outline_admin_panel_settings_24
         privacyCategory.color = "#FFFFFF"
         privacyCategory.bgColor = "#FFFFFF"
@@ -76,7 +76,7 @@ class DashboardFragment: Fragment(), ItemClickListener
     override fun onStart() {
         super.onStart()
         activity!!.nav_view.setCheckedItem(R.id.nav_dashboard)
-        activity!!.toolbar.toolbarTitle.text = "Dashboard"
+        activity!!.toolbar.toolbarTitle.text = getString(R.string.menu_dashboard)
     }
 
 

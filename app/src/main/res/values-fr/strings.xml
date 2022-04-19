@@ -3,7 +3,7 @@
     <string name="app_name">PObY-A</string>
     <string name="menu_dashboard">Tableau de bord</string>
     <string name="menu_malware_scan">Scan de virus</string>
-    <string name="menu_privacy_settings">Vie privée</string>
+    <string name="menu_privacy_settings">Confidentialité</string>
     <string name="menu_apps_info">Applications</string>
     <string name="admin_perm_force_lock_desc">Cette autorisation est nécessaire pour définir la politique de verrouillage de l\'écran (délai, affichage des notifications)</string>
     <string name="screen_lock_enabled_desc">Verrouillage de l\'écran activé</string>
@@ -78,6 +78,18 @@
     <string name="ble_scan_always_enabled_action">Vous serez redirigé vers \"Scanning settings\"\"- Désactiver \"Bluetooth scanning\".</string>
 
     <!-- Dump Apps -->
-    <string name="no_desc_perm">Cette permission n\'a pas de description</string>.
+    <string name="no_desc_perm">Cette permission n\'a pas de description</string>
+    <string name="scanning">En cours</string>
+    <string name="done">Terminer</string>
+    <string name="internet_conn_check">Veuillez vérifier votre connexion internet</string>
+    <string name="warning">Attention</string>
+    <string name="normal">Normal</string>
+    <string name="medium">Moyen</string>
+    <string name="progress">En cours</string>
+    <string name="malware_app_scan">Scan</string>
+    <string name="hide_sys_apps">Cacher les applications système</string>
+    <string name="show_sys_apps">Afficher les applications système</string>
+    <string name="true_string">OK</string>
+    .
 
 </resources>

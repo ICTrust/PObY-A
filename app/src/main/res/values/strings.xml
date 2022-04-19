@@ -116,5 +116,19 @@
     <!-- Dump Apps -->
     <string name="no_desc_perm">This permission has no description</string>
 
+    <!-- Malware Scan -->
+    <string name="done">Done</string>
+    <string name="scanning">Scanning</string>
+    <string name="internet_conn_check">Please check your internet connection</string>
+
+    <!-- Applications status -->
+    <string name="warning">Warning</string>
+    <string name="normal">Normal</string>
+    <string name="medium">Medium</string>
+    <string name="progress">Progress</string>
+    <string name="malware_app_scan">Scanning</string>
+    <string name="hide_sys_apps">Hide system Apps</string>
+    <string name="show_sys_apps">Show system Apps</string>
+    <string name="true_string">OK</string>
 
 </resources>

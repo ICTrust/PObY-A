@@ -18,38 +18,38 @@
 
     <TextView
         android:id="@+id/setting_desc_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Daniel Wellington"
+        android:text="Settings"
         android:textColor="@color/mainTextColor"
         android:textSize="16sp"
         android:layout_toEndOf="@+id/type"
         android:layout_marginStart="16dp"
-        android:layout_toStartOf="@+id/setting_value_tv"
+
         android:layout_marginEnd="12dp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="0dp"/>
 
     <TextView
         android:id="@+id/setting_key_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/subTextColor"
         android:textSize="14sp"
-        android:text="5 hours ago"
+        android:text="description"
         android:layout_marginTop="3dp"
         android:layout_alignStart="@+id/setting_desc_tv"
         android:layout_alignEnd="@id/setting_desc_tv"
         android:layout_below="@+id/setting_desc_tv"/>
 
-    <TextView
+    <!--<TextView
         android:id="@+id/setting_value_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="$ 198.60"
+        android:text="state"
         android:textColor="@color/colorPrimary"
         android:textSize="14sp"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true"/>-->
 
 
 

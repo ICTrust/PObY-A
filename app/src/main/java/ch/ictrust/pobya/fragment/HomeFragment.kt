@@ -42,7 +42,7 @@ class HomeFragment: Fragment(), ItemClickListener,
     override fun onStart() {
         super.onStart()
         activity!!.nav_view.setCheckedItem(R.id.nav_dashboard)
-        activity!!.toolbar.toolbarTitle.text= "Dashboard"
+        activity!!.toolbar.toolbarTitle.text= getString(R.string.menu_dashboard)
     }
 
     override fun onItemClick(position: Int) {

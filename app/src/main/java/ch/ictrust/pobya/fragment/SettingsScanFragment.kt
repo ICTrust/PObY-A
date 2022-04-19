@@ -65,7 +65,7 @@ class SettingsScanFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         activity!!.nav_view.setCheckedItem(R.id.nav_settings_scan)
-        activity!!.toolbar.toolbarTitle.text = "Privacy Settings"
+        activity!!.toolbar.toolbarTitle.text = getString(R.string.menu_privacy_settings)
     }
 
 

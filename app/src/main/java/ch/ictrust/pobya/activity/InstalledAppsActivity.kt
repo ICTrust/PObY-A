@@ -39,7 +39,6 @@ class InstalledAppsActivity : AppCompatActivity(), ItemClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_installed_apps)
 
-
         progressScanApps = findViewById(R.id.loading_spinner_apps)
         floatingActionButton = findViewById(R.id.menu_item)
 
@@ -71,20 +70,19 @@ class InstalledAppsActivity : AppCompatActivity(), ItemClickListener {
         floatingActionButton.setOnClickListener {
             showSystemApps = !showSystemApps
 
-                floatingActionButton.labelText = "Hide system apps"
+                floatingActionButton.labelText = getString(R.string.hide_sys_apps)
                 floatingActionButton.colorNormal = R.color.colorPrimaryDark
                 val scanApps = AsyncDumpInstalledApps(this, showSystemApps)
                 scanApps.execute()
                 if(showSystemApps)
-                    floatingActionButton.labelText = "Hide system apps"
+                    floatingActionButton.labelText = getString(R.string.hide_sys_apps)
                 else
-                    floatingActionButton.labelText = "Show system apps"
+                    floatingActionButton.labelText = getString(R.string.show_sys_apps)
         }
 
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        //menuInflater.inflate(R.menu.apps_menu, menu)
         return true
     }
 
