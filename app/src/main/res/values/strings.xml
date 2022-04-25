@@ -122,6 +122,7 @@
     <string name="internet_conn_check">Please check your internet connection</string>
 
     <!-- Applications status -->
+    <string name="app_status">Status</string>
     <string name="warning">Warning</string>
     <string name="normal">Normal</string>
     <string name="medium">Medium</string>
@@ -130,5 +131,9 @@
     <string name="hide_sys_apps">Hide system Apps</string>
     <string name="show_sys_apps">Show system Apps</string>
     <string name="true_string">OK</string>
+    <string name="package_name">Package name</string>
+    <string name="app_install_date">Install date</string>
+    <string name="app_update_date">Update date</string>
+    <string name="settings">Settings</string>
 
 </resources>

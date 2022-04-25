@@ -75,7 +75,7 @@
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Settings"
+                        android:text="@string/settings"
                         android:elevation="10dp"
                         android:background="@drawable/rounded_corner_button"
                         android:textColor="@color/hairLineColor"

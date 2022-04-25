@@ -9,14 +9,18 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager.widget.PagerAdapter
 import ch.ictrust.pobya.R
+import android.view.animation.AnimationUtils
 
 class SliderAdapter(var context: Context) : PagerAdapter() {
 
     private var layoutInflater: LayoutInflater = LayoutInflater.from(context)
 
-    private var slideImages = intArrayOf(R.drawable.ic_home, R.drawable.outline_admin_panel_settings_24, R.drawable.outline_app_settings_alt_24, R.drawable.outline_radar_24)
+    private var slideImages = intArrayOf(R.drawable.ic_home,
+                                            R.drawable.outline_admin_panel_settings_24,
+                                            R.drawable.outline_app_settings_alt_24,
+                                            R.drawable.outline_radar_24)
 
-    private var slideHeadings = arrayOf("PObY-A", "Privacy settings", "List applications", "Malware scan")
+    private var slideHeadings = arrayOf("PObY-A", context.getString(R.string.menu_privacy_settings) ,context.getString(R.string.menu_apps_info) , context.getString(R.string.menu_malware_scan))
 
     private var slideDescriptions = arrayOf(
         "Privacy Owned by You - Android",
@@ -34,10 +38,8 @@ class SliderAdapter(var context: Context) : PagerAdapter() {
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-
         layoutInflater = LayoutInflater.from(context) as LayoutInflater
         val view = layoutInflater.inflate(R.layout.slide_layout, container, false)
-
         val slideImageView = view.findViewById(R.id.iv_image_icon) as ImageView
         val slideHeading = view.findViewById(R.id.tv_heading) as TextView
         val slideDescription = view.findViewById(R.id.tv_description) as TextView
@@ -45,10 +47,9 @@ class SliderAdapter(var context: Context) : PagerAdapter() {
         slideImageView.setImageResource(slideImages[position])
         slideHeading.text = slideHeadings[position]
         slideDescription.text = slideDescriptions[position]
-
         container.addView(view)
-        return view
 
+        return view
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {

@@ -24,6 +24,7 @@ import ch.ictrust.pobya.R
 import ch.ictrust.pobya.fragment.*
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.app_bar_main.toolbarTitle
+import android.view.animation.AnimationUtils
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -88,14 +89,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, DashboardFragment())
         transaction.commit()
 
         navView.setNavigationItemSelectedListener(this)
-
-
 
     }
 
@@ -129,14 +127,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         when (item.itemId) {
             R.id.nav_dashboard -> {
-                toolbarTitle.text = getString(R.string.menu_malware_scan)+"Dashboard"
+                toolbarTitle.text = getString(R.string.menu_dashboard)
                 val transaction = supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.container, DashboardFragment())
                 transaction.addToBackStack(null)
                 transaction.commit()
             }
             R.id.nav_malware_scan -> {
-                toolbarTitle.text = R.string.menu_malware_scan.toString()
+                toolbarTitle.text = getString(R.string.menu_malware_scan)
                 val transaction = supportFragmentManager.beginTransaction()
                 // Replace the fragment on container
                 transaction.replace(R.id.container, MalwareScanFragment())
@@ -145,7 +143,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 transaction.commit()
             }
             R.id.nav_settings_scan -> {
-                toolbarTitle.text = R.string.menu_privacy_settings.toString()
+                toolbarTitle.text = getString(R.string.menu_privacy_settings)
                 val transaction = supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.container, SettingsScanFragment())
                 transaction.addToBackStack(null)
