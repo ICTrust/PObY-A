@@ -48,8 +48,6 @@ class WalkthroughActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
-
     }
 
     override fun onBackPressed() {
@@ -59,11 +57,11 @@ class WalkthroughActivity : AppCompatActivity() {
     fun addDotsIndicator(position: Int) {
 
         mDots = arrayOfNulls(4)
-        mDotsLayout?.removeAllViews() //without this multiple number of dots will be created
+        mDotsLayout?.removeAllViews()
 
         for (i in mDots.indices) {
             mDots[i] = TextView(this)
-            mDots[i]?.text = Html.fromHtml("&#8226;") //code for the dot icon like thing
+            mDots[i]?.text = Html.fromHtml("&#8226;")
             mDots[i]?.textSize = 35f
             mDots[i]?.setPadding(5,0,5,0)
             mDots[i]?.setTextColor(Color.parseColor("#80ffffff"))
@@ -72,7 +70,7 @@ class WalkthroughActivity : AppCompatActivity() {
         }
 
         if (mDots.isNotEmpty()) {
-            mDots[position]?.setTextColor(Color.parseColor("#ffffff")) //setting currently selected dot to white
+            mDots[position]?.setTextColor(Color.parseColor("#ffffff"))
         }
     }
 
@@ -82,9 +80,7 @@ class WalkthroughActivity : AppCompatActivity() {
         }
 
         override fun onPageSelected(position: Int) {
-
             addDotsIndicator(position)
-
             mCurrentPage = position
 
             if (mCurrentPage == 3){
@@ -92,8 +88,6 @@ class WalkthroughActivity : AppCompatActivity() {
             }else{
                 mContinueButton?.visibility = View.GONE
             }
-
-
         }
 
         override fun onPageScrollStateChanged(state: Int) {

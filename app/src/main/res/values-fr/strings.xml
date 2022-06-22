@@ -11,7 +11,7 @@
     <string name="screen_lock_enabled_action">Vous serez redirigé vers les paramètres de verrouillage de l\'écran.</string>
     <string name="lock_screen_lock_after_timeout_desc">Le délai d\'attente de l\'écran est fixé à 1 minute ou moins.</string>
     <string name="lock_screen_lock_after_timeout_info">Il est recommandé de définir un délai d\'inactivité afin d\'éviter toute utilisation non autorisée de l\'appareil si vous le laissez sans surveillance. Le délai d\'inactivité ne se résume pas à masquer l\'écran après une période donnée         stipulé, mais il active également d\'autres fonctions de sécurité, telles que le verrouillage de l\'écran, qui protègent votre appareil lorsque vous le laissez sans surveillance.</string>
-    <string name="lock_screen_lock_after_timeout_action">Cette action fixera le délai de d\'inactivité de l\'écran à 1 minute.</string>
+    <string name="lock_screen_lock_after_timeout_action">Cette action fixera le délai d\'inactivité de l\'écran à 1 minute.</string>
     <string name="show_password_desc">Les mots de passe sont visibles pendant la saisie</string>
     <string name="show_password_info">Garder les mots de passe visibles peut les révéler et vous rendre vulnérable à des attaques d\'ingénieurie social (\"shoulder surfing\").</string>
     <string name="show_password_action">Cette action rendra les mots de passe in</string>

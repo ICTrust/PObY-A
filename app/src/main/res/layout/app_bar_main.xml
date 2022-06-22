@@ -24,7 +24,6 @@
                     android:layout_height="24dp"
                     android:layout_gravity="end"
                     android:layout_marginEnd="16dp"
-                    android:background="@mipmap/shield"
                     android:visibility="gone"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"/>

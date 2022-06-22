@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="180dp"
         android:layout_height="180dp"
-        android:src="@mipmap/shield"
+        android:src="@mipmap/poby"
         app:layout_constraintBottom_toTopOf="@+id/text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

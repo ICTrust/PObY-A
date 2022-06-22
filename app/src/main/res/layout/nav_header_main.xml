@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:paddingTop="5dp"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:src="@drawable/shield"
+        android:src="@drawable/pobya"
         android:text="PObY" />
 
 </LinearLayout>

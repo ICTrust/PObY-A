@@ -21,7 +21,6 @@ class AppPermissionsFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,7 +37,6 @@ class AppPermissionsFragment : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_app_permissions_list, container, false)
         recyclerView = view as RecyclerView
-
         recyclerView.layoutManager = LinearLayoutManager(view.getContext())
         val appPerms: MutableList<PermissionModel> = app.permissions
         recyclerView.adapter = AppPermissionsRecyclerViewAdapter(appPerms)

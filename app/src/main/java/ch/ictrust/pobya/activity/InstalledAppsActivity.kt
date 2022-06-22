@@ -67,6 +67,8 @@ class InstalledAppsActivity : AppCompatActivity(), ItemClickListener {
         val scanApps = AsyncDumpInstalledApps(this, false)
         scanApps.execute()
 
+        floatingActionButton.labelText = getString(R.string.show_sys_apps)
+
         floatingActionButton.setOnClickListener {
             showSystemApps = !showSystemApps
 

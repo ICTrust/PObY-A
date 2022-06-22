@@ -48,10 +48,4 @@ class AppInfosFragment : Fragment() {
 
         return view
     }
-
-
-
-
-
-
 }
