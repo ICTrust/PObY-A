@@ -25,17 +25,33 @@ class DumpApps(context: Context?, dumpSysApps: Boolean) {
     private var dumpSystemApps = dumpSysApps
     private var context = context!!
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     fun getListApps(): MutableList<InstalledApp> {
         permissions = getAllperms()
         packageManager!!.packageInstaller.allSessions
         listApps = ArrayList()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            installedPackages = packageManager!!.getInstalledPackages(
+                    (PackageManager.GET_PERMISSIONS or PackageManager.GET_META_DATA or PackageManager.GET_SIGNING_CERTIFICATES)
+            )
+        } else {
+            installedPackages = packageManager!!.getInstalledPackages(
+                    (PackageManager.GET_PERMISSIONS or PackageManager.GET_META_DATA or PackageManager.GET_SIGNATURES)
+            )
+        }
         installedPackages = packageManager!!.getInstalledPackages(
-            (PackageManager.GET_PERMISSIONS or PackageManager.GET_META_DATA)
+            (PackageManager.GET_PERMISSIONS or PackageManager.GET_META_DATA or PackageManager.GET_SIGNING_CERTIFICATES)
         )
         for (pInfo: PackageInfo in (installedPackages as MutableList<PackageInfo>?)!!) {
             val permissionsList: MutableList<PermissionModel> = ArrayList()
             val reqPermissions = pInfo.requestedPermissions
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                println(pInfo.signingInfo.getApkContentsSigners())
+            } else {
+                println(pInfo.signatures)
+            }
+
             var state: AppState = AppState.NORMAL
             if (reqPermissions != null) state = getAppConfidence(pInfo)
             if (!dumpSystemApps && isSystemPackage(pInfo) == 1) {

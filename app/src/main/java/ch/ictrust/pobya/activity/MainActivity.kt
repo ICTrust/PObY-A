@@ -153,6 +153,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val intent = Intent(this, InstalledAppsActivity::class.java)
                 startActivity(intent)
             }
+            R.id.nav_data_safety -> {
+                toolbarTitle.text = "Data Safety"
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.container, DataSafetyPolicyFragment())
+                transaction.addToBackStack(null)
+                transaction.commit()
+            }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
@@ -173,8 +180,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.string.admin_perm_force_lock_desc
         )
         startActivityForResult(intent, RESULT_ENABLE)
-
-
 
     }
 }
