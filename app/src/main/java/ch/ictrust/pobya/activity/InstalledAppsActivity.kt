@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.activity_installed_apps.*
 import java.lang.ref.WeakReference
 
 
+@Suppress("OverrideDeprecatedMigration")
 class InstalledAppsActivity : AppCompatActivity(), ItemClickListener {
 
 
@@ -126,6 +127,7 @@ class InstalledAppsActivity : AppCompatActivity(), ItemClickListener {
         private var applicationList: MutableList<InstalledApp> = mutableListOf()
 
 
+        @Deprecated("Deprecated in Java")
         @RequiresApi(Build.VERSION_CODES.M)
         override fun doInBackground(vararg params: Void): MutableList<InstalledApp>? {
             var dumpApps: DumpApps = DumpApps(appContext, dumpSysApps)
@@ -133,6 +135,7 @@ class InstalledAppsActivity : AppCompatActivity(), ItemClickListener {
             return  applicationList
         }
 
+        @Deprecated("Deprecated in Java")
         override fun onPreExecute() {
             super.onPreExecute()
             val activity = activityReference.get()
@@ -141,6 +144,7 @@ class InstalledAppsActivity : AppCompatActivity(), ItemClickListener {
             }
         }
 
+        @Deprecated("Deprecated in Java")
         @RequiresApi(Build.VERSION_CODES.M)
         override fun onPostExecute(result: MutableList<InstalledApp>) {
             super.onPostExecute(result)
