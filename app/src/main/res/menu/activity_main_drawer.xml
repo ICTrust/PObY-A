@@ -20,5 +20,9 @@
             android:id="@+id/nav_apps_info"
             android:icon="@drawable/outline_app_settings_alt_24"
             android:title="@string/menu_apps_info" />
+        <item
+            android:id="@+id/nav_data_safety"
+            android:icon="@drawable/ic_baseline_privacy_tip_24"
+            android:title="Data safety" />
     </group>
 </menu>

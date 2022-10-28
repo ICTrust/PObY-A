@@ -13,6 +13,7 @@ import android.location.LocationManager;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
+import android.service.voice.VoiceInteractionService;
 import android.telephony.TelephonyManager;
 import android.view.autofill.AutofillManager;
 import androidx.annotation.RequiresApi;
@@ -378,10 +379,10 @@ public class SettingsHelper implements Callback {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     public boolean isVoiceAssistanceEnabled() {
+        /** TODO: case of OnePlus that use "oneplus_default_voice_assist_picker_service" instead
+         *        of "voice_interaction_service" and "assistant"
+         */
 
-       /* if(Settings.Secure.getString(context.getContentResolver(), "enabled_input_methods") == "null")
-            return true;
-        */
         if ( android.provider.Settings.Secure.getString(context.getContentResolver(), "assistant") != null
                 && !android.provider.Settings.Secure.getString(context.getContentResolver(), "assistant").isEmpty()) {
             return true;

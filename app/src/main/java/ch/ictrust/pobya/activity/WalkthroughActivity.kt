@@ -50,8 +50,9 @@ class WalkthroughActivity : AppCompatActivity() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        // do something
+        return
     }
 
     fun addDotsIndicator(position: Int) {
