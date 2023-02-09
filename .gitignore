@@ -89,3 +89,7 @@ lint/tmp/
 # 21.05.2021
 app/google-services.json
 app/release/
+
+# ignore .DS_Store
+app/.DS_Store
+.DS_Store
