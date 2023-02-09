@@ -10,7 +10,7 @@ android {
         applicationId "ch.ictrust.pobya"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 1
+        versionCode 4
         versionName "1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true

@@ -105,7 +105,7 @@ class InstalledAppsActivity : AppCompatActivity(), ItemClickListener {
         applicationList = listApps
         installedAppsAdapter = InstalledAppsAdapter(listApps, this)
         installedAppsAdapter.setClickListener(this)
-        recyclerView.apply {
+        recyclerViewSettings.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
             adapter = installedAppsAdapter
         }
