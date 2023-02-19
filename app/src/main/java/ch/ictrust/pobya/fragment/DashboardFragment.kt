@@ -86,10 +86,8 @@ class DashboardFragment: Fragment(), ItemClickListener
                 startActivity(Intent(context,InstalledAppsActivity::class.java))
             }
             1 -> {
-                val transaction = fragmentManager!!.beginTransaction()
-                transaction.replace(R.id.container, MalwareScanFragment())
-                transaction.addToBackStack(null)
-                transaction.commit()
+                startActivity(Intent(context,MalwareScanActivity::class.java))
+
             }
             2 -> {
                 val transaction = fragmentManager!!.beginTransaction()

@@ -8,8 +8,8 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import ch.ictrust.pobya.R
+import ch.ictrust.pobya.models.AppState
 import ch.ictrust.pobya.models.InstalledApp
 import ch.ictrust.pobya.models.PermissionModel
 import java.io.ByteArrayOutputStream
@@ -45,12 +45,6 @@ class DumpApps(context: Context?, dumpSysApps: Boolean) {
         for (pInfo: PackageInfo in (installedPackages as MutableList<PackageInfo>?)!!) {
             val permissionsList: MutableList<PermissionModel> = ArrayList()
             val reqPermissions = pInfo.requestedPermissions
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                println(pInfo.signingInfo.getApkContentsSigners())
-            } else {
-                println(pInfo.signatures)
-            }
 
             var state: AppState = AppState.NORMAL
             if (reqPermissions != null) state = getAppConfidence(pInfo)

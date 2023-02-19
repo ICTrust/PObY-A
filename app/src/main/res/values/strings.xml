@@ -117,9 +117,13 @@
     <string name="no_desc_perm">This permission has no description</string>
 
     <!-- Malware Scan -->
-    <string name="done">Done</string>
+    <string name="done">Rescan</string>
     <string name="scanning">Scanning</string>
     <string name="internet_conn_check">Please check your internet connection</string>
+    <string name="update_database_failed">Database not updated</string>
+    <string name="no_malware_found">No threat found</string>
+    <string name="retry_scan">Retry</string>
+    <string name="malware_found">Malware found</string>
 
     <!-- Applications status -->
     <string name="app_status">Status</string>

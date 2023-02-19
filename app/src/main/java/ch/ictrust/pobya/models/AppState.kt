@@ -1,4 +1,4 @@
-package ch.ictrust.pobya.Utillies
+package ch.ictrust.pobya.models
 
 enum class AppState {
     NORMAL,

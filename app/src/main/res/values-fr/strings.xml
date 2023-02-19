@@ -95,6 +95,10 @@
     <string name="app_install_date">Date d\'installation</string>
     <string name="app_update_date">Mise à jour le</string>
     <string name="settings">Paramètres</string>
+    <string name="update_database_failed">La mise à jour a echoué</string>
+    <string name="no_malware_found">Aucune menace trouvée</string>
+    <string name="retry_scan">Réessayer</string>
+    <string name="malware_found">Menace(s) trouvée(s)</string>
     .
 
 </resources>

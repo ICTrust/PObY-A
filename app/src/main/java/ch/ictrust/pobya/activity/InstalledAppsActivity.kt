@@ -20,6 +20,7 @@ import ch.ictrust.pobya.adapter.InstalledAppsAdapter
 import ch.ictrust.pobya.listener.ItemClickListener
 import ch.ictrust.pobya.models.InstalledApp
 import com.github.clans.fab.FloatingActionButton
+import com.github.clans.fab.FloatingActionMenu
 import kotlinx.android.synthetic.main.activity_installed_apps.*
 import java.lang.ref.WeakReference
 
@@ -32,6 +33,7 @@ class InstalledAppsActivity : AppCompatActivity(), ItemClickListener {
     private lateinit var installedAppsAdapter: InstalledAppsAdapter
     private lateinit var progressScanApps : ProgressBar
     private lateinit var floatingActionButton: FloatingActionButton
+    private lateinit var floatingActionMenu: FloatingActionMenu
     private var showSystemApps = false
 
 
@@ -42,6 +44,7 @@ class InstalledAppsActivity : AppCompatActivity(), ItemClickListener {
 
         progressScanApps = findViewById(R.id.loading_spinner_apps)
         floatingActionButton = findViewById(R.id.menu_item)
+        floatingActionMenu = findViewById(R.id.menu_group)
 
         val actionbar: ActionBar? = supportActionBar
         actionbar?.apply {
@@ -57,13 +60,6 @@ class InstalledAppsActivity : AppCompatActivity(), ItemClickListener {
         toolbar.setNavigationOnClickListener {
             finish()
         }
-        toolbar.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.show_sys_apps -> {
-                }
-            }
-            true
-        }
 
         val scanApps = AsyncDumpInstalledApps(this, false)
         scanApps.execute()
@@ -72,15 +68,17 @@ class InstalledAppsActivity : AppCompatActivity(), ItemClickListener {
 
         floatingActionButton.setOnClickListener {
             showSystemApps = !showSystemApps
-
+            floatingActionButton.labelText = getString(R.string.hide_sys_apps)
+            floatingActionButton.colorNormal = R.color.colorPrimaryDark
+            val scanApps = AsyncDumpInstalledApps(this, showSystemApps)
+            scanApps.execute()
+            if(showSystemApps){
                 floatingActionButton.labelText = getString(R.string.hide_sys_apps)
-                floatingActionButton.colorNormal = R.color.colorPrimaryDark
-                val scanApps = AsyncDumpInstalledApps(this, showSystemApps)
-                scanApps.execute()
-                if(showSystemApps)
-                    floatingActionButton.labelText = getString(R.string.hide_sys_apps)
-                else
-                    floatingActionButton.labelText = getString(R.string.show_sys_apps)
+                floatingActionMenu.close(true)
+            } else {
+                floatingActionButton.labelText = getString(R.string.show_sys_apps)
+                floatingActionMenu.close(true)
+            }
         }
 
     }
@@ -127,7 +125,6 @@ class InstalledAppsActivity : AppCompatActivity(), ItemClickListener {
         private var applicationList: MutableList<InstalledApp> = mutableListOf()
 
 
-        @Deprecated("Deprecated in Java")
         @RequiresApi(Build.VERSION_CODES.M)
         override fun doInBackground(vararg params: Void): MutableList<InstalledApp>? {
             var dumpApps: DumpApps = DumpApps(appContext, dumpSysApps)
@@ -135,7 +132,6 @@ class InstalledAppsActivity : AppCompatActivity(), ItemClickListener {
             return  applicationList
         }
 
-        @Deprecated("Deprecated in Java")
         override fun onPreExecute() {
             super.onPreExecute()
             val activity = activityReference.get()
@@ -144,7 +140,6 @@ class InstalledAppsActivity : AppCompatActivity(), ItemClickListener {
             }
         }
 
-        @Deprecated("Deprecated in Java")
         @RequiresApi(Build.VERSION_CODES.M)
         override fun onPostExecute(result: MutableList<InstalledApp>) {
             super.onPostExecute(result)
