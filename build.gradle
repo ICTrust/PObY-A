@@ -5,7 +5,11 @@ buildscript {
     ext.room_version = "2.5.0"
     repositories {
         google()
-        jcenter()
+        jcenter {
+            content {
+                includeModule("org.jetbrains.kotlinx", "kotlinx-coroutines")
+            }
+        }
         mavenCentral()
         maven { url "https://jitpack.io" }
 
