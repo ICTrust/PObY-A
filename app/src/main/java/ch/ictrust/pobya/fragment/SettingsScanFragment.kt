@@ -37,7 +37,7 @@ class SettingsScanFragment : Fragment() {
         progressBar = view.findViewById(R.id.loading_spinner_settings)
         progressBar.visibility = View.GONE
 
-        view.recyclerView.apply {
+        view.recyclerViewSettings.apply {
             settingsAdapter = SettingsAdapter(settingsList, view.context)
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
             adapter = settingsAdapter
@@ -49,7 +49,7 @@ class SettingsScanFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         getSettings()
-        view?.recyclerView?.apply {
+        view?.recyclerViewSettings?.apply {
             settingsAdapter = SettingsAdapter(settingsList, view!!.context)
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
             adapter = settingsAdapter

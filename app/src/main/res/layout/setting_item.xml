@@ -13,28 +13,26 @@
         android:layout_centerVertical="false"/>
 
 
-
-
-
     <TextView
         android:id="@+id/setting_desc_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="12dp"
+        android:layout_toEndOf="@+id/type"
+
         android:text="Settings"
         android:textColor="@color/mainTextColor"
         android:textSize="16sp"
-        android:layout_toEndOf="@+id/type"
-        android:layout_marginStart="16dp"
-
-        android:layout_marginEnd="12dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/setting_key_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/subTextColor"
+        android:textColor="@color/mainTextColor"
         android:textSize="14sp"
         android:text="description"
         android:layout_marginTop="3dp"

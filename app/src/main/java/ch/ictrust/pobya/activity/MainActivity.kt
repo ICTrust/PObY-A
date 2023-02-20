@@ -24,7 +24,6 @@ import ch.ictrust.pobya.R
 import ch.ictrust.pobya.fragment.*
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.app_bar_main.toolbarTitle
-import android.view.animation.AnimationUtils
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -35,6 +34,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var devicePolicyManager: DevicePolicyManager
     private val RESULT_ENABLE = 11
     private val CODE_WRITE_SETTINGS_PERMISSION = 42
+
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,10 +114,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         this.menu = menu
         return false
     }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+    override fun onOptionsItemSelected(item: MenuItem): Boolean { 
 
         return false
     }
@@ -135,13 +132,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 transaction.commit()
             }
             R.id.nav_malware_scan -> {
-                toolbarTitle.text = getString(R.string.menu_malware_scan)
-                val transaction = supportFragmentManager.beginTransaction()
-                // Replace the fragment on container
-                transaction.replace(R.id.container, MalwareScanFragment())
-                transaction.addToBackStack(null)
-                // Finishing the transition
-                transaction.commit()
+                val intent = Intent(this, MalwareScanActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_settings_scan -> {
                 toolbarTitle.text = getString(R.string.menu_privacy_settings)

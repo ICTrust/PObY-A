@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ch.ictrust.pobya.R
-import ch.ictrust.pobya.Utillies.AppState
+import ch.ictrust.pobya.models.AppState
 import ch.ictrust.pobya.listener.ItemClickListener
 import ch.ictrust.pobya.models.*
 import kotlinx.android.synthetic.main.app_item.view.*

@@ -16,7 +16,7 @@ import ch.ictrust.pobya.models.Category
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.app_bar_main.view.*
-import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.fragment_dashboard.view.*
 
 class DashboardFragment: Fragment(), ItemClickListener
     {
@@ -86,10 +86,8 @@ class DashboardFragment: Fragment(), ItemClickListener
                 startActivity(Intent(context,InstalledAppsActivity::class.java))
             }
             1 -> {
-                val transaction = fragmentManager!!.beginTransaction()
-                transaction.replace(R.id.container, MalwareScanFragment())
-                transaction.addToBackStack(null)
-                transaction.commit()
+                startActivity(Intent(context,MalwareScanActivity::class.java))
+
             }
             2 -> {
                 val transaction = fragmentManager!!.beginTransaction()

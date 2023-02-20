@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/demo_light_transparent"
         android:nestedScrollingEnabled="true">
         <ProgressBar
             android:id="@+id/loading_spinner_settings"
@@ -24,7 +23,7 @@
             android:layout_gravity="center" />
 
         <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/recyclerViewSettings"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true" />

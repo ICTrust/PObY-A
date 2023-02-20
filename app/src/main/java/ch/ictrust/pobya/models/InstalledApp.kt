@@ -1,7 +1,6 @@
 package ch.ictrust.pobya.models
 
 import android.os.Parcelable
-import ch.ictrust.pobya.Utillies.AppState
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

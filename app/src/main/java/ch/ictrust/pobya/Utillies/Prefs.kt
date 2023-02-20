@@ -17,7 +17,7 @@ class Prefs private constructor(context: Context) {
 
     companion object {
 
-        private val PREFS_NAME = "my_prefs"
+        private val PREFS_NAME = "Settings"
         private val ISFIRSTRUN = "isFirstRun"
 
         private var instance: Prefs? = null

@@ -6,10 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import ch.ictrust.pobya.R
-import com.airbnb.lottie.LottieAnimationView
-import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.fragment_dashboard.view.*
 
 class DataSafetyPolicyFragment : Fragment() {
 

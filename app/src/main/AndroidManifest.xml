@@ -39,6 +39,9 @@
             android:name=".activity.InstalledAppsActivity"/>
         <activity
             android:name=".activity.AppDetailActivity"/>
+        <activity
+            android:name=".activity.MalwareScanActivity"
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name="ch.ictrust.pobya.Utillies.AppAdminReceiver"

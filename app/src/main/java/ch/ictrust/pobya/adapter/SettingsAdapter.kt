@@ -28,12 +28,6 @@ class SettingsAdapter(private var items: MutableList<SysSetting>, var context: C
             holder.typeView.setBackgroundResource(R.drawable.ic_baseline_warning_24)
         }
         holder.tvDetail.text = sysSetting.info
-        /*if (sysSetting.currentValue == sysSetting.expectedValue ) {
-            holder.tvValue.text = context.getString(R.string.true_string)
-        } else {
-            holder.tvValue.text = context.getString(R.string.warning)
-        }*/
-
 
         holder.itemView.setOnClickListener(View.OnClickListener {
             AlertDialog.Builder(context)
@@ -72,7 +66,6 @@ class SettingsAdapter(private var items: MutableList<SysSetting>, var context: C
 class SettingsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val tvDetail = view.setting_key_tv!!
     val tvContent = view.setting_desc_tv!!
-    //val tvValue = view.setting_value_tv!!
     val typeView = view.type!!
 }
 

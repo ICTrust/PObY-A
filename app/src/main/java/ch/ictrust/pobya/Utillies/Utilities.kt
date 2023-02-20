@@ -4,17 +4,9 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 object Utilities {
-
-    fun toDateString(date: Date) : String {
-        val format = SimpleDateFormat("MMM dd yyyy")
-        return format.format(date)
-    }
-
     /**
      * Check user permission
      *
