@@ -18,9 +18,11 @@ import ch.ictrust.pobya.fragment.ApplicationPermissionsFragment
 import ch.ictrust.pobya.models.InstalledApplication
 import ch.ictrust.pobya.repository.ApplicationRepository
 import ch.ictrust.pobya.utillies.AppViewPagerAdapter
+import ch.ictrust.pobya.utillies.Utilities
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.launch
 
 
 class AppDetailActivity : AppCompatActivity(){
@@ -41,8 +43,7 @@ class AppDetailActivity : AppCompatActivity(){
         val appTabLayout = findViewById<TabLayout>(R.id.tab_layout_app_details)
         val appViewPagerAdapter = AppViewPagerAdapter(supportFragmentManager)
         val radius = resources.getDimension(R.dimen.roundedCornerAppDetails)
-        val appUninstalled = ApplicationRepository.getInstance(applicationContext as Application)
-                                .getAppByPackageName(packageName)?.uninstalled
+
 
         actionbar?.apply {
             setDisplayHomeAsUpEnabled(true)
@@ -63,7 +64,7 @@ class AppDetailActivity : AppCompatActivity(){
         }
 
 
-        if (appUninstalled == true){
+        if (currentApp.uninstalled){
             btnOpenSettings.isEnabled = false
             btnUninstall.isEnabled = false
         } else {

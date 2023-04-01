@@ -16,10 +16,12 @@ import ch.ictrust.pobya.activity.AppDetailActivity
 import ch.ictrust.pobya.adapter.AppsAdapter
 import ch.ictrust.pobya.models.InstalledApplication
 import ch.ictrust.pobya.repository.ApplicationRepository
+import ch.ictrust.pobya.utillies.Utilities
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.app_bar_main.view.*
+import kotlinx.coroutines.launch
 
 
 class ApplicationsFragment : Fragment()  {
@@ -44,10 +46,12 @@ class ApplicationsFragment : Fragment()  {
 
         appsAdapter.setOnItemClickListener(object : AppsAdapter.OnItemClickListener {
             override fun onItemClick(app: InstalledApplication) {
-                ApplicationRepository.getInstance(view.context.applicationContext as Application).getAppByPackageName(app.packageName)
-                val intent = Intent(view.context, AppDetailActivity::class.java)
-                intent.putExtra("app", app)
-                view.context.startActivity(intent)
+                Utilities.dbScope.launch {
+                    ApplicationRepository.getInstance(view.context.applicationContext as Application).getAppByPackageName(app.packageName)
+                    val intent = Intent(view.context, AppDetailActivity::class.java)
+                    intent.putExtra("app", app)
+                    view.context.startActivity(intent)
+                }
             }
         })
 

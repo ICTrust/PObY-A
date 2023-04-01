@@ -52,12 +52,8 @@ class ApplicationPermissionsFragment : Fragment() {
         recyclerView = view.findViewById(R.id.rvPermissions)
         tvNoPermission = view.findViewById(R.id.tvNoPermission)
 
-        val appUninstalled = ApplicationRepository.getInstance(
-                                    view.context.applicationContext as Application
-                            ).getAppByPackageName(app.packageName)?.uninstalled
 
-        if (appUninstalled == true){
-
+        if (app.uninstalled){
             return view
         }
 
