@@ -1,4 +1,4 @@
-package ch.ictrust.pobya.Utillies
+package ch.ictrust.pobya.utillies
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

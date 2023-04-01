@@ -1,7 +1,6 @@
 <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:name="com.poby.hardroid.ui.appsdetails.AppDetailsActivity"
     android:layout_weight="2"
 
     android:divider="@android:color/background_dark"
@@ -13,4 +12,4 @@
     android:clickable="false"
     android:listSelector="@android:color/holo_blue_light"
     android:nestedScrollingEnabled="true"
-    tools:listitem="@layout/fragment_app_permissions"  android:layout_height="wrap_content" android:layout_width="match_parent"/>
+    tools:listitem="@layout/list_app_permissions"  android:layout_height="wrap_content" android:layout_width="match_parent"/>

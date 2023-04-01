@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3068cc</color>
-    <color name="colorPrimaryDark">#3068cc</color>
+    <!--<color name="colorPrimary">#3068cc</color>-->
+    <color name="colorPrimary">#577AEA</color>
+    <color name="colorSecondary">#DF9163C6</color>
+    <color name="colorPrimaryDark">#093075</color>
     <color name="colorAccent">#D81B60</color>
     <color name="hairLineColor">#d6d6d6</color>
     <color name="mainTextColor">#464646</color>
-    <color name="subTextColor">#b6b9bf</color>
+    <color name="subTextColor">#313132</color>
 
     <color name="doneColor">#26a94e</color>
 

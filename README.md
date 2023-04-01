@@ -1,24 +1,38 @@
 # PObY-A
 PObY-A, Privacy Owned by You - Android, is an application which aim to help Android users to improve security and privacy of their devices.
 
-
 ## Features
-- Check and help to enforce settings privacy based on some CIS (Center of Internet Security) recommendations
-- List installed applications and list their granted permissions
-- Malware scan using the same database as [AMDH](https://github.com/a-yatta/AMDH)
+
+| PObY-A Features                                                |     |
+|----------------------------------------------------------------|-----|
+| 🚫 No Ads or Purchases                                         | ✅   |
+| 📙 Translations (FR/EN)                                        | ✅   |
+| 🪲 Malware scan                                                | ✅   |
+| ⏱️ Live monitoring (v1.4: install/uninstall)                   | ✅   |
+| 🔐 Enforce settings privacy based on some CIS* recommendations | ✅   |
+| ⚠️ Warn apps with dangerous* permissions                        | ✅   |
+| ⚡ Many more coming...                                          | ✅   |
+
+**CIS:** Center of Internet Security
+
+**dangerous**: "A higher-risk permission that would give a requesting application access to private user data or control over the device that can negatively impact the user" [permission element](https://developer.android.com/guide/topics/manifest/permission-element)
 
 ## Needed permissions
 - Write system settings
 - "force-lock" admin permission
+- Bluetooth permission: needed to automate disable bluetooth
+- Wifi permission: needed to automate disable Wifi
+- Foreground service permission: needed for live monitoring
 
 ## Screnshots
-<img src="screenshots/splash_1.png" alt="drawing" width="300"/> 
-<img src="screenshots/splash_2.png" alt="drawing" width="300"/> 
-<img src="screenshots/Device_admin.png" alt="drawing" width="300"/> 
-<img src="screenshots/settings_permission.png" alt="drawing" width="300"/> 
-<img src="screenshots/sidemenu.png" alt="drawing" width="300"/> 
-<img src="screenshots/Applications_list.png" alt="drawing" width="300"/> 
-<img src="screenshots/privacy_settings.png" alt="drawing" width="300"/> 
-<img src="screenshots/option_settings.png" alt="drawing" width="300"/> 
-<img src="screenshots/malware_scan.png" alt="drawing" width="300"/> 
-<img src="screenshots/malware_scan_result.png" alt="drawing" width="300"/> 
+<div style="display: block; margin: auto; margin-left: auto; margin-right: auto;" >
+        <img src="screenshots/sidemenu.jpg" alt="drawing" width="200"/>
+        <img src="screenshots/Dashboard.jpg" alt="drawing" width="200"/>
+        <img src="screenshots/AppsMenu.jpg" alt="drawing" width="225"/>
+        <img src="screenshots/AppPermissions.jpg" alt="drawing" width="215"/>
+        <img src="screenshots/MalwareScan.jpg" alt="drawing" width="200"/>
+        <img src="screenshots/noThreatFound.jpg" alt="drawing" width="215"/>
+        <img src="screenshots/PossibleMalwareFound.jpg" alt="drawing" width="200"/>
+        <img src="screenshots/settings.jpg" alt="drawing" width="200"/>
+        <img src="screenshots/ActionSettings.jpg" alt="drawing" width="200"/>
+</div>

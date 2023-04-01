@@ -5,7 +5,7 @@
     android:padding="16dp">
 
     <View
-        android:id="@+id/type"
+        android:id="@+id/viewStatusIcon"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="@drawable/ic_baseline_warning_24"
@@ -21,7 +21,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="12dp"
-        android:layout_toEndOf="@+id/type"
+        android:layout_toEndOf="@+id/viewStatusIcon"
 
         android:text="Settings"
         android:textColor="@color/mainTextColor"

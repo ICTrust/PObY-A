@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">PObY-A</string>
+    <string name="navigation_drawer_open">Ouvrir le menu de navigation</string>
+    <string name="navigation_drawer_close">Fermer le menu de navigation</string>
     <string name="menu_dashboard">Tableau de bord</string>
     <string name="menu_malware_scan">Scan de virus</string>
     <string name="menu_privacy_settings">Confidentialité</string>
@@ -99,6 +101,14 @@
     <string name="no_malware_found">Aucune menace trouvée</string>
     <string name="retry_scan">Réessayer</string>
     <string name="malware_found">Menace(s) trouvée(s)</string>
-    .
+    <string name="menu_data_safety">Protection de données</string>
+    <string name="no_internet_conn">Veuillez vérifier la connexion internet</string>
+    <string name="no_permission_granted">Aucune permission autorisée</string>
+    <string name="third_party_apps">Tierces</string>
+    <string name="system_apps">Système</string>
+    <string name="empty_db">Base de données vide</string>
+    <string name="uninstalled">Désinstallées</string>
+    <string name="uninstall">Désinstaller</string>
+    <string name="uninstall_date">Date de désinstallation</string>
 
 </resources>

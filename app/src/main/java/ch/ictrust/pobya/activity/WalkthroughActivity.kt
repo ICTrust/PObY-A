@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import ch.ictrust.pobya.R
-import ch.ictrust.pobya.Utillies.Prefs
+import ch.ictrust.pobya.utillies.Prefs
 import ch.ictrust.pobya.adapter.SliderAdapter
 
 class WalkthroughActivity : AppCompatActivity() {

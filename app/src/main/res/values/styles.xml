@@ -19,12 +19,26 @@
 
     <style name="ActionSheetStyle">
         <item name="actionSheetBackground">@android:color/transparent</item>
-        <item name="cancelButtonTextColor">#1E82FF</item>
+        <item name="cancelButtonTextColor">#FF6D00</item>
         <item name="otherButtonTextColor">#1E82FF</item>
         <item name="actionSheetPadding">10dp</item>
         <item name="otherButtonSpacing">0dp</item>
         <item name="cancelButtonMarginTop">10dp</item>
         <item name="actionSheetTextSize">16sp</item>
+    </style>
+
+    <style name="roundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">13dp</item>
+    </style>
+    <style name="roundedImageViewAppDetails">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">39dp</item>
+    </style>
+
+    <style name="circleImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
     </style>
 
 </resources>

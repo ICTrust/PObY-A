@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="130dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center|center_vertical|center_horizontal"
+    android:outlineProvider="bounds"
+    android:background="@drawable/shape_dashbord_item"
+    android:clipToOutline="true"
+    android:outlineAmbientShadowColor="#C6C7CC"
+    android:outlineSpotShadowColor="#FFFFFF"
+    android:layout_weight="1"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginBottom="10dp"
+    android:elevation="20dp"
+    android:orientation="vertical"
+    android:paddingTop="10dp">
+    <!--   android:background="@drawable/shape_elevation"-->
+    <!--<androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cvMenuContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="303dp"
+        android:elevation="50dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/ivMenu"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="20dp"
+            android:foregroundGravity="center_vertical|clip_horizontal"
+            android:paddingTop="20dp"
+            android:textAlignment="center"
+            app:civ_border_color="@android:color/transparent"
+            app:civ_border_width="1dp"
+            app:civ_fill_color="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivMenu"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:foregroundGravity="center_vertical|clip_horizontal|center"
+            android:gravity="center"
+            android:text="Applications"
+            android:textColor="@color/mainTextColor"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivMenu" />
+    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvDahboardIconMenu"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:foreground="@drawable/menu_round_shadow_shape"
+            android:elevation="20dp"
+            android:textAlignment="center"
+            app:cardPreventCornerOverlap="false"
+            app:cardCornerRadius="50dp">
+            <ImageView
+                android:id="@+id/ivMenuIcon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:scaleType="fitXY"
+                android:foregroundGravity="center_vertical|clip_horizontal"
+                android:textAlignment="center" />
+        </androidx.cardview.widget.CardView>
+
+
+    <TextView
+        android:id="@+id/tvDashboardItemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|center_horizontal|center_vertical"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:text="Applications"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivMenuIcon" />
+
+
+</LinearLayout>

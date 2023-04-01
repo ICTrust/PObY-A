@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="roundedCornerPrimary">12dp</dimen>
+    <dimen name="roundedCornerAppDetails">38dp</dimen>
 </resources>

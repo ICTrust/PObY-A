@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/installed_apps_layout"
+    tools:context=".fragment.ApplicationsFragment">
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:tabIndicatorColor="@color/colorPrimaryDark"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabMode="scrollable" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/linearLayoutAppList"
+        android:layout_height="match_parent"
+        android:alignmentMode="alignMargins"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:columnCount="1"
+        android:visibility="visible"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout"
+        android:rowCount="1">
+
+
+
+        <!-- <ListView
+             android:id="@+id/listApps"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_weight="2"
+             android:cacheColorHint="#000000"
+             android:divider="@android:color/background_dark"
+             android:dividerHeight="4dp"
+             android:drawSelectorOnTop="false"
+             android:focusableInTouchMode="false"
+             android:footerDividersEnabled="true"
+             android:headerDividersEnabled="true"
+             android:listSelector="@android:color/holo_blue_light"
+             android:nestedScrollingEnabled="true">
+             -
+
+     </ListView>-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/appsRecycleView"
+            android:layout_weight="2"
+            android:cacheColorHint="#000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tabLayout"
+            android:dividerHeight="4dp"
+            android:drawSelectorOnTop="false"
+            android:focusableInTouchMode="false"
+            android:footerDividersEnabled="true"
+            android:headerDividersEnabled="true"
+            android:listSelector="@android:color/holo_blue_light"
+            android:nestedScrollingEnabled="true"
+            >
+
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/flMainContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
+
+        <ProgressBar
+            android:id="@+id/loading_spinner_apps"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="?attr/colorPrimary"
+            android:layout_gravity="center" />
+
+
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
