@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import androidx.fragment.app.Fragment
 import ch.ictrust.pobya.R
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.app_bar_main.view.*
 import kotlinx.android.synthetic.main.fragment_dashboard.view.*
 
 class DataSafetyPolicyFragment : Fragment() {
@@ -26,5 +29,11 @@ class DataSafetyPolicyFragment : Fragment() {
         }
         return view
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        activity?.nav_view?.setCheckedItem(R.id.nav_data_safety)
+        activity?.toolbar?.toolbarTitle?.text = getString(R.string.menu_data_safety)
     }
 }

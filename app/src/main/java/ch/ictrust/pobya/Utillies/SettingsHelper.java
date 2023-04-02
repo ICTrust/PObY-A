@@ -1,4 +1,4 @@
-package ch.ictrust.pobya.Utillies;
+package ch.ictrust.pobya.utillies;
 
 import android.Manifest;
 import android.app.Activity;
@@ -13,13 +13,17 @@ import android.location.LocationManager;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
-import android.service.voice.VoiceInteractionService;
+import android.provider.Telephony;
 import android.telephony.TelephonyManager;
 import android.view.autofill.AutofillManager;
+
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
+
 import ch.ictrust.pobya.R;
-import ch.ictrust.pobya.models.SysSetting;
+import ch.ictrust.pobya.models.SysSettings;
+
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 
@@ -30,7 +34,7 @@ interface Callback {
 public class SettingsHelper implements Callback {
 
     private Context context;
-    private ArrayList<SysSetting> sysSettings;
+    private ArrayList<SysSettings> sysSettings;
 
     private DevicePolicyManager dpm;
     private ComponentName compName;
@@ -44,103 +48,104 @@ public class SettingsHelper implements Callback {
     }
 
 
-    public ArrayList<SysSetting> scan() {
+    public ArrayList<SysSettings> scan() {
 
         // screen lock enabled
-        sysSettings.add(new SysSetting(context.getString(R.string.screen_lock_enabled_info),
+        sysSettings.add(new SysSettings(context.getString(R.string.screen_lock_enabled_info),
                 context.getString(R.string.screen_lock_enabled_desc),
-                Boolean.valueOf(isScreenLockEnabled()),
-                Boolean.TRUE, "screenLockSettings",
+                Boolean.valueOf(isScreenLockEnabled()).toString(),
+                Boolean.TRUE.toString(), "screenLockSettings",
                 context.getString(R.string.screen_lock_enabled_action)));
 
-        sysSettings.add(new SysSetting(context.getString(R.string.lock_screen_lock_after_timeout_info),
-                context.getString(R.string.lock_screen_lock_after_timeout_desc), screenLockTimeoutEnabled(), Boolean.TRUE,
+        sysSettings.add(new SysSettings(context.getString(R.string.lock_screen_lock_after_timeout_info),
+                context.getString(R.string.lock_screen_lock_after_timeout_desc),
+                Boolean.valueOf(screenLockTimeoutEnabled()).toString() , Boolean.TRUE.toString(),
                 "setScreenLockTimeoutEnabled",
                 context.getString(R.string.lock_screen_lock_after_timeout_action)));
 
-        sysSettings.add(new SysSetting(context.getString(R.string.show_password_info),
-                context.getString(R.string.show_password_desc), isPatternVisible(), Boolean.FALSE,
-                "makePaternInvisible",
+        sysSettings.add(new SysSettings(context.getString(R.string.show_password_info),
+                context.getString(R.string.show_password_desc), Boolean.valueOf(isPatternVisible()).toString(),
+                Boolean.FALSE.toString(), "makePatternInvisible",
                 context.getString(R.string.show_password_action)));
 
-        sysSettings.add(new SysSetting(context.getString(R.string.development_settings_enabled_info),
-                context.getString(R.string.development_settings_enabled_desc), isPatternVisible(), Boolean.FALSE,
-                "disableDevSetting", context.getString(R.string.development_settings_enabled_action)));
+        sysSettings.add(new SysSettings(context.getString(R.string.development_settings_enabled_info),
+                context.getString(R.string.development_settings_enabled_desc), Boolean.valueOf(isPatternVisible()).toString(),
+                Boolean.FALSE. toString(),"disableDevSetting", context.getString(R.string.development_settings_enabled_action)));
 
         if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.M) {
-            sysSettings.add(new SysSetting("install_non_market_apps", "Install applications " +
-                    "that are not from play store", isInstallUnknownAppEnabled(),
-                    Boolean.FALSE, "disableInstallUnknownApp", "You will be redirected to development " +
+            sysSettings.add(new SysSettings("install_non_market_apps", "Install applications " +
+                    "that are not from play store", Boolean.valueOf(isInstallUnknownAppEnabled()).toString(),
+                    Boolean.FALSE.toString(), "disableInstallUnknownApp", "You will be redirected to development " +
                     "Settings"));
         }
 
-        sysSettings.add(new SysSetting(context.getString(R.string.sim_card_locked_info),
-                context.getString(R.string.sim_card_locked_desc), isSimCardLocked(), Boolean.TRUE,"setSimCardLock",
-                context.getString(R.string.sim_card_locked_action)));
+        /*sysSettings.add(new SysSettings(context.getString(R.string.sim_card_locked_info),
+                context.getString(R.string.sim_card_locked_desc), Boolean.valueOf(isSimCardLocked()).toString(),
+                Boolean.TRUE.toString(), "setSimCardLock", context.getString(R.string.sim_card_locked_action)));*/
 
-        sysSettings.add(new SysSetting(context.getString(R.string.auto_time_info),
-                context.getString(R.string.auto_time_desc), isNetTimeEnabled(), Boolean.TRUE,"setNetTimeAuto",
-                context.getString(R.string.auto_time_action)));
+        sysSettings.add(new SysSettings(context.getString(R.string.auto_time_info),
+                context.getString(R.string.auto_time_desc), Boolean.valueOf(isNetTimeEnabled()).toString(),
+                Boolean.TRUE.toString(), "setNetTimeAuto", context.getString(R.string.auto_time_action)));
 
-        sysSettings.add(new SysSetting(context.getString(R.string.add_users_when_locked_info),
+        sysSettings.add(new SysSettings(context.getString(R.string.add_users_when_locked_info),
                 context.getString(R.string.add_users_when_locked_desc),
-                isAddUsersLockScreenEnabled(), Boolean.FALSE, "fixAddUsersLockScreenEnabled",
-                context.getString(R.string.add_users_when_locked_action)));
+                Boolean.valueOf(isAddUsersLockScreenEnabled()).toString(), Boolean.FALSE.toString(),
+                "fixAddUsersLockScreenEnabled", context.getString(R.string.add_users_when_locked_action)));
 
-        sysSettings.add(new SysSetting(context.getString(R.string.lock_screen_show_notifications_info),
+        sysSettings.add(new SysSettings(context.getString(R.string.lock_screen_show_notifications_info),
                 context.getString(R.string.lock_screen_show_notifications_desc),
-                isLockShowNotificationsEnabled(), Boolean.FALSE, "setLockShowNotifications",
+                Boolean.valueOf(isLockShowNotificationsEnabled()).toString(),
+                Boolean.FALSE.toString(), "setLockShowNotifications",
                 context.getString(R.string.lock_screen_show_notifications_action)));
 
-        sysSettings.add(new SysSetting(context.getString(R.string.location_enabled_info),
+        sysSettings.add(new SysSettings(context.getString(R.string.location_enabled_info),
                 context.getString(R.string.location_enabled_desc),
-                isLocationEnabled(), Boolean.FALSE, "disableLocation",
+                Boolean.valueOf(isLocationEnabled()).toString(),
+                Boolean.FALSE.toString(), "disableLocation",
                 context.getString(R.string.location_enabled_action)));
 
-        sysSettings.add(new SysSetting(context.getString(R.string.voice_interaction_service_info),
+        sysSettings.add(new SysSettings(context.getString(R.string.voice_interaction_service_info),
                 context.getString(R.string.voice_interaction_service_desc),
-                isVoiceAssistanceEnabled(), Boolean.FALSE,"setVoiceAssistance",
-                context.getString(R.string.voice_interaction_service_action)));
+                Boolean.valueOf(isVoiceAssistanceEnabled()).toString(), Boolean.FALSE.toString(),
+                "setVoiceAssistance", context.getString(R.string.voice_interaction_service_action)));
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            sysSettings.add(new SysSetting(context.getString(R.string.autofill_service_info),
+            sysSettings.add(new SysSettings(context.getString(R.string.autofill_service_info),
                     context.getString(R.string.autofill_service_desc),
-                    isAutofillServiceEnabled(), Boolean.FALSE, "autofillSettings",
-                    context.getString(R.string.autofill_service_action)));
+                    Boolean.valueOf(isAutofillServiceEnabled()).toString(), Boolean.FALSE.toString(),
+                    "autofillSettings", context.getString(R.string.autofill_service_action)));
         }
-        sysSettings.add(new SysSetting(context.getString(R.string.bluetooth_on_info),
+        sysSettings.add(new SysSettings(context.getString(R.string.bluetooth_on_info),
                 context.getString(R.string.bluetooth_on_desc),
-                isBluetoothOn(), Boolean.FALSE, "disableBluetooth",
-                context.getString(R.string.bluetooth_on_action)));
+                Boolean.valueOf(isBluetoothOn()).toString(), Boolean.FALSE.toString(),
+                "disableBluetooth", context.getString(R.string.bluetooth_on_action)));
 
-        sysSettings.add(new SysSetting(context.getString(R.string.wifi_on_info),
-                context.getString(R.string.wifi_on_desc),
-                isWifiEnabled(), Boolean.FALSE, "disableWifi",
-                context.getString(R.string.wifi_on_action)));
+        sysSettings.add(new SysSettings(context.getString(R.string.wifi_on_info),
+                context.getString(R.string.wifi_on_desc), Boolean.valueOf(isWifiEnabled()).toString(), Boolean.FALSE.toString(),
+                "disableWifi",  context.getString(R.string.wifi_on_action)));
 
-        sysSettings.add(new SysSetting(context.getString(R.string.debug_app_info),
+        sysSettings.add(new SysSettings(context.getString(R.string.debug_app_info),
                 context.getString(R.string.debug_app_desc),
-                debugableAppsDisabled() , Boolean.TRUE, "openDevSettings",
-                context.getString(R.string.debug_app_action)));
+                Boolean.valueOf(debugableAppsDisabled()).toString(), Boolean.TRUE.toString(),
+                "openDevSettings", context.getString(R.string.debug_app_action)));
 
-        sysSettings.add(new SysSetting(context.getString(R.string.adb_enabled_info),
+        sysSettings.add(new SysSettings(context.getString(R.string.adb_enabled_info),
                 context.getString(R.string.adb_enabled_desc),
-                isADBEnabled(), Boolean.FALSE, "openDevSettings",
-                context.getString(R.string.adb_enabled_action)));
+                Boolean.valueOf(isADBEnabled()).toString(), Boolean.FALSE.toString(),
+                "openDevSettings", context.getString(R.string.adb_enabled_action)));
 
-        sysSettings.add(new SysSetting(context.getString(R.string.wifi_scan_always_enabled_info),
+        sysSettings.add(new SysSettings(context.getString(R.string.wifi_scan_always_enabled_info),
                 context.getString(R.string.wifi_scan_always_enabled_desc),
-                isWifiScanEnabled(), Boolean.FALSE, "disableAlwaysWifiScan",
-                context.getString(R.string.wifi_scan_always_enabled_action)));
+                Boolean.valueOf(isWifiScanEnabled()).toString(), Boolean.FALSE.toString(),
+                "disableAlwaysWifiScan", context.getString(R.string.wifi_scan_always_enabled_action)));
 
-        sysSettings.add(new SysSetting(context.getString(R.string.ble_scan_always_enabled_info),
+        sysSettings.add(new SysSettings(context.getString(R.string.ble_scan_always_enabled_info),
                 context.getString(R.string.ble_scan_always_enabled_desc),
-                isBleScanAlwaysOn(), Boolean.FALSE, "disableAlwaysBleScan",
-                context.getString(R.string.ble_scan_always_enabled_action)));
+                Boolean.valueOf(isBleScanAlwaysOn()).toString(), Boolean.FALSE.toString(),
+                "disableAlwaysBleScan", context.getString(R.string.ble_scan_always_enabled_action)));
 
         return sysSettings;
     }
-
 
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -158,9 +163,9 @@ public class SettingsHelper implements Callback {
     }
 
 
-    public boolean isPatternVisible(){
+    public boolean isPatternVisible() {
         try {
-            return  Settings.System.getInt(context.getContentResolver(),
+            return Settings.System.getInt(context.getContentResolver(),
                     Settings.System.TEXT_SHOW_PASSWORD) != 0;
         } catch (Settings.SettingNotFoundException e) {
             e.printStackTrace();
@@ -168,7 +173,7 @@ public class SettingsHelper implements Callback {
         return true;
     }
 
-    public void makePaternInvisible(){
+    public void makePatternInvisible() {
         android.provider.Settings.System.putString(context.getContentResolver(),
                 Settings.System.TEXT_SHOW_PASSWORD, "0");
     }
@@ -224,31 +229,31 @@ public class SettingsHelper implements Callback {
     }
 
 
-    public boolean isSimCardLocked() {
+    /*public boolean isSimCardLocked() {
 
         TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
         int state = manager.getSimState();
-        if (state == TelephonyManager.SIM_STATE_PIN_REQUIRED && state == TelephonyManager.SIM_STATE_PUK_REQUIRED) {
+        if (state == TelephonyManager.SIM_STATE_PIN_REQUIRED ) {
             return true;
         }
         return false;
     }
 
 
-    public void setSimCardLock(){
+    public void setSimCardLock() {
         Intent intent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
         context.startActivity(intent);
-    }
+    }*/
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+
     public boolean isNetTimeEnabled() {
         try {
-            if (Settings.Global.getInt(context.getContentResolver(), Settings.Global.AUTO_TIME) != 1 ){
+            if (Settings.Global.getInt(context.getContentResolver(), Settings.Global.AUTO_TIME) != 1) {
                 return false;
             }
 
-            if (Settings.Global.getInt(context.getContentResolver(), Settings.Global.AUTO_TIME_ZONE) != 1 ) {
+            if (Settings.Global.getInt(context.getContentResolver(), Settings.Global.AUTO_TIME_ZONE) != 1) {
                 return false;
             }
         } catch (Settings.SettingNotFoundException e) {
@@ -258,14 +263,15 @@ public class SettingsHelper implements Callback {
         return true;
     }
 
-    public void setNetTimeAuto(){
+    public void setNetTimeAuto() {
         Intent intent = new Intent(Settings.ACTION_DATE_SETTINGS);
         context.startActivity(intent);
     }
 
 
-    static boolean safetyNetEnabled ;
-    private void handleSafetyNetResponse(boolean state){
+    static boolean safetyNetEnabled;
+
+    private void handleSafetyNetResponse(boolean state) {
         safetyNetEnabled = state;
     }
 
@@ -274,7 +280,7 @@ public class SettingsHelper implements Callback {
         safetyNetEnabled = status;
     }
 
-    public boolean getScanSecurityThreatsEnabled(){
+    public boolean getScanSecurityThreatsEnabled() {
         return safetyNetEnabled;
     }
 
@@ -298,7 +304,7 @@ public class SettingsHelper implements Callback {
         return false;
     }
 
-    public void setScreenTimeOut(){
+    public void setScreenTimeOut() {
         dpm.setMaximumTimeToLock(compName, 60000L);
     }
 
@@ -315,7 +321,7 @@ public class SettingsHelper implements Callback {
 
     public void fixAddUsersLockScreenEnabled() {
         // TODO: Catch exception (case crash Samsung)
-        Intent intent = new Intent( "com.android.settings");
+        Intent intent = new Intent("com.android.settings");
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             intent.setClassName(
                     "com.android.settings",
@@ -345,8 +351,8 @@ public class SettingsHelper implements Callback {
     }
 
 
-    public void setLockShowNotifications(){
-        Intent intent = new Intent( "com.android.settings");
+    public void setLockShowNotifications() {
+        Intent intent = new Intent("com.android.settings");
         intent.setClassName(
                 "com.android.settings",
                 "com.android.settings.Settings$ConfigureNotificationSettingsActivity");
@@ -367,8 +373,8 @@ public class SettingsHelper implements Callback {
         return false;
     }
 
-    public void disableLocation(){
-        Intent intent = new Intent( "com.android.settings");
+    public void disableLocation() {
+        Intent intent = new Intent("com.android.settings");
         intent.setClassName(
                 "com.android.settings",
                 "com.android.settings.Settings$LocationSettingsActivity");
@@ -383,7 +389,7 @@ public class SettingsHelper implements Callback {
          *        of "voice_interaction_service" and "assistant"
          */
 
-        if ( android.provider.Settings.Secure.getString(context.getContentResolver(), "assistant") != null
+        if (android.provider.Settings.Secure.getString(context.getContentResolver(), "assistant") != null
                 && !android.provider.Settings.Secure.getString(context.getContentResolver(), "assistant").isEmpty()) {
             return true;
         }
@@ -395,9 +401,9 @@ public class SettingsHelper implements Callback {
         return false;
     }
 
-    public void setVoiceAssistance(){
+    public void setVoiceAssistance() {
 
-        Intent intent = new Intent( "com.android.settings");
+        Intent intent = new Intent("com.android.settings");
         intent.setClassName(
                 "com.android.settings",
                 "com.android.settings.Settings$ManageAssistActivity");
@@ -431,7 +437,7 @@ public class SettingsHelper implements Callback {
     }
 
 
-    public void autofillSettings(){
+    public void autofillSettings() {
         Intent intent = new Intent("com.android.settings");
         intent.setClassName(
                 "com.android.settings",
@@ -454,12 +460,16 @@ public class SettingsHelper implements Callback {
 
     public void disableBluetooth() {
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        String[] perms = { Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN};
+        String[] perms = {Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN};
         if (!Utilities.INSTANCE.hasPermissions(context, perms)) {
-            ActivityCompat.requestPermissions((Activity)context, perms,  PackageManager.PERMISSION_GRANTED);
+            ActivityCompat.requestPermissions((Activity) context, perms, PackageManager.PERMISSION_GRANTED);
         }
         if (mBluetoothAdapter.isEnabled()) {
-            mBluetoothAdapter.disable();
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions((Activity) context, perms, PackageManager.PERMISSION_GRANTED);
+            } else {
+                mBluetoothAdapter.cancelDiscovery();
+            }
         }
     }
 
@@ -471,13 +481,11 @@ public class SettingsHelper implements Callback {
         } catch (android.provider.Settings.SettingNotFoundException e) {
             e.printStackTrace();
         }
-
         return false;
     }
 
 
     public boolean isUSBMassStorageEnabled() {
-
         try {
             if (android.provider.Settings.Global.getInt(context.getContentResolver(), "usb_mass_storage_enabled") != 0)
                 return true;
@@ -485,7 +493,6 @@ public class SettingsHelper implements Callback {
             e.printStackTrace();
         }
         return false;
-
     }
 
     // TODO
@@ -588,7 +595,8 @@ public class SettingsHelper implements Callback {
 
     public boolean isDefaultInstallLocationChanged() {
         try {
-            if (android.provider.Settings.Global.getInt(context.getContentResolver(), "default_install_location") == 0)
+            if (android.provider.Settings.Global.getInt(context.getContentResolver(),
+                    "default_install_location") == 0)
                 return true;
         } catch (android.provider.Settings.SettingNotFoundException e) {
             e.printStackTrace();
@@ -596,9 +604,15 @@ public class SettingsHelper implements Callback {
         return false;
     }
 
+
+    public void setDefaultInstallLocation() {
+        Settings.Global.putInt(context.getContentResolver(), "default_install_location",0);
+    }
+
     public boolean isPackageVerifierEnabled() {
         try {
-            if (android.provider.Settings.Global.getInt(context.getContentResolver(), "package_verifier_enable") != 0)
+            if (android.provider.Settings.Global.getInt(context.getContentResolver(),
+                    "package_verifier_enable") != 0)
                 return true;
         } catch (android.provider.Settings.SettingNotFoundException e) {
             e.printStackTrace();
@@ -717,18 +731,6 @@ public class SettingsHelper implements Callback {
         try {
             return android.provider.Settings.Global.getInt(context.getContentResolver(),
                     "wait_for_debugger") != 0;
-
-        } catch (android.provider.Settings.SettingNotFoundException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-
-    public boolean isAddUserWhenLockedEnabled() {
-        try {
-            return android.provider.Settings.Global.getInt(context.getContentResolver(),
-                    "add_users_when_locked") != 0;
 
         } catch (android.provider.Settings.SettingNotFoundException e) {
             e.printStackTrace();

@@ -1,5 +1,6 @@
-<shape android:shape="oval"
+<shape android:shape="rectangle"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <size android:width="280dp" android:height="280dp"/>
+    <!--<stroke android:color="@color/colorPrimary" android:width="5dp" />-->
     <!--<gradient android:startColor="@color/color_orange" android:endColor="#0096FFFF"  android:type="radial" android:centerColor="#ED9717"  android:gradientRadius="43.0%"/>-->
 </shape>

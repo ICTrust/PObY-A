@@ -1,31 +1,25 @@
-package ch.ictrust.pobya.Utillies;
+package ch.ictrust.pobya.utillies;
 
 import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.UserHandle;
 import android.widget.Toast;
-import androidx.annotation.RequiresApi;
 import ch.ictrust.pobya.activity.MainActivity;
 
 
 
 public class AppAdminReceiver extends DeviceAdminReceiver {
 
-    private static final String TAG = "AppAdminReceiver";
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onProfileProvisioningComplete(Context context, Intent intent) {
-        // Enable the profile
         DevicePolicyManager manager =
                 (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
         ComponentName componentName = getComponentName(context);
         manager.setProfileName(componentName, "PObY-A");
 
-        // Open the main screen
         Intent launch = new Intent(context, MainActivity.class);
         launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(launch);

@@ -2,13 +2,16 @@ package ch.ictrust.pobya.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-
+@Entity
 data class PermissionModel (
     val group: String,
     val group_package: String,
     val group_label: String,
     val group_description: String,
+    @PrimaryKey
     val permission: String,
     val package_name: String,
     val label: String,

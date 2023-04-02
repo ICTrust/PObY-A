@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="ch.ictrust.pobya.fragment.DashboardFragment"
+        android:label="@string/menu_dashboard"
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_nav_home_to_nav_installed_apps"
+            app:destination="@id/nav_installed_apps" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_privacy_settings"
+            app:destination="@id/nav_privacy_settings" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_malware_scan"
+            app:destination="@id/nav_malware_scan" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_data_safety"
+            app:destination="@id/nav_data_safety" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_installed_apps"
+        android:name="ch.ictrust.pobya.fragment.ApplicationsFragment"
+        android:label="@string/menu_apps_info"
+        tools:layout="@layout/fragment_apps" >
+        <action
+            android:id="@+id/action_nav_installed_apps_to_nav_dashboard"
+            app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_nav_installed_apps_to_nav_privacy_settings"
+            app:destination="@id/nav_privacy_settings" />
+        <action
+            android:id="@+id/action_nav_installed_apps_to_nav_malware_scan"
+            app:destination="@id/nav_malware_scan" />
+
+        <action
+            android:id="@+id/action_nav_installed_apps_to_nav_data_safety"
+            app:destination="@id/nav_data_safety" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_malware_scan"
+        android:name="ch.ictrust.pobya.fragment.MalwareScanFragment"
+        android:label="@string/menu_malware_scan"
+        tools:layout="@layout/fragment_apps" >
+        <action
+            android:id="@+id/action_nav_malware_scan_to_nav_installed_apps_details"
+            app:destination="@id/nav_installed_apps" />
+        <action
+            android:id="@+id/action_nav_malware_scan_to_nav_privacy_settings"
+            app:destination="@id/nav_privacy_settings" />
+        <action
+            android:id="@+id/action_nav_malware_scan_to_nav_dashabord"
+            app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_nav_malware_scan_to_nav_data_safety"
+            app:destination="@id/nav_data_safety" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_privacy_settings"
+        android:name="ch.ictrust.pobya.fragment.SettingsScanFragment"
+        android:label="@string/menu_privacy_settings"
+        tools:layout="@layout/fragment_settings_scan" >
+        <action
+            android:id="@+id/action_nav_privacy_settings_to_nav_installed_apps"
+            app:destination="@id/nav_installed_apps" />
+        <action
+            android:id="@+id/action_nav_data_safety_to_nav_data_safety"
+            app:destination="@id/nav_data_safety" />
+        <action
+            android:id="@+id/action_nav_privacy_settings_to_nav_malware_scan"
+            app:destination="@id/nav_malware_scan" />
+        <action
+            android:id="@+id/action_nav_privacy_settings_to_nav_dashboard"
+            app:destination="@id/nav_home" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_data_safety"
+        android:name="ch.ictrust.pobya.fragment.MalwareScanFragment"
+        android:label="@string/menu_malware_scan"
+        tools:layout="@layout/fragment_apps" >
+        <action
+            android:id="@+id/action_nav_data_safety_to_nav_installed_apps"
+            app:destination="@id/nav_installed_apps" />
+        <action
+            android:id="@+id/action_nav_data_safety_to_nav_privacy_settings"
+            app:destination="@id/nav_privacy_settings" />
+        <action
+            android:id="@+id/action_nav_data_safety_to_nav_malware_scan"
+            app:destination="@id/nav_malware_scan" />
+        <action
+            android:id="@+id/action_nav_data_safety_to_nav_dashboard"
+            app:destination="@id/nav_home" />
+    </fragment>
+
+
+
+</navigation>
