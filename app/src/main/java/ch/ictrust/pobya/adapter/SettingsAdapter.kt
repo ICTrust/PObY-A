@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import ch.ictrust.pobya.R
 import ch.ictrust.pobya.models.SysSettings
 import ch.ictrust.pobya.utillies.SettingsHelper
-import kotlinx.android.synthetic.main.setting_item.view.*
 import java.lang.reflect.Method
 
 
@@ -63,8 +62,8 @@ class SettingsAdapter(private var items: MutableList<SysSettings>, var context: 
 }
 
 class SettingsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    val tvDetail: TextView = view.setting_key_tv
-    val tvContent: TextView = view.setting_desc_tv
-    val viewStatusIcon: View = view.viewStatusIcon
+    val tvDetail: TextView = view.findViewById(R.id.setting_key_tv)
+    val tvContent: TextView = view.findViewById(R.id.setting_desc_tv)
+    val viewStatusIcon: View = view.findViewById(R.id.viewStatusIcon)
 }
 

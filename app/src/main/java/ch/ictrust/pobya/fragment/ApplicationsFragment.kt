@@ -18,9 +18,6 @@ import ch.ictrust.pobya.models.InstalledApplication
 import ch.ictrust.pobya.repository.ApplicationRepository
 import ch.ictrust.pobya.utillies.Utilities
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.app_bar_main.view.*
 import kotlinx.coroutines.launch
 
 
@@ -134,14 +131,6 @@ class ApplicationsFragment : Fragment()  {
         tabLayout.getTabAt(0)?.select()
 
         return view
-    }
-
-
-
-    override fun onStart() {
-        super.onStart()
-        activity?.nav_view?.setCheckedItem(R.id.nav_apps_info)
-        activity?.toolbar?.toolbarTitle?.text = getString(R.string.menu_apps_info)
     }
 
 }

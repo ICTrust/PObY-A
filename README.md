@@ -18,7 +18,7 @@ PObY-A, Privacy Owned by You - Android, is an application which aim to help Andr
 **dangerous**: "A higher-risk permission that would give a requesting application access to private user data or control over the device that can negatively impact the user" [permission element](https://developer.android.com/guide/topics/manifest/permission-element)
 
 ## Support
-Android versions from **8.0 (API 26)**
+Android versions: **8.0 (API 26) or later**
 
 ## Needed permissions
 - Write system settings

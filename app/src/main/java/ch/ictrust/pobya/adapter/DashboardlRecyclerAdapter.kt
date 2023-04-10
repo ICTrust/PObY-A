@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import ch.ictrust.pobya.R
 import ch.ictrust.pobya.listener.ItemClickListener
 import ch.ictrust.pobya.models.Category
-import kotlinx.android.synthetic.main.dashboard_list_item.view.*
 
 class DashboardRecyclerAdapter (private var items : List<Category>, val context: Context) : RecyclerView.Adapter<DashboardViewHolder>() {
 
@@ -50,6 +49,7 @@ class DashboardRecyclerAdapter (private var items : List<Category>, val context:
 }
 
 class DashboardViewHolder (view: View) : RecyclerView.ViewHolder(view) {
-    val tvName : TextView = view.tvDashboardItemName
-    val ivMenuIcon: ImageView = view.ivMenuIcon
+
+    val tvName : TextView = view.findViewById(R.id.tvDashboardItemName)
+    val ivMenuIcon: ImageView = view.findViewById(R.id.ivMenuIcon)
 }
