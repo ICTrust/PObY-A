@@ -17,7 +17,10 @@ import ch.ictrust.pobya.models.InstalledApplication
 import ch.ictrust.pobya.models.PermissionModel
 import ch.ictrust.pobya.repository.ApplicationRepository
 import ch.ictrust.pobya.repository.PermissionRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
 
@@ -29,7 +32,7 @@ class ApplicationPermissionHelper(ctx: Context, dumpSysApps: Boolean) {
     private var permissions: ArrayList<PermissionModel> = ArrayList()
     private var dumpSystemApps = dumpSysApps
     private var context = ctx
-    private var tag : String = "DumpApps"
+    private var tag : String = "ApplicationPermissionHelper"
 
     var dbJob = Job()
 
@@ -347,7 +350,7 @@ class ApplicationPermissionHelper(ctx: Context, dumpSysApps: Boolean) {
     fun getAppPermissions(packageName: String) : List<PermissionModel> {
         getAllperms()
         val pkgInfo: PackageInfo =
-            context.packageManager.getPackageInfo(
+            packageManager.getPackageInfo(
                 packageName,
                 PackageManager.GET_PERMISSIONS  or PackageManager.GET_META_DATA
             )
@@ -379,4 +382,18 @@ class ApplicationPermissionHelper(ctx: Context, dumpSysApps: Boolean) {
         return appPerms
     }
 
+    fun getAppCert(packageName: String): ByteArray {
+        val sigs = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            packageManager.getPackageInfo(
+                packageName,
+                PackageManager.GET_SIGNING_CERTIFICATES
+            ).signingInfo.apkContentsSigners[0].toByteArray()
+        } else {
+            context.packageManager.getPackageInfo(
+                packageName,
+                PackageManager.GET_SIGNATURES
+            ).signatures[0].toByteArray()
+        }
+        return sigs
+    }
 }

@@ -7,8 +7,11 @@ import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import ch.ictrust.pobya.models.Malware
+import ch.ictrust.pobya.models.MalwareCert
+import ch.ictrust.pobya.repository.MalwareCertRepository
 import ch.ictrust.pobya.repository.MalwareRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
@@ -17,6 +20,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.net.ConnectException
+import java.util.concurrent.TimeUnit
 
 
 object Utilities {
@@ -51,9 +56,13 @@ object Utilities {
 
     fun updateMalwareDB(context: Context) {
         var malwarePackages : List<Malware> = ArrayList()
+        var malwareCerts : List<MalwareCert> = ArrayList()
         var currentMalwareDbVersion = Prefs.getInstance(context)?.malwareDbVersion
         dbScope.launch {
-            val client = OkHttpClient()
+            val client = OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .build()
             var version = 0
 
             val versionRequest = Request.Builder()
@@ -63,23 +72,40 @@ object Utilities {
             var response = client.newCall(versionRequest).execute()
             if (response.isSuccessful) {
                 version = response.body?.string()?.toInt()!!
-                if (version == currentMalwareDbVersion)
+                if (version == currentMalwareDbVersion) {
+                    Log.i("Utilities", "Database up-to-date")
                     return@launch
+                }
             }
 
-            val retrieveNewDB = Request.Builder()
-                .url(Prefs.getInstance(context)?.malwareDatabaseUrl.toString())
+            val retrieveNewMalwareDB = Request.Builder()
+                .url(Prefs.getInstance(context)?.malwareDatabaseUrlPrefs.toString())
                 .build()
+            try {
+                response = client.newCall(retrieveNewMalwareDB).execute()
+                if (response.isSuccessful) {
+                    val jsonString = response.body?.string()
+                    malwarePackages = Gson().fromJson(jsonString, Array<Malware>::class.java).asList()
 
-            response = client.newCall(retrieveNewDB).execute()
+                    MalwareRepository.getInstance(context.applicationContext as Application).insertList(malwarePackages)
+                    Prefs.getInstance(context)?.malwareDbVersion = version
 
-            if (response.isSuccessful) {
-                val jsonString = response.body?.string()
-                malwarePackages = Gson().fromJson(jsonString, Array<Malware>::class.java).asList()
 
-                MalwareRepository.getInstance(context.applicationContext as Application).insertList(malwarePackages)
-                Prefs.getInstance(context)!!.malwareDbVersion = version
+                }
+                val retrieveNewMalwareCertDB = Request.Builder()
+                    .url(Prefs.getInstance(context)?.certsDatabaseURLPrefs.toString())
+                    .build()
 
+                response = client.newCall(retrieveNewMalwareCertDB).execute()
+                if (response.isSuccessful) {
+                    val jsonString = response.body?.string()
+                    malwareCerts = Gson().fromJson(jsonString, Array<MalwareCert>::class.java).asList()
+                    MalwareCertRepository.getInstance(
+                                                context.applicationContext as Application
+                                            ).insertList(malwareCerts)
+                }
+            } catch (ex: ConnectException){
+                Log.e("Utilities", ex.message.toString())
             }
         }
     }

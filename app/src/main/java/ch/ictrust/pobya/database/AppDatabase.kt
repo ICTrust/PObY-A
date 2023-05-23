@@ -1,25 +1,20 @@
 package ch.ictrust.pobya.database
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Database
 import androidx.room.Room.databaseBuilder
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import ch.ictrust.pobya.dao.*
 import ch.ictrust.pobya.models.*
-import ch.ictrust.pobya.repository.MalwareRepository
 import ch.ictrust.pobya.utillies.ApplicationPermissionHelper
 import ch.ictrust.pobya.utillies.Prefs
 import ch.ictrust.pobya.utillies.Utilities
-import com.google.gson.Gson
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import okhttp3.Request
 
 @Database(
     entities = [InstalledApplication::class, PermissionModel::class, ApplicationPermissionCrossRef::class,
-        SysSettings::class, MalwareScan::class, Malware::class],
+        SysSettings::class, MalwareScan::class, Malware::class, MalwareCert::class],
     version = Prefs.DATABASE_VERSION,
     exportSchema = false
 )
@@ -30,6 +25,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun sysSettingsDao(): SysSettingsDao
     abstract fun malwareScanDao(): MalwareScanDao
     abstract fun malwareDao(): MalwareDao
+    abstract fun malwareCertDao(): MalwareCertDao
+
 
     companion object {
         private var instance: AppDatabase? = null
@@ -73,6 +70,7 @@ abstract class AppDatabase : RoomDatabase() {
         private val applicationPermissionDao: ApplicationPermissionDao
         private val sysSettingDao: SysSettingsDao
         private val malwareDao: MalwareDao
+        private val malwareCertDao: MalwareCertDao
         private val context: Context
 
         init {
@@ -82,6 +80,8 @@ abstract class AppDatabase : RoomDatabase() {
             applicationPermissionDao = db.applicationPermissionDao()
             sysSettingDao = db.sysSettingsDao()
             malwareDao = db.malwareDao()
+            malwareCertDao = db.malwareCertDao()
+
         }
 
          fun populate() {
@@ -101,12 +101,10 @@ abstract class AppDatabase : RoomDatabase() {
                     )
                 }
             }
-
-            Utilities.updateMalwareDB(context)
         }
 
         fun update(){
-
+            // TODO
         }
     }
 }
