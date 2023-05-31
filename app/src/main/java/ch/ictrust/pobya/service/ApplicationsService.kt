@@ -51,7 +51,8 @@ class ApplicationsService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        var notificationId = 1
+        // Notification ID start with 2 (ID 1 for the foreground service's notifications)
+        var notificationId = 2
 
         notificationManager =
             getSystemService(NOTIFICATION_SERVICE) as NotificationManager
