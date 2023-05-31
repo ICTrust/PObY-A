@@ -23,5 +23,4 @@ interface PermissionDao {
 
     @Query("DELETE FROM PermissionModel")
     fun deleteAll()
-
 }

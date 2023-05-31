@@ -13,6 +13,7 @@ import android.provider.Settings
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -25,20 +26,19 @@ import ch.ictrust.pobya.R
 import ch.ictrust.pobya.fragment.*
 import ch.ictrust.pobya.service.ApplicationsService
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.fragment_dashboard.*
-import kotlinx.android.synthetic.main.list_app_permissions.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-   private lateinit var menu : Menu
+    private lateinit var menu: Menu
     private val tag = "MainActivity"
-    private lateinit  var compName: ComponentName
+    private lateinit var compName: ComponentName
     private lateinit var devicePolicyManager: DevicePolicyManager
     private var RESULT_ENABLE = 11
     private var CODE_WRITE_SETTINGS_PERMISSION = 42
+    private lateinit var toolbarTitle: TextView
 
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -46,10 +46,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        toolbarTitle = findViewById(R.id.toolbarTitle)
 
         initViews()
 
-         val intentFilter = IntentFilter().apply {
+        val intentFilter = IntentFilter().apply {
             addAction(Intent.ACTION_PACKAGE_ADDED)
             addAction(Intent.ACTION_PACKAGE_REMOVED)
             addDataScheme("package")
@@ -70,7 +71,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             )
         }
 
-        val activityManager = applicationContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val activityManager =
+            applicationContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val serviceIsRunning = activityManager.runningAppProcesses.any {
             it.processName == "ch.ictrust.pobya.ApplicationsService"
         }
@@ -89,7 +91,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
-    private fun initViews(){
+    private fun initViews() {
 
         supportActionBar?.show()
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -119,7 +121,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -134,6 +135,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         this.menu = menu
         return false
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return false
     }
@@ -183,7 +185,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-    private fun enableAdmin(){
+    private fun enableAdmin() {
 
         compName = ComponentName(this, ch.ictrust.pobya.utillies.AppAdminReceiver::class.java)
         devicePolicyManager = getSystemService(DEVICE_POLICY_SERVICE) as DevicePolicyManager

@@ -18,15 +18,12 @@ import ch.ictrust.pobya.models.InstalledApplication
 import ch.ictrust.pobya.repository.ApplicationRepository
 import ch.ictrust.pobya.utillies.Utilities
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.app_bar_main.view.*
 import kotlinx.coroutines.launch
 
 
-class ApplicationsFragment : Fragment()  {
+class ApplicationsFragment : Fragment() {
 
-    private lateinit var progressScanApps : ProgressBar
+    private lateinit var progressScanApps: ProgressBar
     private lateinit var appsAdapter: AppsAdapter
     private lateinit var tabLayout: TabLayout
     private lateinit var recyclerView: RecyclerView
@@ -47,7 +44,8 @@ class ApplicationsFragment : Fragment()  {
         appsAdapter.setOnItemClickListener(object : AppsAdapter.OnItemClickListener {
             override fun onItemClick(app: InstalledApplication) {
                 Utilities.dbScope.launch {
-                    ApplicationRepository.getInstance(view.context.applicationContext as Application).getAppByPackageName(app.packageName)
+                    ApplicationRepository.getInstance(view.context.applicationContext as Application)
+                        .getAppByPackageName(app.packageName)
                     val intent = Intent(view.context, AppDetailActivity::class.java)
                     intent.putExtra("app", app)
                     view.context.startActivity(intent)
@@ -61,7 +59,7 @@ class ApplicationsFragment : Fragment()  {
         categories.add(getString(R.string.system_apps))
         categories.add(getString(R.string.uninstalled))
 
-        for (category in categories ) {
+        for (category in categories) {
             tabLayout.addTab(tabLayout.newTab().setText(category))
         }
 
@@ -70,7 +68,7 @@ class ApplicationsFragment : Fragment()  {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 progressScanApps.visibility = View.VISIBLE
 
-                when(tab.position){
+                when (tab.position) {
                     0 -> // Third parties Apps
                         ApplicationRepository.getInstance(view.context.applicationContext as Application)
                             .getThirdPartyApps().observe(requireActivity()) { apps ->
@@ -88,26 +86,27 @@ class ApplicationsFragment : Fragment()  {
                     1 -> // System Apps
                         ApplicationRepository.getInstance(view.context.applicationContext as Application)
                             .getSystemApps().observe(viewLifecycleOwner) { apps ->
-                            appsAdapter.submitList(apps)
-                            appsAdapter.notifyDataSetChanged()
-                            progressScanApps.visibility = View.GONE
-                        }
+                                appsAdapter.submitList(apps)
+                                appsAdapter.notifyDataSetChanged()
+                                progressScanApps.visibility = View.GONE
+                            }
                     2 ->// Uninstalled Apps history
                         ApplicationRepository.getInstance(view.context.applicationContext as Application)
                             .getUninstalledApps().observe(
-                            viewLifecycleOwner
-                        ) { apps ->
-                            appsAdapter.submitList(apps.toList())
-                            appsAdapter.notifyDataSetChanged()
-                            progressScanApps.visibility = View.GONE
-                        }
+                                viewLifecycleOwner
+                            ) { apps ->
+                                appsAdapter.submitList(apps.toList())
+                                appsAdapter.notifyDataSetChanged()
+                                progressScanApps.visibility = View.GONE
+                            }
                     else ->
                         ApplicationRepository.getInstance(view.context.applicationContext as Application)
                             .getAllApps().observe(
-                            viewLifecycleOwner
-                        ) { apps -> appsAdapter.submitList(apps)
-                            recyclerView.adapter = appsAdapter
-                        }
+                                viewLifecycleOwner
+                            ) { apps ->
+                                appsAdapter.submitList(apps)
+                                recyclerView.adapter = appsAdapter
+                            }
                 }
             }
 
@@ -134,14 +133,6 @@ class ApplicationsFragment : Fragment()  {
         tabLayout.getTabAt(0)?.select()
 
         return view
-    }
-
-
-
-    override fun onStart() {
-        super.onStart()
-        activity?.nav_view?.setCheckedItem(R.id.nav_apps_info)
-        activity?.toolbar?.toolbarTitle?.text = getString(R.string.menu_apps_info)
     }
 
 }

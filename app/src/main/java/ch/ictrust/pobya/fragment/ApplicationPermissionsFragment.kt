@@ -1,7 +1,6 @@
 package ch.ictrust.pobya.fragment
 
 
-import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,15 +10,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ch.ictrust.pobya.R
-import ch.ictrust.pobya.utillies.ApplicationPermissionHelper
-import ch.ictrust.pobya.utillies.Utilities
 import ch.ictrust.pobya.activity.AppDetailActivity
 import ch.ictrust.pobya.adapter.AppPermissionsRecyclerViewAdapter
 import ch.ictrust.pobya.models.ApplicationPermissionCrossRef
 import ch.ictrust.pobya.models.InstalledApplication
 import ch.ictrust.pobya.models.PermissionModel
 import ch.ictrust.pobya.repository.ApplicationPermissionRepository
-import ch.ictrust.pobya.repository.ApplicationRepository
+import ch.ictrust.pobya.utillies.ApplicationPermissionHelper
+import ch.ictrust.pobya.utillies.Utilities
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -53,37 +51,45 @@ class ApplicationPermissionsFragment : Fragment() {
         tvNoPermission = view.findViewById(R.id.tvNoPermission)
 
 
-        if (app.uninstalled){
+        if (app.uninstalled) {
             return view
         }
 
-        val applicationPermissionCrossRefList : ArrayList<ApplicationPermissionCrossRef> = ArrayList()
+        val applicationPermissionCrossRefList: ArrayList<ApplicationPermissionCrossRef> =
+            ArrayList()
         var perms: List<PermissionModel>
 
         Utilities.dbScope.launch {
 
-                val applicationPermissionHelper = ApplicationPermissionHelper(view.context, true)
-                perms = applicationPermissionHelper.getAppPermissions(app.packageName)
+            val applicationPermissionHelper = ApplicationPermissionHelper(view.context, true)
+            perms = applicationPermissionHelper.getAppPermissions(app.packageName)
 
-                perms.forEach {
-                    applicationPermissionCrossRefList.add(ApplicationPermissionCrossRef(app.packageName, it.permission))
-                }
-
-                ApplicationPermissionRepository(view.context).insertAll(applicationPermissionCrossRefList)
-            withContext(Dispatchers.Main){
-
-
-            if(applicationPermissionCrossRefList.isEmpty())
-                tvNoPermission.visibility = View.VISIBLE
-
-            recyclerView.apply {
-                layoutManager = LinearLayoutManager(
-                    view.context,
-                    LinearLayoutManager.VERTICAL,
-                    false
+            perms.forEach {
+                applicationPermissionCrossRefList.add(
+                    ApplicationPermissionCrossRef(
+                        app.packageName,
+                        it.permission
+                    )
                 )
-                adapter = AppPermissionsRecyclerViewAdapter(perms)
             }
+
+            ApplicationPermissionRepository(view.context).insertAll(
+                applicationPermissionCrossRefList
+            )
+            withContext(Dispatchers.Main) {
+
+
+                if (applicationPermissionCrossRefList.isEmpty())
+                    tvNoPermission.visibility = View.VISIBLE
+
+                recyclerView.apply {
+                    layoutManager = LinearLayoutManager(
+                        view.context,
+                        LinearLayoutManager.VERTICAL,
+                        false
+                    )
+                    adapter = AppPermissionsRecyclerViewAdapter(perms)
+                }
             }
         }
 
@@ -93,12 +99,14 @@ class ApplicationPermissionsFragment : Fragment() {
 
 
     companion object {
+
         private const val ARG_COLUMN_COUNT = "column-count"
         fun newInstance(columnCount: Int): ApplicationPermissionsFragment {
             val fragment = ApplicationPermissionsFragment()
             val args = Bundle()
             args.putInt(ARG_COLUMN_COUNT, columnCount)
             fragment.arguments = args
+
             return fragment
         }
     }

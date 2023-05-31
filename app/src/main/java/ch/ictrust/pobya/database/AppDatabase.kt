@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 @Database(
     entities = [InstalledApplication::class, PermissionModel::class, ApplicationPermissionCrossRef::class,
-        SysSettings::class, MalwareScan::class],
+        SysSettings::class, MalwareScan::class, Malware::class, MalwareCert::class],
     version = Prefs.DATABASE_VERSION,
     exportSchema = false
 )
@@ -24,10 +24,13 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun applicationPermissionDao(): ApplicationPermissionDao
     abstract fun sysSettingsDao(): SysSettingsDao
     abstract fun malwareScanDao(): MalwareScanDao
+    abstract fun malwareDao(): MalwareDao
+    abstract fun malwareCertDao(): MalwareCertDao
 
     companion object {
         private var instance: AppDatabase? = null
         private var context: Context? = null
+
         @Synchronized
         fun getInstance(c: Context?): AppDatabase {
             if (instance == null) {
@@ -55,7 +58,7 @@ abstract class AppDatabase : RoomDatabase() {
             override fun onOpen(db: SupportSQLiteDatabase) {
                 super.onOpen(db)
                 val updateDB = instance?.let { context?.let { ctx -> UpdateDb(it, ctx) } }
-                //updateDB?.update()
+                updateDB?.update()
             }
         }
     }
@@ -66,6 +69,8 @@ abstract class AppDatabase : RoomDatabase() {
         private val permissionDao: PermissionDao
         private val applicationPermissionDao: ApplicationPermissionDao
         private val sysSettingDao: SysSettingsDao
+        private val malwareDao: MalwareDao
+        private val malwareCertDao: MalwareCertDao
         private val context: Context
 
         init {
@@ -74,9 +79,12 @@ abstract class AppDatabase : RoomDatabase() {
             permissionDao = db.permissionDao()
             applicationPermissionDao = db.applicationPermissionDao()
             sysSettingDao = db.sysSettingsDao()
+            malwareDao = db.malwareDao()
+            malwareCertDao = db.malwareCertDao()
+
         }
 
-         fun populate() {
+        fun populate() {
             val dump = ApplicationPermissionHelper(context.applicationContext, true)
             val perms: List<PermissionModel> = dump.getAllperms()
             for (permission in perms) {
@@ -95,8 +103,8 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        fun update(){
-            // TODO: update permissions
+        fun update() {
+            // TODO
         }
     }
 }

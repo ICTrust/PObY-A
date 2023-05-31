@@ -24,8 +24,10 @@ class AppPermissionsRecyclerViewAdapter(permissions: List<PermissionModel>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.mItem = permissions[position].label
-        holder.tvPermissionName.text = permissions[position].label.replaceFirstChar { it.uppercase() }
-        holder.tvPermissionDesc.text = permissions[position].description.replaceFirstChar { it.uppercase() }
+        holder.tvPermissionName.text =
+            permissions[position].label.replaceFirstChar { it.uppercase() }
+        holder.tvPermissionDesc.text =
+            permissions[position].description.replaceFirstChar { it.uppercase() }
     }
 
     override fun getItemCount(): Int {
@@ -35,6 +37,7 @@ class AppPermissionsRecyclerViewAdapter(permissions: List<PermissionModel>) :
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(
         view
     ) {
+
         val tvPermissionName: TextView
         val tvPermissionDesc: TextView
         var mItem: String? = null

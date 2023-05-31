@@ -1,6 +1,5 @@
 package ch.ictrust.pobya.activity
 
-import android.app.Application
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.net.Uri
@@ -16,21 +15,18 @@ import ch.ictrust.pobya.R
 import ch.ictrust.pobya.fragment.AppInfosFragment
 import ch.ictrust.pobya.fragment.ApplicationPermissionsFragment
 import ch.ictrust.pobya.models.InstalledApplication
-import ch.ictrust.pobya.repository.ApplicationRepository
 import ch.ictrust.pobya.utillies.AppViewPagerAdapter
-import ch.ictrust.pobya.utillies.Utilities
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.tabs.TabLayout
-import kotlinx.coroutines.launch
 
 
-class AppDetailActivity : AppCompatActivity(){
+class AppDetailActivity : AppCompatActivity() {
 
-    private lateinit var appIconView : ShapeableImageView
+    private lateinit var appIconView: ShapeableImageView
     private lateinit var viewPager: ViewPager
     private lateinit var currentApp: InstalledApplication
-    private lateinit var toolbarTitle : TextView
+    private lateinit var toolbarTitle: TextView
     private lateinit var btnOpenSettings: Button
     private lateinit var btnUninstall: Button
 
@@ -52,7 +48,7 @@ class AppDetailActivity : AppCompatActivity(){
         actionbar!!.hide()
 
         appIconView = findViewById(R.id.appDetailIcon)
-        toolbarTitle = findViewById(R.id.toolbarTitle)
+        toolbarTitle = findViewById(R.id.appInfoToolbarTitle)
         btnUninstall = findViewById(R.id.uninstall)
         btnOpenSettings = findViewById(R.id.open_app_settings)
 
@@ -64,7 +60,7 @@ class AppDetailActivity : AppCompatActivity(){
         }
 
 
-        if (currentApp.uninstalled){
+        if (currentApp.uninstalled) {
             btnOpenSettings.isEnabled = false
             btnUninstall.isEnabled = false
         } else {
@@ -81,7 +77,7 @@ class AppDetailActivity : AppCompatActivity(){
             }
         }
 
-        appIconView.setImageIcon(Icon.createWithData(currentApp.icon, 0, currentApp.icon.size ))
+        appIconView.setImageIcon(Icon.createWithData(currentApp.icon, 0, currentApp.icon.size))
         appIconView.shapeAppearanceModel = appIconView.shapeAppearanceModel
             .toBuilder()
             .setAllCorners(CornerFamily.ROUNDED, radius)

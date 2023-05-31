@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import ch.ictrust.pobya.R
 import ch.ictrust.pobya.listener.ItemClickListener
 import ch.ictrust.pobya.models.Category
-import kotlinx.android.synthetic.main.dashboard_list_item.view.*
 
-class DashboardRecyclerAdapter (private var items : List<Category>, val context: Context) : RecyclerView.Adapter<DashboardViewHolder>() {
+class DashboardRecyclerAdapter(private var items: List<Category>, val context: Context) :
+    RecyclerView.Adapter<DashboardViewHolder>() {
 
     private var clickListener: ItemClickListener? = null
 
@@ -41,7 +41,9 @@ class DashboardRecyclerAdapter (private var items : List<Category>, val context:
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): DashboardViewHolder {
-        return DashboardViewHolder(LayoutInflater.from(context).inflate(R.layout.dashboard_list_item, parent, false))
+        return DashboardViewHolder(
+            LayoutInflater.from(context).inflate(R.layout.dashboard_list_item, parent, false)
+        )
     }
 
     override fun getItemCount(): Int {
@@ -49,7 +51,8 @@ class DashboardRecyclerAdapter (private var items : List<Category>, val context:
     }
 }
 
-class DashboardViewHolder (view: View) : RecyclerView.ViewHolder(view) {
-    val tvName : TextView = view.tvDashboardItemName
-    val ivMenuIcon: ImageView = view.ivMenuIcon
+class DashboardViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+    val tvName: TextView = view.findViewById(R.id.tvDashboardItemName)
+    val ivMenuIcon: ImageView = view.findViewById(R.id.ivMenuIcon)
 }

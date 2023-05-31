@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class PermissionModel (
+data class PermissionModel(
     val group: String,
     val group_package: String,
     val group_label: String,
@@ -28,8 +28,7 @@ data class PermissionModel (
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readInt()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(group)
@@ -56,5 +55,6 @@ data class PermissionModel (
             return arrayOfNulls(size)
         }
     }
+
 
 }

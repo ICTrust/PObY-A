@@ -7,17 +7,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import ch.ictrust.pobya.R
 import ch.ictrust.pobya.utillies.Prefs
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import ch.ictrust.pobya.utillies.Utilities
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
 
 class SplashActivity : AppCompatActivity() {
-
-    private var mAuth: FirebaseAuth? = null
-    lateinit var db: FirebaseFirestore
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,23 +20,13 @@ class SplashActivity : AppCompatActivity() {
         supportActionBar?.hide()
         getHashKey(this)
 
-        mAuth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
-
-
         if (!Prefs.getInstance(this)!!.isFirstRun!!) {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
-        }else{
+        } else {
             val intent = Intent(this, WalkthroughActivity::class.java)
-            /*Utilities.populateScope.launch {
-                withContext(Dispatchers.IO) {
-                    val dumpApps = DumpApps(applicationContext, true)
-                    dumpApps.getListApps(true)
-                    dumpApps.getAllperms()
-                }
-            }*/
+            Utilities.updateMalwareDB(this)
             startActivity(intent)
             finish()
         }

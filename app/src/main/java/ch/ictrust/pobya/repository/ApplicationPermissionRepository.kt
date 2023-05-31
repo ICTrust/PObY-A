@@ -31,15 +31,15 @@ class ApplicationPermissionRepository(context: Context) {
 
     fun delete(applicationPermissionCrossRef: ApplicationPermissionCrossRef) {
 
-            applicationPermissionDao.delete(applicationPermissionCrossRef)
+        applicationPermissionDao.delete(applicationPermissionCrossRef)
 
     }
 
-    fun loadByPermission(permission: String) : LiveData<List<ApplicationPermissionCrossRef>> {
+    fun loadByPermission(permission: String): LiveData<List<ApplicationPermissionCrossRef>> {
         return applicationPermissionDao.loadByPerm(permission)
     }
 
-    fun loadByPackageName(packageName: String) : LiveData<List<ApplicationPermissionCrossRef>> {
+    fun loadByPackageName(packageName: String): LiveData<List<ApplicationPermissionCrossRef>> {
         return applicationPermissionDao.loadByPkg(packageName)
     }
 

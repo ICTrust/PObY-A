@@ -13,12 +13,14 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import ch.ictrust.pobya.R
-import ch.ictrust.pobya.utillies.ApplicationPermissionHelper
-import ch.ictrust.pobya.utillies.Utilities
 import ch.ictrust.pobya.models.InstalledApplication
 import ch.ictrust.pobya.repository.ApplicationRepository
-import kotlinx.coroutines.*
-import java.util.Calendar
+import ch.ictrust.pobya.utillies.ApplicationPermissionHelper
+import ch.ictrust.pobya.utillies.Utilities
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.*
 
 
 class ApplicationsService : Service() {
@@ -28,6 +30,7 @@ class ApplicationsService : Service() {
     private var NOTIFICATION_CHANNEL_ID_service = "PObY-A service"
 
     private lateinit var notificationManager: NotificationManager
+
     private lateinit var notificationBuilder: NotificationCompat.Builder
     private lateinit var notificationBuilderService: NotificationCompat.Builder
 
@@ -36,7 +39,8 @@ class ApplicationsService : Service() {
         super.onCreate()
         Utilities.populateScope.launch {
             withContext(Dispatchers.IO) {
-                val applicationPermissionHelper = ApplicationPermissionHelper(applicationContext, true)
+                val applicationPermissionHelper =
+                    ApplicationPermissionHelper(applicationContext, true)
                 applicationPermissionHelper.getListApps(true)
                 applicationPermissionHelper.getAllperms()
             }
@@ -46,6 +50,9 @@ class ApplicationsService : Service() {
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
+        // Notification ID start with 2 (ID 1 for the foreground service's notifications)
+        var notificationId = 2
 
         notificationManager =
             getSystemService(NOTIFICATION_SERVICE) as NotificationManager
@@ -74,9 +81,9 @@ class ApplicationsService : Service() {
         val appRepository = ApplicationRepository.getInstance(application)
 
         val notification = notificationBuilder.setOngoing(true)
-            .setSmallIcon(R.mipmap.ic_launcher_round)
-            .setContentTitle("Privacy Live Monitoring")
-            .setPriority(NotificationManager.IMPORTANCE_LOW)
+            .setSmallIcon(R.drawable.pobya_shield_transparent)
+            .setContentTitle(getString(R.string.monitoring_service_desc))
+            .setPriority(NotificationManager.IMPORTANCE_HIGH)
             .setCategory(Notification.CATEGORY_SERVICE)
             .build()
         startForeground(1, notification)
@@ -90,6 +97,7 @@ class ApplicationsService : Service() {
         intentFilter.priority = 999
 
         receiver = object : BroadcastReceiver() {
+
             override fun onReceive(context: Context, intent: Intent) {
                 val notificationChannel = NotificationChannel(
                     NOTIFICATION_CHANNEL_ID,
@@ -109,73 +117,78 @@ class ApplicationsService : Service() {
 
                 val action = intent.action
 
-
-
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-
-                if (action == Intent.ACTION_PACKAGE_ADDED) {
-                    val app = intent.data?.schemeSpecificPart?.let {
-                        ApplicationPermissionHelper(applicationContext, true).getAppByPackageName(it)
-                    }
-                    Utilities.populateScope.launch {
-                        withContext(Dispatchers.IO) {
-                            app?.let { appRepository.insert(it) }
+                when (action) {
+                    // TODO: manage application update.
+                    //      The current state when an update is performed it's considered as
+                    //      uninstall and install (two notifications are shown)
+                    Intent.ACTION_PACKAGE_ADDED -> {
+                        val app = intent.data?.schemeSpecificPart?.let {
+                            ApplicationPermissionHelper(
+                                applicationContext,
+                                true
+                            ).getAppByPackageName(it)
                         }
-                    }
-
-                    //app?.let { AppsViewModel(application).addApp(it) }
-
-                    notificationBuilderAction.setDefaults(Notification.DEFAULT_ALL)
-                        .setWhen(System.currentTimeMillis())
-                        .setSmallIcon(R.mipmap.ic_launcher_round)
-                        .setTicker("PObY-A")
-                        .setAutoCancel(true)
-                        .setContentTitle("New application installed")
-                        .setContentText("" + app?.name)
-                        .setContentInfo("Info")
-                    notificationManager.notify(2, notificationBuilderAction.build())
-
-
-                } else if (action == Intent.ACTION_PACKAGE_REMOVED) {
-
-                    var app: InstalledApplication
-
-                    Utilities.dbScope.launch {
-                        val applicationRepository = ApplicationRepository.getInstance(application)
-                        val currentDate = Calendar.getInstance().time
-                        app = applicationRepository.getAppByPackageName(
-                            intent.data?.schemeSpecificPart.toString()
-                        )!!
-                        app.uninstalled = true
-                        app.uninstallDate = currentDate.time
-
-                        applicationRepository.update(app)
-
-                        withContext(Dispatchers.Main) {
-                            notificationBuilderAction.setDefaults(Notification.DEFAULT_ALL)
-                                .setWhen(System.currentTimeMillis())
-                                .setSmallIcon(R.mipmap.ic_launcher_round)
-                                .setAutoCancel(true)
-                                .setTicker("PObY-A")
-                                .setContentTitle("Application removed")
-                                .setContentText(app.name)
-                                .setContentInfo("Info")
-
-                            notificationManager.notify(2, notificationBuilderAction.build())
+                        Utilities.populateScope.launch {
+                            withContext(Dispatchers.IO) {
+                                app?.let { appRepository.insert(it) }
+                            }
                         }
 
+                        notificationBuilderAction.setDefaults(Notification.DEFAULT_ALL)
+                            .setWhen(System.currentTimeMillis())
+                            .setSmallIcon(R.drawable.pobya_shield_transparent)
+                            .setTicker("PObY-A")
+                            .setAutoCancel(true)
+                            .setContentTitle(getString(R.string.monitoring_app_added))
+                            .setContentText("" + app?.name)
+                            .setContentInfo("Info")
+                        notificationManager.notify(
+                            notificationId,
+                            notificationBuilderAction.build()
+                        )
+                        notificationId += 1
+                    }
+                    Intent.ACTION_PACKAGE_REMOVED -> {
 
+                        var app: InstalledApplication
+
+                        Utilities.dbScope.launch {
+                            val applicationRepository =
+                                ApplicationRepository.getInstance(application)
+                            val currentDate = Calendar.getInstance().time
+                            app = applicationRepository.getAppByPackageName(
+                                intent.data?.schemeSpecificPart.toString()
+                            )!!
+                            app.uninstalled = true
+                            app.uninstallDate = currentDate.time
+
+                            applicationRepository.update(app)
+
+                            withContext(Dispatchers.Main) {
+                                notificationBuilderAction.setDefaults(Notification.DEFAULT_ALL)
+                                    .setWhen(System.currentTimeMillis())
+                                    .setSmallIcon(R.drawable.pobya_shield_transparent)
+                                    .setAutoCancel(true)
+                                    .setTicker("PObY-A")
+                                    .setContentTitle(getString(R.string.monitoring_app_removed))
+                                    .setContentText(app.name)
+                                    .setContentInfo("Info")
+
+                                notificationManager.notify(
+                                    notificationId,
+                                    notificationBuilderAction.build()
+                                )
+                                notificationId += 1
+                            }
+                        }
                     }
                 }
             }
-
         }
-
-
 
         try {
             registerReceiver(receiver, intentFilter)
-
         } catch (e: Exception) {
             Log.e(TAG, e.stackTrace.toString())
         }
@@ -197,7 +210,6 @@ class ApplicationsService : Service() {
             return super.onTaskRemoved(rootIntent)
         }
 
-
         val restartServiceIntent =
             Intent(applicationContext, ApplicationsService::class.java).also {
                 it.setPackage(packageName)
@@ -209,7 +221,6 @@ class ApplicationsService : Service() {
     }
 
     override fun onDestroy() {
-
         try {
             unregisterReceiver(receiver)
         } catch (e: java.lang.Exception) {
@@ -224,8 +235,6 @@ class ApplicationsService : Service() {
             }
 
         startForegroundService(restartServiceIntent)
-
-
     }
 
 }

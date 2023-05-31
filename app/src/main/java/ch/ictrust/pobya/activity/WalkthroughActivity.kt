@@ -11,12 +11,12 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import ch.ictrust.pobya.R
-import ch.ictrust.pobya.utillies.Prefs
 import ch.ictrust.pobya.adapter.SliderAdapter
+import ch.ictrust.pobya.utillies.Prefs
 
 class WalkthroughActivity : AppCompatActivity() {
 
-    private var mSlideViewPager : ViewPager? = null
+    private var mSlideViewPager: ViewPager? = null
     private var mDotsLayout: LinearLayout? = null
     private var mContinueButton: Button? = null
 
@@ -42,7 +42,7 @@ class WalkthroughActivity : AppCompatActivity() {
         addDotsIndicator(0)
 
         mSlideViewPager?.addOnPageChangeListener(viewListener)
-        mContinueButton?.setOnClickListener{
+        mContinueButton?.setOnClickListener {
             Prefs.getInstance(this)!!.isFirstRun = false
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
@@ -64,7 +64,7 @@ class WalkthroughActivity : AppCompatActivity() {
             mDots[i] = TextView(this)
             mDots[i]?.text = Html.fromHtml("&#8226;")
             mDots[i]?.textSize = 35f
-            mDots[i]?.setPadding(5,0,5,0)
+            mDots[i]?.setPadding(5, 0, 5, 0)
             mDots[i]?.setTextColor(Color.parseColor("#80ffffff"))
 
             mDotsLayout?.addView(mDots[i])
@@ -75,24 +75,29 @@ class WalkthroughActivity : AppCompatActivity() {
         }
     }
 
-    internal var viewListener: ViewPager.OnPageChangeListener = object : ViewPager.OnPageChangeListener {
-        override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+    internal var viewListener: ViewPager.OnPageChangeListener =
+        object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
 
-        }
+            }
 
-        override fun onPageSelected(position: Int) {
-            addDotsIndicator(position)
-            mCurrentPage = position
+            override fun onPageSelected(position: Int) {
+                addDotsIndicator(position)
+                mCurrentPage = position
 
-            if (mCurrentPage == 3){
-                mContinueButton?.visibility = View.VISIBLE
-            }else{
-                mContinueButton?.visibility = View.GONE
+                if (mCurrentPage == 3) {
+                    mContinueButton?.visibility = View.VISIBLE
+                } else {
+                    mContinueButton?.visibility = View.GONE
+                }
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+
             }
         }
-
-        override fun onPageScrollStateChanged(state: Int) {
-
-        }
-    }
 }

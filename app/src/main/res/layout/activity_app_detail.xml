@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="@android:color/white"
-                android:id="@+id/toolbarTitle"
+                android:id="@+id/appInfoToolbarTitle"
                 android:text="Applications"
                 android:textSize="20sp"/>
 
