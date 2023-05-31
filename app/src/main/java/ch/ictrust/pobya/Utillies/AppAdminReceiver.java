@@ -7,11 +7,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.UserHandle;
 import android.widget.Toast;
+
 import ch.ictrust.pobya.activity.MainActivity;
 
 
-
 public class AppAdminReceiver extends DeviceAdminReceiver {
+
+    /**
+     * @return A newly instantiated {@link ComponentName} for this
+     * DeviceAdminReceiver.
+     */
+    public static ComponentName getComponentName(Context context) {
+        return new ComponentName(context.getApplicationContext(), AppAdminReceiver.class);
+    }
 
     @Override
     public void onProfileProvisioningComplete(Context context, Intent intent) {
@@ -24,16 +32,6 @@ public class AppAdminReceiver extends DeviceAdminReceiver {
         launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(launch);
     }
-
-    /**
-     * @return A newly instantiated {@link ComponentName} for this
-     * DeviceAdminReceiver.
-     */
-    public static ComponentName getComponentName(Context context) {
-        return new ComponentName(context.getApplicationContext(), AppAdminReceiver.class);
-    }
-
-
 
     @Override
     public void onEnabled(Context context, Intent intent) {
@@ -60,7 +58,7 @@ public class AppAdminReceiver extends DeviceAdminReceiver {
     }
 
     @Override
-    public void onPasswordFailed(Context context, Intent intent, UserHandle user){
+    public void onPasswordFailed(Context context, Intent intent, UserHandle user) {
     }
 
     @Override

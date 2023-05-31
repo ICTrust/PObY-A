@@ -17,15 +17,19 @@ import com.google.android.flexbox.*
 import com.google.android.material.navigation.NavigationView
 
 
-class DashboardFragment: Fragment(), ItemClickListener {
+class DashboardFragment : Fragment(), ItemClickListener {
     private var categoryList: MutableList<Category> = mutableListOf()
     private lateinit var categoryAdapter: DashboardRecyclerAdapter
     private lateinit var toolbarTitle: TextView
-    private lateinit var navView : NavigationView
+    private lateinit var navView: NavigationView
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val view : View = inflater.inflate(R.layout.fragment_dashboard, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val view: View = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
         initCategory()
         toolbarTitle = requireActivity().findViewById(R.id.toolbarTitle)
@@ -35,7 +39,7 @@ class DashboardFragment: Fragment(), ItemClickListener {
         categoryAdapter.setClickListener(this)
         view.findViewById<RecyclerView>(R.id.categoryRecyclerView).apply {
             elevation = 10F
-            layoutManager = GridLayoutManager(this.context,2)
+            layoutManager = GridLayoutManager(this.context, 2)
             layoutManager = FlexboxLayoutManager(context).apply {
                 justifyContent = JustifyContent.CENTER
                 alignItems = AlignItems.STRETCH
@@ -48,7 +52,7 @@ class DashboardFragment: Fragment(), ItemClickListener {
         return view
     }
 
-    private fun initCategory(){
+    private fun initCategory() {
 
         categoryList.clear()
 
@@ -77,11 +81,9 @@ class DashboardFragment: Fragment(), ItemClickListener {
     }
 
 
-
-
     override fun onItemClick(position: Int) {
 
-        when (position){
+        when (position) {
             0 -> {
                 toolbarTitle.text = getString(R.string.menu_apps_info)
                 navView.menu.getItem(3).isChecked = true

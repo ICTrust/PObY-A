@@ -3,7 +3,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="menu_dashboard">Dashboard</string>
-    <string name="menu_malware_scan">Malware Scan</string>
+    <string name="menu_malware_scan">Threats Scan</string>
     <string name="menu_privacy_settings">Privacy Settings</string>
     <string name="menu_apps_info">Applications</string>
     <string name="menu_data_safety">Data Safety</string>
@@ -13,6 +13,9 @@
     <string name="admin_perm_force_lock_desc">This permission is required to set the screen lock policy (timeout, display notifications)</string>
 
     <!-- Settings -->
+    <!-- Actions -->
+    <string name="settings_action_start">Start</string>
+    <string name="settings_action_cancel">Cancel</string>
     <!--   screen lock -->
     <string name="screen_lock_enabled_desc">Screen lock is enabled</string>
     <string name="screen_lock_enabled_info">Enabling screen lock requires a form of user
@@ -49,7 +52,6 @@
         cellular provider and is generally more accurate and reliable than your own managed and
         set date and time. Accurate date and time could help in forensics, device recovery through
         Android Device Manager and maintain application and logs in a time-sync manner.</string>
-    <string name="auto_time_action">You will be redirected to \"Date and time\" settings:  - Enable \"Use network-provided time\"   - Enable \"Use network-provided time zone\".</string>
 
     <!--   Add user when device is locked -->
     <string name="add_users_when_locked_desc">Add users from lock screen</string>
@@ -90,7 +92,7 @@
     <!--   Wi-Fi -->
     <string name="wifi_on_desc">Wi-Fi is enabled</string>
     <string name="wifi_on_info">Leaving Wi-Fi on can open your device to potential security risks.</string>
-    <string name="wifi_on_action">This action will disable Wi-Fi</string>
+    <string name="wifi_on_action">You will be redirected to \"Wi-Fi\" settings.</string>
 
     <!--   Debug App -->
     <string name="debug_app_desc">Application debugging disabled</string>
@@ -124,9 +126,8 @@
     <string name="update_database_failed">Database not updated</string>
     <string name="no_malware_found">No threat found</string>
     <string name="retry_scan">Retry</string>
-    <string name="malware_found">Malware found</string>
     <string name="no_internet_conn">Please check the internet connection</string>
-    <string name="empty_db">Empty malware database</string>
+    <string name="empty_db">Empty threats database</string>
 
     <!-- Applications status -->
     <string name="app_status">Status</string>
@@ -148,5 +149,12 @@
     <string name="uninstalled">Uninstalled</string>
     <string name="uninstall">Uninstall</string>
     <string name="uninstall_date">Uninstall date</string>
+
+    <!-- monitoring -->
+    <string name="monitoring_service_desc">Applications live monitoring</string>
+    <string name="monitoring_app_added">New application installed</string>
+    <string name="monitoring_app_removed">Application removed</string>
+    <string name="auto_time_action">You will be redirected to \"Date and time\" settings: \n    - Enable \"Use network-provided time\"\n    - Enable \"Use network-provided time zone\".</string>
+    <string name="malware_found">Threats found</string>
 
 </resources>

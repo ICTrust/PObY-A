@@ -22,15 +22,16 @@ import com.google.android.material.shape.CornerFamily
 
 
 class AppsAdapter(ctx: Context) : ListAdapter<InstalledApplication, AppsAdapter.AppHolder>(
-        DIFF_CALLBACK
-    ) {
+    DIFF_CALLBACK
+) {
     private lateinit var listener: OnItemClickListener
     private lateinit var context: Context
 
     init {
-        ApplicationRepository.getInstance(ctx as Application).getThirdPartyApps().observeForever { apps ->
-            submitList(apps)
-        }
+        ApplicationRepository.getInstance(ctx as Application).getThirdPartyApps()
+            .observeForever { apps ->
+                submitList(apps)
+            }
     }
 
     override fun onCreateViewHolder(
@@ -56,16 +57,16 @@ class AppsAdapter(ctx: Context) : ListAdapter<InstalledApplication, AppsAdapter.
         holder.image.background = BitmapDrawable.createFromStream(currentApp.icon.inputStream(), "")
         holder.imageName.text = currentApp.name
 
-        val radius: Float = context.getResources().getDimension(R.dimen.roundedCornerPrimary)
-        holder.image.setImageIcon(Icon.createWithData(currentApp.icon, 0, currentApp.icon.size ))
+        val radius: Float = context.resources.getDimension(R.dimen.roundedCornerPrimary)
+        holder.image.setImageIcon(Icon.createWithData(currentApp.icon, 0, currentApp.icon.size))
         holder.image.shapeAppearanceModel = holder.image.shapeAppearanceModel
             .toBuilder()
             .setAllCorners(CornerFamily.ROUNDED, radius)
             .build()
 
-        when (currentApp.applicationState){
+        when (currentApp.applicationState) {
             ApplicationState.DANGEROUS -> {
-                holder.tvState.text =  context.getString(R.string.warning)
+                holder.tvState.text = context.getString(R.string.warning)
                 holder.tvState.setTextColor(context.resources.getColor(R.color.warningColor))
             }
             ApplicationState.NORMAL -> {
@@ -97,10 +98,11 @@ class AppsAdapter(ctx: Context) : ListAdapter<InstalledApplication, AppsAdapter.
                 }
             }
         }
+
     }
 
-
     interface OnItemClickListener {
+
         fun onItemClick(app: InstalledApplication)
     }
 

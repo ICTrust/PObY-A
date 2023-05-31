@@ -4,7 +4,7 @@
     <string name="navigation_drawer_open">Ouvrir le menu de navigation</string>
     <string name="navigation_drawer_close">Fermer le menu de navigation</string>
     <string name="menu_dashboard">Tableau de bord</string>
-    <string name="menu_malware_scan">Scan de virus</string>
+    <string name="menu_malware_scan">Scan de menaces</string>
     <string name="menu_privacy_settings">Confidentialité</string>
     <string name="menu_apps_info">Applications</string>
     <string name="admin_perm_force_lock_desc">Cette autorisation est nécessaire pour définir la politique de verrouillage de l\'écran (délai, affichage des notifications)</string>
@@ -25,7 +25,7 @@
     <string name="sim_card_locked_action">Vous serez redirigé vers le menu des paramètres de sécurité :  - Choisissez Verrouillage de la carte SIM   - Activez le verrouillage de la carte SIM.</string>
     <string name="auto_time_desc">Le temps fourni par le réseau est activé</string>
     <string name="auto_time_info">Utiliser le réglage de l\'heure fourni par le réseau permet de récupérer les informations de date et d\'heure auprès du fournisseur de téléphonie mobile.\n        fournisseur de téléphonie mobile et sont généralement plus précises et plus fiables que la date et l\'heure que vous gérez et réglez vous-même.\n        que la date et l\'heure que vous gérez et réglez vous-même. La précision de la date et de l\'heure peut être utile dans le cadre de la recherche d\'indices, de la restauration de l\'appareil et de maintenir les applications et les journaux en synchronisation avec l\'heure.</string>
-    <string name="auto_time_action">Vous serez redirigé vers les paramètres \"Date et heure\\ :  - Activez \"Date et heure automatiques\".      - Activez \"Utiliser le fuseau horaire fourni par le réseau\".</string>
+    <string name="auto_time_action">Vous serez redirigé vers les paramètres \"Date et heure\" : \n    - Activez \"Date et heure automatiques\".\n    - Activez \"Utiliser le fuseau horaire fourni par le réseau\".</string>
     <string name="add_users_when_locked_desc">Ajouter des utilisateurs depuis l\'écran de verrouillage</string>
     <string name="add_users_when_locked_info">Les utilisateurs et le profil invité peuvent faire la plupart des mêmes choses que le propriétaire de l\'appareil, mais chaque profil dispose de son propre espace de stockage. Les invités peuvent installer des applications malveillantes ou mener toute autre activité malveillante susceptible de compromettre la sécurité globale de l\'appareil. En outre, les connexions Wi-Fi et Bluetooth sont partagées, ce qui pourrait donner aux invités un accès non autorisé aux réseaux/appareils et compromettre ainsi les données.</string>
     <string name="add_users_when_locked_action">Vous serez redirigé vers les paramètres des utilisateurs: \n- Désactiver \"Ajouter des utilisateurs à partir de l\'écran de verrouillage\" .</string>
@@ -57,7 +57,7 @@
     <!-- Wi-Fi -->
     <string name="wifi_on_desc">Wi-Fi est activé</string>
     <string name="wifi_on_info">Laisser le Wi-Fi activé peut ouvrir votre appareil à des risques de sécurité potentiels.</string>
-    <string name="wifi_on_action">Cette action va désactiver le Wi-Fi</string>.
+    .
 
 
     <string name="debug_app_desc">Débogage de l\'application désactivé</string>.
@@ -82,7 +82,6 @@
     <!-- Dump Apps -->
     <string name="no_desc_perm">Cette permission n\'a pas de description</string>
     <string name="scanning">En cours</string>
-    <string name="done">Terminer</string>
     <string name="internet_conn_check">Veuillez vérifier votre connexion internet</string>
     <string name="warning">Attention</string>
     <string name="normal">Normal</string>
@@ -100,7 +99,7 @@
     <string name="update_database_failed">La mise à jour a echoué</string>
     <string name="no_malware_found">Aucune menace trouvée</string>
     <string name="retry_scan">Réessayer</string>
-    <string name="malware_found">Menace(s) trouvée(s)</string>
+    <string name="malware_found">Menaces trouvées</string>
     <string name="menu_data_safety">Protection de données</string>
     <string name="no_internet_conn">Veuillez vérifier la connexion internet</string>
     <string name="no_permission_granted">Aucune permission autorisée</string>
@@ -110,5 +109,12 @@
     <string name="uninstalled">Désinstallées</string>
     <string name="uninstall">Désinstaller</string>
     <string name="uninstall_date">Date de désinstallation</string>
+    <string name="monitoring_service_desc">Vérification des applications</string>
+    <string name="monitoring_app_added">Nouvelle application installée</string>
+    <string name="monitoring_app_removed">Application supprimée</string>
+    <string name="settings_action_start">"Démarrer "</string>
+    <string name="settings_action_cancel">Annuler</string>
+    <string name="wifi_on_action">Vous serez redirigé vers les paramètres \"Wi-Fi\".</string>
+    <string name="done">Rescanner</string>
 
 </resources>

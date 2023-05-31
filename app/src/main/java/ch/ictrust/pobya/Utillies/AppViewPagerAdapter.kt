@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 
 class AppViewPagerAdapter(fm: FragmentManager) :
     FragmentPagerAdapter(fm) {
-    private var  fragmentList: MutableList<Fragment> = mutableListOf()
+    private var fragmentList: MutableList<Fragment> = mutableListOf()
     private var listTitles: MutableList<String> = mutableListOf()
 
     override fun getItem(position: Int): Fragment {

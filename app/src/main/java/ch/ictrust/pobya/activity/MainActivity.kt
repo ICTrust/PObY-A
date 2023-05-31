@@ -32,14 +32,13 @@ import kotlinx.coroutines.flow.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private lateinit var menu : Menu
+    private lateinit var menu: Menu
     private val tag = "MainActivity"
-    private lateinit  var compName: ComponentName
+    private lateinit var compName: ComponentName
     private lateinit var devicePolicyManager: DevicePolicyManager
     private var RESULT_ENABLE = 11
     private var CODE_WRITE_SETTINGS_PERMISSION = 42
     private lateinit var toolbarTitle: TextView
-
 
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -51,7 +50,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         initViews()
 
-         val intentFilter = IntentFilter().apply {
+        val intentFilter = IntentFilter().apply {
             addAction(Intent.ACTION_PACKAGE_ADDED)
             addAction(Intent.ACTION_PACKAGE_REMOVED)
             addDataScheme("package")
@@ -72,7 +71,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             )
         }
 
-        val activityManager = applicationContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val activityManager =
+            applicationContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val serviceIsRunning = activityManager.runningAppProcesses.any {
             it.processName == "ch.ictrust.pobya.ApplicationsService"
         }
@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
-    private fun initViews(){
+    private fun initViews() {
 
         supportActionBar?.show()
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -121,7 +121,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -136,6 +135,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         this.menu = menu
         return false
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return false
     }
@@ -185,7 +185,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-    private fun enableAdmin(){
+    private fun enableAdmin() {
 
         compName = ComponentName(this, ch.ictrust.pobya.utillies.AppAdminReceiver::class.java)
         devicePolicyManager = getSystemService(DEVICE_POLICY_SERVICE) as DevicePolicyManager

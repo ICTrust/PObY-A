@@ -27,7 +27,6 @@ interface ApplicationDao {
     @Query("DELETE FROM installedApplication WHERE packageName IS (:packageName) ")
     fun delete(packageName: String)
 
-
     @Query("SELECT * FROM installedApplication ORDER BY name ASC")
     fun getAllApplications(): LiveData<List<InstalledApplication>>
 
@@ -37,10 +36,8 @@ interface ApplicationDao {
     @Query("SELECT * FROM installedApplication WHERE uninstalled=1 ORDER BY name ASC")
     fun getUninstalledApplications(): LiveData<List<InstalledApplication>>
 
-
     @Query("SELECT * FROM installedApplication WHERE enabled IS FALSE ORDER BY name ASC")
     fun getDisabledApplications(): LiveData<List<InstalledApplication>>
-
 
     @Query("SELECT * FROM installedApplication WHERE isSystemApp=1 ORDER BY name ASC")
     fun getSystemApplications(): LiveData<List<InstalledApplication>>
@@ -56,7 +53,5 @@ interface ApplicationDao {
 
     @Query("SELECT * FROM installedApplication WHERE isSystemApp=0 and uninstalled=0 ORDER BY name ASC")
     fun getPartyApplications(): List<InstalledApplication>
-
-
 
 }

@@ -35,12 +35,12 @@ class ApplicationRepository {
             }
         }
     }
+
     fun insert(app: InstalledApplication) {
         applicationDao.insert(app)
     }
 
-
-    fun insertApps(apps: List<InstalledApplication>){
+    fun insertApps(apps: List<InstalledApplication>) {
         applicationDao.insertAllApps(apps)
     }
 
@@ -56,7 +56,7 @@ class ApplicationRepository {
         applicationDao.deleteAll()
     }
 
-    fun getAppByPackageName(packageName: String): InstalledApplication? {
+    fun getAppByPackageName(packageName: String): InstalledApplication {
         return applicationDao.loadAllByPkgName(packageName)
     }
 

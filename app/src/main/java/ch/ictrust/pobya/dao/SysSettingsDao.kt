@@ -6,7 +6,6 @@ import ch.ictrust.pobya.models.SysSettings
 
 @Dao
 interface SysSettingsDao {
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(sysSetting: SysSettings)
 
@@ -19,10 +18,8 @@ interface SysSettingsDao {
     @Query("SELECT * FROM SysSettings WHERE currentValue<>expectedValue")
     fun getSettingsFailed(): SysSettings
 
-
     @Query("SELECT * FROM SysSettings ORDER BY info DESC")
     fun getAllSettings(): LiveData<List<SysSettings>>
-
 
     @Query("DELETE FROM SysSettings")
     fun deleteAll()

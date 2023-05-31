@@ -21,12 +21,12 @@ import com.google.android.material.shape.CornerFamily
 import com.google.android.material.tabs.TabLayout
 
 
-class AppDetailActivity : AppCompatActivity(){
+class AppDetailActivity : AppCompatActivity() {
 
-    private lateinit var appIconView : ShapeableImageView
+    private lateinit var appIconView: ShapeableImageView
     private lateinit var viewPager: ViewPager
     private lateinit var currentApp: InstalledApplication
-    private lateinit var toolbarTitle : TextView
+    private lateinit var toolbarTitle: TextView
     private lateinit var btnOpenSettings: Button
     private lateinit var btnUninstall: Button
 
@@ -60,7 +60,7 @@ class AppDetailActivity : AppCompatActivity(){
         }
 
 
-        if (currentApp.uninstalled){
+        if (currentApp.uninstalled) {
             btnOpenSettings.isEnabled = false
             btnUninstall.isEnabled = false
         } else {
@@ -77,7 +77,7 @@ class AppDetailActivity : AppCompatActivity(){
             }
         }
 
-        appIconView.setImageIcon(Icon.createWithData(currentApp.icon, 0, currentApp.icon.size ))
+        appIconView.setImageIcon(Icon.createWithData(currentApp.icon, 0, currentApp.icon.size))
         appIconView.shapeAppearanceModel = appIconView.shapeAppearanceModel
             .toBuilder()
             .setAllCorners(CornerFamily.ROUNDED, radius)

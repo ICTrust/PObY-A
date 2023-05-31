@@ -1,12 +1,12 @@
 package ch.ictrust.pobya.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import ch.ictrust.pobya.R
 import ch.ictrust.pobya.activity.AppDetailActivity
 import ch.ictrust.pobya.models.InstalledApplication

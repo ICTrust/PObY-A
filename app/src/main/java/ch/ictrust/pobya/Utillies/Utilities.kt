@@ -45,7 +45,11 @@ object Utilities {
     fun hasPermissions(context: Context?, vararg permissions: String): Boolean {
         if (context != null) {
             for (permission in permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(
+                        context,
+                        permission
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
                     return false
                 }
             }
@@ -55,8 +59,8 @@ object Utilities {
     }
 
     fun updateMalwareDB(context: Context) {
-        var malwarePackages : List<Malware> = ArrayList()
-        var malwareCerts : List<MalwareCert> = ArrayList()
+        var malwarePackages: List<Malware> = ArrayList()
+        var malwareCerts: List<MalwareCert> = ArrayList()
         var currentMalwareDbVersion = Prefs.getInstance(context)?.malwareDbVersion
         dbScope.launch {
             val client = OkHttpClient.Builder()
@@ -85,9 +89,11 @@ object Utilities {
                 response = client.newCall(retrieveNewMalwareDB).execute()
                 if (response.isSuccessful) {
                     val jsonString = response.body?.string()
-                    malwarePackages = Gson().fromJson(jsonString, Array<Malware>::class.java).asList()
+                    malwarePackages =
+                        Gson().fromJson(jsonString, Array<Malware>::class.java).asList()
 
-                    MalwareRepository.getInstance(context.applicationContext as Application).insertList(malwarePackages)
+                    MalwareRepository.getInstance(context.applicationContext as Application)
+                        .insertList(malwarePackages)
                     Prefs.getInstance(context)?.malwareDbVersion = version
 
 
@@ -99,12 +105,13 @@ object Utilities {
                 response = client.newCall(retrieveNewMalwareCertDB).execute()
                 if (response.isSuccessful) {
                     val jsonString = response.body?.string()
-                    malwareCerts = Gson().fromJson(jsonString, Array<MalwareCert>::class.java).asList()
+                    malwareCerts =
+                        Gson().fromJson(jsonString, Array<MalwareCert>::class.java).asList()
                     MalwareCertRepository.getInstance(
-                                                context.applicationContext as Application
-                                            ).insertList(malwareCerts)
+                        context.applicationContext as Application
+                    ).insertList(malwareCerts)
                 }
-            } catch (ex: ConnectException){
+            } catch (ex: ConnectException) {
                 Log.e("Utilities", ex.message.toString())
             }
         }
@@ -114,7 +121,7 @@ object Utilities {
         val connectivityManager =
             context.applicationContext.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
 
-        if(connectivityManager.activeNetworkInfo != null){
+        if (connectivityManager.activeNetworkInfo != null) {
             val network: Network? = connectivityManager.activeNetwork
             val capabilities = connectivityManager
                 .getNetworkCapabilities(network)

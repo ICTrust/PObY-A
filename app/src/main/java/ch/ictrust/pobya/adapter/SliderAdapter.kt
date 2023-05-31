@@ -9,18 +9,24 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager.widget.PagerAdapter
 import ch.ictrust.pobya.R
-import android.view.animation.AnimationUtils
 
 class SliderAdapter(var context: Context) : PagerAdapter() {
 
     private var layoutInflater: LayoutInflater = LayoutInflater.from(context)
 
-    private var slideImages = intArrayOf(R.drawable.ic_home,
-                                            R.drawable.outline_admin_panel_settings_24,
-                                            R.drawable.outline_app_settings_alt_24,
-                                            R.drawable.outline_radar_24)
+    private var slideImages = intArrayOf(
+        R.drawable.ic_home,
+        R.drawable.outline_admin_panel_settings_24,
+        R.drawable.outline_app_settings_alt_24,
+        R.drawable.outline_radar_24
+    )
 
-    private var slideHeadings = arrayOf("PObY-A", context.getString(R.string.menu_privacy_settings) ,context.getString(R.string.menu_apps_info) , context.getString(R.string.menu_malware_scan))
+    private var slideHeadings = arrayOf(
+        "PObY-A",
+        context.getString(R.string.menu_privacy_settings),
+        context.getString(R.string.menu_apps_info),
+        context.getString(R.string.menu_malware_scan)
+    )
 
     private var slideDescriptions = arrayOf(
         "Privacy Owned by You - Android",

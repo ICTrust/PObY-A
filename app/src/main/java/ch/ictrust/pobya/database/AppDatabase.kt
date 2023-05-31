@@ -27,10 +27,10 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun malwareDao(): MalwareDao
     abstract fun malwareCertDao(): MalwareCertDao
 
-
     companion object {
         private var instance: AppDatabase? = null
         private var context: Context? = null
+
         @Synchronized
         fun getInstance(c: Context?): AppDatabase {
             if (instance == null) {
@@ -84,7 +84,7 @@ abstract class AppDatabase : RoomDatabase() {
 
         }
 
-         fun populate() {
+        fun populate() {
             val dump = ApplicationPermissionHelper(context.applicationContext, true)
             val perms: List<PermissionModel> = dump.getAllperms()
             for (permission in perms) {
@@ -103,7 +103,7 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        fun update(){
+        fun update() {
             // TODO
         }
     }

@@ -11,23 +11,23 @@ import androidx.recyclerview.widget.RecyclerView
 import ch.ictrust.pobya.R
 import ch.ictrust.pobya.adapter.SettingsAdapter
 import ch.ictrust.pobya.models.SysSettings
-
+import ch.ictrust.pobya.utillies.SettingsHelper
 
 
 class SettingsScanFragment : Fragment() {
 
-    private var settingsList : MutableList<SysSettings> = mutableListOf()
+    private var settingsList: MutableList<SysSettings> = mutableListOf()
     private lateinit var settingsAdapter: SettingsAdapter
-    private lateinit var progressBar : ProgressBar
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view : View = inflater.inflate(R.layout.fragment_settings_scan, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_settings_scan, container, false)
 
-        getSettings()
+        settingsList = SettingsHelper(context).scan()
 
         settingsAdapter = SettingsAdapter(settingsList, view.context)
         progressBar = view.findViewById(R.id.loading_spinner_settings)
@@ -38,24 +38,16 @@ class SettingsScanFragment : Fragment() {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
             adapter = settingsAdapter
         }
-
         return view
     }
 
     override fun onResume() {
         super.onResume()
-        getSettings()
+        settingsList = SettingsHelper(context).scan()
         view?.findViewById<RecyclerView>(R.id.recyclerViewSettings)?.apply {
             settingsAdapter = SettingsAdapter(settingsList, requireView().context)
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
             adapter = settingsAdapter
         }
-
     }
-
-    private fun getSettings() {
-        val settingsHelper = ch.ictrust.pobya.utillies.SettingsHelper(context)
-        settingsList = settingsHelper.scan()
-    }
-
 }

@@ -24,7 +24,7 @@ class SplashActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
-        }else{
+        } else {
             val intent = Intent(this, WalkthroughActivity::class.java)
             Utilities.updateMalwareDB(this)
             startActivity(intent)
