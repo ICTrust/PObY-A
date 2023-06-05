@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 
 class Prefs private constructor(context: Context) {
 
-    private var mPrefs: SharedPreferences? =
+    var mPrefs: SharedPreferences? =
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     private val malwareDatabaseURL =
@@ -43,11 +43,23 @@ class Prefs private constructor(context: Context) {
             ?.putString(DATABASE_VERSION_URL, malwareDatabaseVersionURL!!)!!.apply()
 
 
+    var monitoringServiceStatus: Boolean?
+        get() = mPrefs?.getBoolean(MONITORING_SERVICE_ENABLED, true)
+        set(monitoringServiceStatus) = mPrefs?.edit()
+            ?.putBoolean(MONITORING_SERVICE_ENABLED, monitoringServiceStatus!!)!!.apply()
+
+
+    var autoStartEnabled: Boolean?
+        get() = mPrefs?.getBoolean(AUTO_START_ENABLED, true)
+        set(autoStartEnabled) = mPrefs?.edit()
+            ?.putBoolean(AUTO_START_ENABLED, autoStartEnabled!!)!!.apply()
+
+
     companion object {
         internal const val DATABASE_VERSION = 142
         internal const val DATABASE_NAME = "Poby-a"
 
-        private const val PREFS_NAME = "Settings"
+        internal const val PREFS_NAME = "Settings"
         private const val IS_FIRST_RUN = "isFirstRun"
 
         private const val REMOTE_DATABASE_URL = "remoteDatabase"
@@ -55,6 +67,9 @@ class Prefs private constructor(context: Context) {
 
         private const val DATABASE_VERSION_URL = "malwareDatabaseVersion"
         private const val MALWARE_DB_VERSION = "malwareDbVersion"
+
+        internal const val MONITORING_SERVICE_ENABLED = "monitoringServiceEnabled"
+        private const val AUTO_START_ENABLED = "autoStart"
 
         private var instance: Prefs? = null
 
@@ -68,6 +83,7 @@ class Prefs private constructor(context: Context) {
             }
             return instance
         }
+
     }
 
 

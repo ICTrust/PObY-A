@@ -16,6 +16,7 @@ import ch.ictrust.pobya.R
 import ch.ictrust.pobya.models.InstalledApplication
 import ch.ictrust.pobya.repository.ApplicationRepository
 import ch.ictrust.pobya.utillies.ApplicationPermissionHelper
+import ch.ictrust.pobya.utillies.Prefs
 import ch.ictrust.pobya.utillies.Utilities
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,21 +36,12 @@ class ApplicationsService : Service() {
     private lateinit var notificationBuilderService: NotificationCompat.Builder
 
 
-    override fun onCreate() {
-        super.onCreate()
-        Utilities.populateScope.launch {
-            withContext(Dispatchers.IO) {
-                val applicationPermissionHelper =
-                    ApplicationPermissionHelper(applicationContext, true)
-                applicationPermissionHelper.getListApps(true)
-                applicationPermissionHelper.getAllperms()
-            }
-        }
-        Log.d(TAG, "The service has been created.")
-    }
-
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
+        if (Prefs.getInstance(baseContext)?.monitoringServiceStatus == false){
+            stopSelf()
+            stopForeground(true)
+        }
 
         // Notification ID start with 2 (ID 1 for the foreground service's notifications)
         var notificationId = 2
@@ -210,12 +202,17 @@ class ApplicationsService : Service() {
             return super.onTaskRemoved(rootIntent)
         }
 
-        val restartServiceIntent =
-            Intent(applicationContext, ApplicationsService::class.java).also {
-                it.setPackage(packageName)
-            }
+        if (Prefs.getInstance(applicationContext)?.monitoringServiceStatus == true) {
+            val restartServiceIntent =
+                Intent(applicationContext, ApplicationsService::class.java).also {
+                    it.setPackage(packageName)
+                }
 
-        startForegroundService(restartServiceIntent)
+            startForegroundService(restartServiceIntent)
+        } else {
+            stopForeground(true)
+            stopSelf()
+        }
 
         super.onTaskRemoved(rootIntent)
     }
@@ -225,16 +222,11 @@ class ApplicationsService : Service() {
             unregisterReceiver(receiver)
         } catch (e: java.lang.Exception) {
             Log.e(TAG, e.stackTrace.toString())
-        } finally {
-            super.onDestroy()
         }
 
-        val restartServiceIntent =
-            Intent(applicationContext, ApplicationsService::class.java).also {
-                it.setPackage(packageName)
-            }
-
-        startForegroundService(restartServiceIntent)
+        stopForeground(true)
+        stopSelf()
     }
+
 
 }
