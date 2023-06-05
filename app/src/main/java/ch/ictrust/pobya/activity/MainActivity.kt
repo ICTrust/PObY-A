@@ -25,6 +25,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import ch.ictrust.pobya.R
 import ch.ictrust.pobya.fragment.*
 import ch.ictrust.pobya.service.ApplicationsService
+import ch.ictrust.pobya.utillies.Prefs
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -76,7 +77,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val serviceIsRunning = activityManager.runningAppProcesses.any {
             it.processName == "ch.ictrust.pobya.ApplicationsService"
         }
-        if (!serviceIsRunning) {
+        if (!serviceIsRunning && Prefs.getInstance(applicationContext)?.monitoringServiceStatus == true) {
             Log.d(tag, "Starting applications monitoring Service")
             startService(Intent(applicationContext, ApplicationsService::class.java))
         }
@@ -168,6 +169,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 toolbarTitle.text = getString(R.string.menu_apps_info)
                 val transaction = supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.flMainContainer, ApplicationsFragment())
+                transaction.addToBackStack(null)
+                transaction.commit()
+            }
+            R.id.nav_preferences -> {
+                toolbarTitle.text = getString(R.string.menu_preferences)
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.flMainContainer, ApplicationPreferencesFragment())
                 transaction.addToBackStack(null)
                 transaction.commit()
             }

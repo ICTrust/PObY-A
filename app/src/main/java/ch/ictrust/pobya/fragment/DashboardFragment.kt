@@ -73,9 +73,14 @@ class DashboardFragment : Fragment(), ItemClickListener {
         privacyCategory.image = R.drawable.outline_admin_panel_settings_24
         categoryList.add(privacyCategory)
 
+        val appPreferences = Category()
+        appPreferences.name = getString(R.string.menu_preferences)
+        appPreferences.image = R.drawable.ic_outline_preferences_24
+        categoryList.add(appPreferences)
+
 
         val dataSafetyCategory = Category()
-        dataSafetyCategory.name = "Data Safety"
+        dataSafetyCategory.name = getString(R.string.menu_data_safety)
         dataSafetyCategory.image = R.drawable.ic_baseline_privacy_tip_24
         categoryList.add(dataSafetyCategory)
     }
@@ -111,8 +116,17 @@ class DashboardFragment : Fragment(), ItemClickListener {
                 transaction.commit()
             }
             3 -> {
-                toolbarTitle.text = getString(R.string.menu_data_safety)
+                toolbarTitle.text = "Presences"
                 navView.menu.getItem(4).isChecked = true
+                val transaction = parentFragmentManager.beginTransaction()
+                transaction.replace(R.id.flMainContainer, ApplicationPreferencesFragment())
+                transaction.addToBackStack(null)
+
+                transaction.commit()
+            }
+            4 -> {
+                toolbarTitle.text = getString(R.string.menu_data_safety)
+                navView.menu.getItem(5).isChecked = true
                 val transaction = parentFragmentManager.beginTransaction()
                 transaction.replace(R.id.flMainContainer, DataSafetyPolicyFragment())
                 transaction.addToBackStack(null)
