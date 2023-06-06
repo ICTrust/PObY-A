@@ -116,7 +116,7 @@ class DashboardFragment : Fragment(), ItemClickListener {
                 transaction.commit()
             }
             3 -> {
-                toolbarTitle.text = "Presences"
+                toolbarTitle.text = getString(R.string.menu_preferences)
                 navView.menu.getItem(4).isChecked = true
                 val transaction = parentFragmentManager.beginTransaction()
                 transaction.replace(R.id.flMainContainer, ApplicationPreferencesFragment())
