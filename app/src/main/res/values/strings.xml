@@ -7,6 +7,7 @@
     <string name="menu_privacy_settings">Privacy Settings</string>
     <string name="menu_apps_info">Applications</string>
     <string name="menu_data_safety">Data Safety</string>
+    <string name="menu_preferences">Preferences</string>
 
 
     <!-- Permissions -->
@@ -156,5 +157,11 @@
     <string name="monitoring_app_removed">Application removed</string>
     <string name="auto_time_action">You will be redirected to \"Date and time\" settings: \n    - Enable \"Use network-provided time\"\n    - Enable \"Use network-provided time zone\".</string>
     <string name="malware_found">Threats found</string>
+
+
+    <!-- Preferences -->
+    <string name="prefrences_monitoring_name">Live monitoring</string>
+    <string name="prefrences_monitoring_desc">Enable realtime monitoring</string>
+
 
 </resources>

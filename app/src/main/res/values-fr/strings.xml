@@ -116,5 +116,8 @@
     <string name="settings_action_cancel">Annuler</string>
     <string name="wifi_on_action">Vous serez redirigé vers les paramètres \"Wi-Fi\".</string>
     <string name="done">Rescanner</string>
+    <string name="menu_preferences">Préférences</string>
+    <string name="prefrences_monitoring_name">Contrôle en direct</string>
+    <string name="prefrences_monitoring_desc">"Activer le mode de contrôle en direct "</string>
 
 </resources>
