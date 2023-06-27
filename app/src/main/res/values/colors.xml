@@ -10,9 +10,10 @@
     <color name="subTextColor">#313132</color>
 
     <color name="doneColor">#26a94e</color>
-
     <color name="firstColor">#23bfd4</color>
     <color name="secondColor">#2594df</color>
     <color name="thirdColor">#2435df</color>
+
+    <color name="warningColor">#D0FF9800</color>
 
 </resources>
