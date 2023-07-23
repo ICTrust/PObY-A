@@ -14,13 +14,9 @@ import ch.ictrust.pobya.models.MalwareCert
 import ch.ictrust.pobya.repository.MalwareCertRepository
 import ch.ictrust.pobya.repository.MalwareRepository
 import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import java.net.ConnectException
 import java.util.concurrent.TimeUnit
 
 
@@ -58,7 +54,7 @@ object Utilities {
         return true
     }
 
-    fun updateMalwareDB(context: Context) {
+    fun updateMalwareDB(context: Context, testedURL: Int = 1) {
         var malwarePackages: List<Malware> = ArrayList()
         var malwareCerts: List<MalwareCert> = ArrayList()
         var currentMalwareDbVersion = Prefs.getInstance(context)?.malwareDbVersion
@@ -68,24 +64,26 @@ object Utilities {
                 .readTimeout(60, TimeUnit.SECONDS)
                 .build()
             var version = 0
+            val baseURL = Prefs.getInstance(context)?.baseURL
 
             val versionRequest = Request.Builder()
-                .url(Prefs.getInstance(context)?.malwareVersionDatabaseUrl.toString())
+                .url(baseURL + Prefs.getInstance(context)?.malwareVersionDatabaseUrl.toString())
                 .build()
 
-            var response = client.newCall(versionRequest).execute()
-            if (response.isSuccessful) {
-                version = response.body?.string()?.toInt()!!
-                if (version == currentMalwareDbVersion) {
-                    Log.i("Utilities", "Database up-to-date")
-                    return@launch
-                }
-            }
 
             val retrieveNewMalwareDB = Request.Builder()
-                .url(Prefs.getInstance(context)?.malwareDatabaseUrlPrefs.toString())
+                .url(baseURL + Prefs.getInstance(context)?.malwareDatabaseUrlPrefs.toString())
                 .build()
             try {
+                var response = client.newCall(versionRequest).execute()
+                if (response.isSuccessful) {
+                    version = response.body?.string()?.toInt()!!
+                    if (version == currentMalwareDbVersion) {
+                        Log.i("Utilities", "Database up-to-date")
+                        return@launch
+                    }
+                }
+
                 response = client.newCall(retrieveNewMalwareDB).execute()
                 if (response.isSuccessful) {
                     val jsonString = response.body?.string()
@@ -95,11 +93,9 @@ object Utilities {
                     MalwareRepository.getInstance(context.applicationContext as Application)
                         .insertList(malwarePackages)
                     Prefs.getInstance(context)?.malwareDbVersion = version
-
-
                 }
                 val retrieveNewMalwareCertDB = Request.Builder()
-                    .url(Prefs.getInstance(context)?.certsDatabaseURLPrefs.toString())
+                    .url(baseURL + Prefs.getInstance(context)?.certsDatabaseURLPrefs.toString())
                     .build()
 
                 response = client.newCall(retrieveNewMalwareCertDB).execute()
@@ -111,12 +107,29 @@ object Utilities {
                         context.applicationContext as Application
                     ).insertList(malwareCerts)
                 }
-            } catch (ex: ConnectException) {
+            } catch (ex: Exception ) {
                 Log.e("Utilities", ex.message.toString())
+                // TODO: Remove hadcoded value (2)
+                if (testedURL > 2 ) {
+                    //TODO: Show error message after trying all URLs
+                    return@launch
+                } else {
+                    println(Prefs.getURLs())
+                    val indexURL = Prefs.getURLs()
+                        .filter { it != Prefs.getInstance(context)!!.baseURL }
+
+                    withContext(Dispatchers.Main) {
+                        Prefs.getInstance(context)!!.mPrefs?.edit()
+                            ?.putString(Prefs.BASE_URL, indexURL[0])!!.apply()
+                    }
+                    Log.i("Utilities", "Switching URL to: " +
+                                Prefs.getInstance(context)?.baseURL)
+                    updateMalwareDB(context, testedURL+1)
+                }
             }
         }
     }
-
+    
     fun hasInternetConnection(context: Context): Boolean {
         val connectivityManager =
             context.applicationContext.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
