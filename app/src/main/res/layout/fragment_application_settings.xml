@@ -16,22 +16,23 @@
         android:orientation="vertical"
         android:layout_gravity="center"
         >
-        <FrameLayout
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:padding="16dp">
 
                 <LinearLayout
+                    android:id="@+id/llPreferenceTitleContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="70dp"
-                    android:orientation="vertical"
-                    android:id="@+id/llPreferenceTitleContainer">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tvPreferenceTitleServiceMonitoring"
@@ -41,7 +42,7 @@
 
                         android:layout_marginTop="0dp"
                         android:layout_marginEnd="12dp"
-                        android:text="Monitoring Service"
+                        android:text="@string/monitoring_service_title"
                         android:textColor="@color/mainTextColor"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -50,10 +51,10 @@
                         android:id="@+id/tvPreferenceDesc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/mainTextColor"
-                        android:textSize="14sp"
+                        android:layout_marginTop="3dp"
                         android:text="monitor install and uninstall"
-                        android:layout_marginTop="3dp" />
+                        android:textColor="@color/mainTextColor"
+                        android:textSize="14sp" />
                 </LinearLayout>
 
 
@@ -65,13 +66,63 @@
                     android:layout_marginLeft="-50dp"
                     android:layout_toRightOf="@id/llPreferenceTitleContainer"
                     android:button="@drawable/dashboard_card_poby"
-                    app:trackTint="@drawable/toggle_preferences"
-                    app:thumbTint="@drawable/untoggle_preferences"/>
+                    app:thumbTint="@drawable/untoggle_preferences"
+                    app:trackTint="@drawable/toggle_preferences" />
 
 
             </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:padding="16dp"
+                android:layout_height="wrap_content">
 
-        </FrameLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/databaseURLContainer">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/mainTextColor"
+                        android:textStyle="bold"
+                        android:text="@string/prefrences_database_url_name"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/prefrences_database_url_desc">
+
+                    </TextView>
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <Spinner
+                            android:id="@+id/databaseURLSpinner"
+                            android:layout_width="match_parent"
+                            android:backgroundTint="@android:color/white"
+                            android:layout_height="wrap_content"
+                            android:background="@android:drawable/btn_dropdown"
+                            android:spinnerMode="dropdown" />
+                        <ImageView
+                            android:layout_gravity="center_vertical|end"
+                            android:contentDescription="@null"
+                            android:layout_width="wrap_content"
+                            android:layout_marginRight="4dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_dropdown" />
+                    </FrameLayout>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+
+
+
+
 
     </LinearLayout>
 

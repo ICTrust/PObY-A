@@ -129,6 +129,7 @@
     <string name="retry_scan">Retry</string>
     <string name="no_internet_conn">Please check the internet connection</string>
     <string name="empty_db">Empty threats database</string>
+    <string name="threats_found">Possible threat found</string>
 
     <!-- Applications status -->
     <string name="app_status">Status</string>
@@ -152,6 +153,7 @@
     <string name="uninstall_date">Uninstall date</string>
 
     <!-- monitoring -->
+    <string name="monitoring_service_title">Monitoring Service</string>
     <string name="monitoring_service_desc">Applications live monitoring</string>
     <string name="monitoring_app_added">New application installed</string>
     <string name="monitoring_app_removed">Application removed</string>
@@ -162,6 +164,9 @@
     <!-- Preferences -->
     <string name="prefrences_monitoring_name">Live monitoring</string>
     <string name="prefrences_monitoring_desc">Enable realtime monitoring</string>
+    <string name="prefrences_database_url_name">Database URL</string>
+    <string name="prefrences_database_url_desc">Domain from where the threats database will be downloaded.</string>
+
 
 
 </resources>

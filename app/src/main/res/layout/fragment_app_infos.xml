@@ -101,7 +101,7 @@
                 android:layout_centerVertical="true"
                 android:textColor="@color/subTextColor"
                 android:textSize="12sp"
-                android:text="Jul 12 2018"
+                android:text=""
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="16dp"/>
 
