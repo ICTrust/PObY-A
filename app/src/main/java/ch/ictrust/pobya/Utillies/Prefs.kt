@@ -8,17 +8,22 @@ class Prefs private constructor(context: Context) {
     var mPrefs: SharedPreferences? =
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
+
+
     private val malwareDatabaseURL =
-        "https://codeberg.org/ICTrust/mal-db/raw/branch/main/malware.json"
+        "ICTrust/mal-db/raw/branch/main/malware.json"
     private val certsDatabaseURL =
-        "https://codeberg.org/ICTrust/mal-db/raw/branch/main/malware_cert.json"
+        "ICTrust/mal-db/raw/branch/main/malware_cert.json"
     private val malwareDatabaseVersionURL =
-        "https://codeberg.org/ICTrust/mal-db/raw/branch/main/version"
+        "ICTrust/mal-db/raw/branch/main/version"
 
     var isFirstRun: Boolean?
         get() = mPrefs?.getBoolean(IS_FIRST_RUN, true)
         set(isFirstRun) = mPrefs?.edit()?.putBoolean(IS_FIRST_RUN, isFirstRun!!)!!.apply()
 
+    var baseURL : String?
+        get() = mPrefs?.getString(BASE_URL, URLs[0])
+        set(baseURL) = mPrefs?.edit()?.putString(BASE_URL, baseURL!!)!!.apply()
 
     var malwareDbVersion: Int?
         get() = mPrefs?.getInt(MALWARE_DB_VERSION, 0)
@@ -55,12 +60,22 @@ class Prefs private constructor(context: Context) {
             ?.putBoolean(AUTO_START_ENABLED, autoStartEnabled!!)!!.apply()
 
 
+
+
+
     companion object {
+
+        internal val URLs = arrayOf("https://codeberg.org/", "https://github.com/")
+
+
+
         internal const val DATABASE_VERSION = 142
         internal const val DATABASE_NAME = "Poby-a"
 
         internal const val PREFS_NAME = "Settings"
         private const val IS_FIRST_RUN = "isFirstRun"
+
+        internal const val BASE_URL = "baseURL"
 
         private const val REMOTE_DATABASE_URL = "remoteDatabase"
         private const val REMOTE_CERTS_DATABASE_URL = "remoteCertsDatabase"
@@ -82,6 +97,10 @@ class Prefs private constructor(context: Context) {
                 }
             }
             return instance
+        }
+
+        fun getURLs(): Array<String> {
+            return URLs
         }
 
     }

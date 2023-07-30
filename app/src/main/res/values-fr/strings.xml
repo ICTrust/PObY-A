@@ -119,5 +119,9 @@
     <string name="menu_preferences">Préférences</string>
     <string name="prefrences_monitoring_name">Contrôle en direct</string>
     <string name="prefrences_monitoring_desc">"Activer le mode de contrôle en direct "</string>
+    <string name="prefrences_database_url_name">Adresse de la base de données</string>
+    <string name="prefrences_database_url_desc">Le nom de domaine utilisé pour le téléchargement de la base de données des menaces</string>
+    <string name="monitoring_service_title">Service de contrôle</string>
+    <string name="threats_found">Possible menaces trouvées</string>
 
 </resources>
