@@ -24,10 +24,13 @@ object Utilities {
 
     var dbJob = Job()
     var dbScope: CoroutineScope = CoroutineScope(GlobalScope.coroutineContext + dbJob)
+    private const val TAG = "Utilities"
 
     var populateDBJob = Job()
     var populateScope: CoroutineScope = CoroutineScope(GlobalScope.coroutineContext + populateDBJob)
 
+    var networkJob = Job()
+    var networkScope: CoroutineScope = CoroutineScope(GlobalScope.coroutineContext + networkJob)
 
     /**
      * Check user permission
@@ -50,7 +53,6 @@ object Utilities {
                 }
             }
         }
-
         return true
     }
 
@@ -76,12 +78,14 @@ object Utilities {
                 .build()
             try {
                 var response = client.newCall(versionRequest).execute()
+                println(response)
                 if (response.isSuccessful) {
-                    version = response.body?.string()?.toInt()!!
+                    version = response.body?.string()?.strip()?.toInt()!!
                     if (version == currentMalwareDbVersion) {
                         Log.i("Utilities", "Database up-to-date")
                         return@launch
                     }
+                    Prefs.getInstance(context)?.malwareDbVersion = version
                 }
 
                 response = client.newCall(retrieveNewMalwareDB).execute()
@@ -129,7 +133,7 @@ object Utilities {
             }
         }
     }
-    
+
     fun hasInternetConnection(context: Context): Boolean {
         val connectivityManager =
             context.applicationContext.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -143,5 +147,4 @@ object Utilities {
         }
         return false
     }
-
 }
