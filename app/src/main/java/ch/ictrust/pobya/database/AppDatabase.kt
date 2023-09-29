@@ -5,6 +5,10 @@ import androidx.room.Database
 import androidx.room.Room.databaseBuilder
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import ch.ictrust.pobya.clam.dao.ClamVersionDao
+import ch.ictrust.pobya.clam.dao.HSBDao
+import ch.ictrust.pobya.clam.models.ClamVersion
+import ch.ictrust.pobya.clam.models.HSB
 import ch.ictrust.pobya.dao.*
 import ch.ictrust.pobya.models.*
 import ch.ictrust.pobya.utillies.ApplicationPermissionHelper
@@ -14,7 +18,8 @@ import kotlinx.coroutines.launch
 
 @Database(
     entities = [InstalledApplication::class, PermissionModel::class, ApplicationPermissionCrossRef::class,
-        SysSettings::class, MalwareScan::class, Malware::class, MalwareCert::class],
+        SysSettings::class, MalwareScan::class, Malware::class, MalwareCert::class, HSB::class,
+               ClamVersion::class],
     version = Prefs.DATABASE_VERSION,
     exportSchema = false
 )
@@ -26,6 +31,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun malwareScanDao(): MalwareScanDao
     abstract fun malwareDao(): MalwareDao
     abstract fun malwareCertDao(): MalwareCertDao
+    abstract fun hsbDao(): HSBDao
+    abstract fun clamVersionDao(): ClamVersionDao
 
     companion object {
         private var instance: AppDatabase? = null
@@ -58,7 +65,7 @@ abstract class AppDatabase : RoomDatabase() {
             override fun onOpen(db: SupportSQLiteDatabase) {
                 super.onOpen(db)
                 val updateDB = instance?.let { context?.let { ctx -> UpdateDb(it, ctx) } }
-                updateDB?.update()
+                //updateDB?.update()
             }
         }
     }
@@ -71,6 +78,8 @@ abstract class AppDatabase : RoomDatabase() {
         private val sysSettingDao: SysSettingsDao
         private val malwareDao: MalwareDao
         private val malwareCertDao: MalwareCertDao
+        private val hsbDao: HSBDao
+        private val clamVersionDao: ClamVersionDao
         private val context: Context
 
         init {
@@ -81,7 +90,8 @@ abstract class AppDatabase : RoomDatabase() {
             sysSettingDao = db.sysSettingsDao()
             malwareDao = db.malwareDao()
             malwareCertDao = db.malwareCertDao()
-
+            hsbDao = db.hsbDao()
+            clamVersionDao = db.clamVersionDao()
         }
 
         fun populate() {
@@ -104,7 +114,18 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         fun update() {
-            // TODO
+            val dump = ApplicationPermissionHelper(context.applicationContext, true)
+            for (app in dump.getListApps(true)) {
+                applicationDao.insert(app)
+                dump.getAppPermissions(app.packageName).forEach {
+                    applicationPermissionDao.insert(
+                        ApplicationPermissionCrossRef(
+                            app.packageName,
+                            it.permission
+                        )
+                    )
+                }
+            }
         }
     }
 }
