@@ -22,6 +22,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 class ApplicationPreferencesFragment : Fragment() {
 
     private lateinit var toggleButtonMonitoring: SwitchMaterial
+    private lateinit var toggleButtonScanSysApps: SwitchMaterial
     private lateinit var databaseURLSpinner: Spinner
 
     override fun onCreateView(
@@ -32,6 +33,7 @@ class ApplicationPreferencesFragment : Fragment() {
         val view: View = inflater.inflate(layout.fragment_application_settings, container, false)
 
         toggleButtonMonitoring = view.findViewById(R.id.toggleButtonMonitoring)
+        toggleButtonScanSysApps = view.findViewById(R.id.toggleButtonScanSysApps)
         databaseURLSpinner = view.findViewById(R.id.databaseURLSpinner)
 
         // Live monitoring service
@@ -60,8 +62,15 @@ class ApplicationPreferencesFragment : Fragment() {
             }
         }
 
+        // Live monitoring service
+        toggleButtonScanSysApps.isChecked = Prefs.getInstance(view.context)?.enableSysAppScan == true
+        toggleButtonScanSysApps.setOnClickListener {
+            Prefs.getInstance(view.context)?.mPrefs?.edit()?.putBoolean(Prefs.ENABLE_SYS_APPS_SCAN,
+                toggleButtonScanSysApps.isChecked)!!.apply()
+        }
+
         // Database URLs
-        val databaseURLsAdapter = ArrayAdapter(view.context, layout.spinner_urls_item, Prefs.URLs)
+        val databaseURLsAdapter = ArrayAdapter(view.context, layout.spinner_urls_item, Prefs.malDbURLs)
         databaseURLsAdapter.setDropDownViewResource(layout.spinner_urls_dropdown_item)
 
         val spinnerURLsListener: AdapterView.OnItemSelectedListener =
@@ -73,7 +82,8 @@ class ApplicationPreferencesFragment : Fragment() {
                     id: Long
                 ) {
                     Prefs.getInstance(view.context)?.mPrefs?.edit()?.putString(
-                                Prefs.BASE_URL, parent.getItemAtPosition(position).toString())!!.apply()
+                                Prefs.BASE_URL,
+                                parent.getItemAtPosition(position).toString())!!.apply()
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -81,6 +91,7 @@ class ApplicationPreferencesFragment : Fragment() {
 
         databaseURLSpinner.adapter = databaseURLsAdapter
         databaseURLSpinner.onItemSelectedListener = spinnerURLsListener
+        databaseURLSpinner.setSelection(Prefs.malDbURLs.indexOf(Prefs.getInstance(view.context)?.baseURL.toString()))
 
         return view
     }

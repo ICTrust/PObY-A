@@ -57,7 +57,6 @@
                         android:textSize="14sp" />
                 </LinearLayout>
 
-
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/toggleButtonMonitoring"
                     android:layout_width="wrap_content"
@@ -65,6 +64,54 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginLeft="-50dp"
                     android:layout_toRightOf="@id/llPreferenceTitleContainer"
+                    android:button="@drawable/dashboard_card_poby"
+                    app:thumbTint="@drawable/untoggle_preferences"
+                    app:trackTint="@drawable/toggle_preferences" />
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:id="@+id/llPreferenceScanSysAppsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="70dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvPreferenceScanSysApps"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+
+                        android:layout_marginTop="0dp"
+                        android:layout_marginEnd="12dp"
+                        android:text="Scan system Apps"
+                        android:textColor="@color/mainTextColor"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvScanSysAppsDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="Include system's applications during threat scan may take time and result some false positives"
+                        android:textColor="@color/mainTextColor"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/toggleButtonScanSysApps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginLeft="-50dp"
+                    android:layout_toRightOf="@id/llPreferenceScanSysAppsContainer"
                     android:button="@drawable/dashboard_card_poby"
                     app:thumbTint="@drawable/untoggle_preferences"
                     app:trackTint="@drawable/toggle_preferences" />

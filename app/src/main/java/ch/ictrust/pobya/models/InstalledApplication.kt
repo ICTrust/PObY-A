@@ -8,19 +8,22 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @Entity
 data class InstalledApplication(
-    val name: String,
+    var name: String,
     @PrimaryKey
-    val packageName: String,
-    val versionCode: Long?,
-    val icon: ByteArray,
-    val isSystemApp: Int,
-    val applicationState: ApplicationState,
-    val enabled: Boolean,
-    val installedDate: Long,
-    val updateDate: Long,
+    var packageName: String,
+    var versionCode: Long?,
+    var icon: ByteArray,
+    var isSystemApp: Int,
+    var applicationState: ApplicationState,
+    var enabled: Boolean,
+    var installedDate: Long,
+    var updateDate: Long,
     var uninstalled: Boolean = false,
     var uninstallDate: Long = 0,
-    val trusted: Boolean = false,
+    var flaggedAsThreat: Boolean = false,
+    var flagReason: String? = null,
+    var trusted: Boolean = false,
+
 ) : Parcelable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

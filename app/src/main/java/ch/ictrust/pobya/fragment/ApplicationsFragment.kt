@@ -16,6 +16,7 @@ import ch.ictrust.pobya.activity.AppDetailActivity
 import ch.ictrust.pobya.adapter.AppsAdapter
 import ch.ictrust.pobya.models.InstalledApplication
 import ch.ictrust.pobya.repository.ApplicationRepository
+import ch.ictrust.pobya.utillies.ApplicationPermissionHelper
 import ch.ictrust.pobya.utillies.Utilities
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.launch
@@ -40,6 +41,9 @@ class ApplicationsFragment : Fragment() {
         tabLayout = view.findViewById(R.id.tabLayout)
         progressScanApps.visibility = View.VISIBLE
         appsAdapter = AppsAdapter(view.context.applicationContext)
+        Utilities.dbScope.launch {
+            ApplicationPermissionHelper(view.context, true).getListApps(true)
+        }
 
         appsAdapter.setOnItemClickListener(object : AppsAdapter.OnItemClickListener {
             override fun onItemClick(app: InstalledApplication) {

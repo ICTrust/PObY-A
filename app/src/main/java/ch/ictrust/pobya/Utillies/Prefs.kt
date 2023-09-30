@@ -8,8 +8,6 @@ class Prefs private constructor(context: Context) {
     var mPrefs: SharedPreferences? =
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
-
-
     private val malwareDatabaseURL =
         "ICTrust/mal-db/raw/branch/main/malware.json"
     private val certsDatabaseURL =
@@ -22,7 +20,7 @@ class Prefs private constructor(context: Context) {
         set(isFirstRun) = mPrefs?.edit()?.putBoolean(IS_FIRST_RUN, isFirstRun!!)!!.apply()
 
     var baseURL : String?
-        get() = mPrefs?.getString(BASE_URL, URLs[0])
+        get() = mPrefs?.getString(BASE_URL, malDbURLs[0])
         set(baseURL) = mPrefs?.edit()?.putString(BASE_URL, baseURL!!)!!.apply()
 
     var malwareDbVersion: Int?
@@ -53,38 +51,49 @@ class Prefs private constructor(context: Context) {
         set(monitoringServiceStatus) = mPrefs?.edit()
             ?.putBoolean(MONITORING_SERVICE_ENABLED, monitoringServiceStatus!!)!!.apply()
 
-
+    // TODO: enable at startup
     var autoStartEnabled: Boolean?
         get() = mPrefs?.getBoolean(AUTO_START_ENABLED, true)
         set(autoStartEnabled) = mPrefs?.edit()
             ?.putBoolean(AUTO_START_ENABLED, autoStartEnabled!!)!!.apply()
 
 
+    var enableSysAppScan: Boolean?
+        get() = mPrefs?.getBoolean(ENABLE_SYS_APPS_SCAN, false)
+        set(enableSysAppScan) = mPrefs?.edit()
+            ?.putBoolean(ENABLE_SYS_APPS_SCAN, enableSysAppScan!!)!!.apply()
 
 
+    var baseClamURL : String?
+        get() = mPrefs?.getString(BASE_CLAM_DB_URL, clamDbURLs[0])
+        set(baseClamURL) = mPrefs?.edit()?.putString(BASE_CLAM_DB_URL, baseClamURL!!)!!.apply()
 
     companion object {
 
-        internal val URLs = arrayOf("https://codeberg.org/", "https://github.com/")
+        internal val malDbURLs = arrayOf("https://codeberg.org/", "https://github.com/")
+        // A mirror is created but not yet ready for production
+        // https://database.clamav.net/ is for testing purpose
+        internal val clamDbURLs = arrayOf("https://database.clamav.net/")
 
 
-
-        internal const val DATABASE_VERSION = 142
+        internal const val DATABASE_VERSION = 149
         internal const val DATABASE_NAME = "Poby-a"
 
-        internal const val PREFS_NAME = "Settings"
-        private const val IS_FIRST_RUN = "isFirstRun"
+        private const val PREFS_NAME = "Settings"
+        internal const val IS_FIRST_RUN = "isFirstRun"
 
         internal const val BASE_URL = "baseURL"
+        internal const val BASE_CLAM_DB_URL = "clamURL"
 
-        private const val REMOTE_DATABASE_URL = "remoteDatabase"
-        private const val REMOTE_CERTS_DATABASE_URL = "remoteCertsDatabase"
+        internal const val REMOTE_DATABASE_URL = "remoteDatabase"
+        internal const val REMOTE_CERTS_DATABASE_URL = "remoteCertsDatabase"
 
-        private const val DATABASE_VERSION_URL = "malwareDatabaseVersion"
-        private const val MALWARE_DB_VERSION = "malwareDbVersion"
+        internal const val DATABASE_VERSION_URL = "malwareDatabaseVersion"
+        internal const val MALWARE_DB_VERSION = "malwareDbVersion"
 
         internal const val MONITORING_SERVICE_ENABLED = "monitoringServiceEnabled"
-        private const val AUTO_START_ENABLED = "autoStart"
+        internal const val AUTO_START_ENABLED = "autoStart"
+        internal const val ENABLE_SYS_APPS_SCAN = "enableSysAppScan"
 
         private var instance: Prefs? = null
 
@@ -99,11 +108,12 @@ class Prefs private constructor(context: Context) {
             return instance
         }
 
-        fun getURLs(): Array<String> {
-            return URLs
+        fun getMalDbURLs(): Array<String> {
+            return malDbURLs
         }
 
+        fun getClamDbURLs(): Array<String> {
+            return clamDbURLs
+        }
     }
-
-
 }
