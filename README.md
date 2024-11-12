@@ -5,28 +5,26 @@ PObY-A, Privacy Owned by You - Android, is an application which aim to help Andr
 
 ## Features
 
-| PObY-A Features                                                |     |
-|----------------------------------------------------------------|-----|
-| 🚫 No Ads or Purchases                                         | ✅   |
-| 📙 Translations (FR & EN)                                      | ✅   |
-| 🪲 Malware scan                                                | ✅   |
-| ⏱️ Live monitoring (install/uninstall)                         | ✅   |
-| 🔐 Enforce settings privacy based on some CIS* recommendations | ✅   |
-| ⚠️ Warn apps with dangerous* permissions                       | ✅   |
-| ⚡ Many more coming...                                          | ✅   |
+| PObY-A Features                                                |   |
+|----------------------------------------------------------------|---|
+| 🚫 No Ads or Purchases                                         | ✅ |
+| 📙 Translations (FR & EN)                                      | ✅ |
+| 🪲 Malware scan                                                | ✅ |
+| 🛡️ CVD: ClamAV database integration                           | ✅ |
+| 🔐 Enforce settings privacy based on some CIS* recommendations | ✅ |
+| ⚠️ Warn apps with dangerous* permissions                       | ✅ |
+| ⚡ Many more coming...                                          | ✅ |
 
-**CIS:** Center of Internet Security
+**CIS:** Center for Internet Security
 
 **dangerous**: "A higher-risk permission that would give a requesting application access to private user data or control over the device that can negatively impact the user" [permission element](https://developer.android.com/guide/topics/manifest/permission-element)
 
 ## Supported Android versions
-**8.0 (API 26) to 12 (API 31)**
+**8.0 (API 26) to 13 (API 34)**
 
 ## Needed permissions
 - Write system settings
 - "force-lock" admin permission
-- Bluetooth permission: needed to automate disable bluetooth
-- Foreground service permission: needed for live monitoring
 
 ## Screnshots
 <div style="display: block; margin: auto; margin-left: auto; margin-right: auto;" >

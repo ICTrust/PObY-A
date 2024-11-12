@@ -1,3 +1,22 @@
+/*
+ * This file is part of PObY-A.
+ *
+ * Copyright (C) 2023 ICTrust Sàrl
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package ch.ictrust.pobya.activity
 
 import android.content.Intent
@@ -14,6 +33,7 @@ import androidx.viewpager.widget.ViewPager
 import ch.ictrust.pobya.R
 import ch.ictrust.pobya.fragment.AppInfosFragment
 import ch.ictrust.pobya.fragment.ApplicationPermissionsFragment
+import ch.ictrust.pobya.fragment.ApplicationThreatInfoFragment
 import ch.ictrust.pobya.models.InstalledApplication
 import ch.ictrust.pobya.utillies.AppViewPagerAdapter
 import com.google.android.material.imageview.ShapeableImageView
@@ -39,7 +59,9 @@ class AppDetailActivity : AppCompatActivity() {
         val appTabLayout = findViewById<TabLayout>(R.id.tab_layout_app_details)
         val appViewPagerAdapter = AppViewPagerAdapter(supportFragmentManager)
         val radius = resources.getDimension(R.dimen.roundedCornerAppDetails)
-
+        //val header = findViewById<FrameLayout>(R.id.flMainContainer)
+        val tvMalwareDetection = findViewById<TextView>(R.id.tvMalwareDetection)
+        val tvMalwareSignature = findViewById<TextView>(R.id.tvThreatName)
 
         actionbar?.apply {
             setDisplayHomeAsUpEnabled(true)
@@ -53,6 +75,16 @@ class AppDetailActivity : AppCompatActivity() {
         btnOpenSettings = findViewById(R.id.open_app_settings)
 
         currentApp = intent.getParcelableExtra("app")!!
+
+        if (currentApp.flaggedAsThreat) {
+            tvMalwareSignature.text = currentApp.flagReason
+            tvMalwareSignature.visibility = TextView.VISIBLE
+            tvMalwareDetection.visibility = TextView.VISIBLE
+        } else {
+            tvMalwareSignature.visibility = TextView.GONE
+            tvMalwareSignature.height = 0
+            tvMalwareDetection.visibility = TextView.GONE
+        }
 
         toolbar.setNavigationIcon(R.drawable.ic_back)
         toolbar.setNavigationOnClickListener {
@@ -89,6 +121,10 @@ class AppDetailActivity : AppCompatActivity() {
 
         appViewPagerAdapter.addFragment(ApplicationPermissionsFragment(), "Permissions")
         appViewPagerAdapter.addFragment(AppInfosFragment(), "Information")
+        if (currentApp.flaggedAsThreat) {
+            appViewPagerAdapter.addFragment(ApplicationThreatInfoFragment(), "Threat Info")
+        }
+
         viewPager.adapter = appViewPagerAdapter
         appTabLayout.setupWithViewPager(viewPager)
     }

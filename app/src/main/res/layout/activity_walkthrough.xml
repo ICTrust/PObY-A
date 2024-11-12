@@ -10,9 +10,10 @@
     <androidx.viewpager.widget.ViewPager
             android:id="@+id/slide_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:contentDescription="Desc"
+        />
 
-    </androidx.viewpager.widget.ViewPager>
 
     <LinearLayout
             android:orientation="horizontal"

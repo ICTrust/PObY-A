@@ -1,16 +1,36 @@
+/*
+ * This file is part of PObY-A.
+ *
+ * Copyright (C) 2023 ICTrust Sàrl
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
 package ch.ictrust.pobya.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.ActivityManager
+import android.app.AlertDialog
 import android.app.admin.DevicePolicyManager
-import android.content.*
+import android.content.ComponentName
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.StrictMode
 import android.provider.Settings
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
@@ -22,23 +42,28 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import ch.ictrust.pobya.BuildConfig
 import ch.ictrust.pobya.R
-import ch.ictrust.pobya.fragment.*
-import ch.ictrust.pobya.service.ApplicationsService
-import ch.ictrust.pobya.utillies.Prefs
+import ch.ictrust.pobya.fragment.ApplicationPreferencesFragment
+import ch.ictrust.pobya.fragment.ApplicationsFragment
+import ch.ictrust.pobya.fragment.DashboardFragment
+import ch.ictrust.pobya.fragment.DataSafetyPolicyFragment
+import ch.ictrust.pobya.fragment.MalwareScanFragment
+import ch.ictrust.pobya.fragment.SettingsScanFragment
+import ch.ictrust.pobya.service.MalwareScanService
+import ch.ictrust.pobya.utillies.PackageInstallUninstallReceiver
+import ch.ictrust.pobya.utillies.SettingsHelper
 import com.google.android.material.navigation.NavigationView
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var menu: Menu
-    private val tag = "MainActivity"
+    private val TAG = "MainActivity"
     private lateinit var compName: ComponentName
     private lateinit var devicePolicyManager: DevicePolicyManager
-    private var RESULT_ENABLE = 11
     private var CODE_WRITE_SETTINGS_PERMISSION = 42
+    private var READ_EXTERNAL_STORAGE = 1
     private lateinit var toolbarTitle: TextView
 
 
@@ -48,6 +73,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         toolbarTitle = findViewById(R.id.toolbarTitle)
+
+        /*
+          // Debuging
+          if (BuildConfig.DEBUG) {
+          StrictMode.setThreadPolicy(
+               StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build()
+            )
+            StrictMode.setVmPolicy(
+                StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build()
+            )
+        }*/
+        //init device policy manager
+        compName = ComponentName(this, ch.ictrust.pobya.utillies.AppAdminReceiver::class.java)
+        devicePolicyManager = getSystemService(DEVICE_POLICY_SERVICE) as DevicePolicyManager
 
         initViews()
 
@@ -59,6 +106,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         intentFilter.priority = 999
 
+        val rec = PackageInstallUninstallReceiver()
+        registerReceiver(rec, intentFilter)
 
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -72,22 +121,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             )
         }
 
-        val activityManager =
-            applicationContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val serviceIsRunning = activityManager.runningAppProcesses.any {
-            it.processName == "ch.ictrust.pobya.ApplicationsService"
-        }
-        if (!serviceIsRunning && Prefs.getInstance(applicationContext)?.monitoringServiceStatus == true) {
-            Log.d(tag, "Starting applications monitoring Service")
-            startService(Intent(applicationContext, ApplicationsService::class.java))
-        }
+        SettingsHelper(applicationContext).scan()
 
-        enableAdmin()
 
         if (!Settings.System.canWrite(applicationContext)) {
             val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
             intent.data = Uri.parse("package:" + this.packageName)
-            this.startActivityForResult(intent, CODE_WRITE_SETTINGS_PERMISSION)
+            startActivityForResult(intent, CODE_WRITE_SETTINGS_PERMISSION)
         }
 
     }
@@ -150,6 +190,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 transaction.addToBackStack(null)
                 transaction.commit()
             }
+
             R.id.nav_malware_scan -> {
                 toolbarTitle.text = getString(R.string.menu_malware_scan)
                 val transaction = supportFragmentManager.beginTransaction()
@@ -158,6 +199,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 transaction.commit()
 
             }
+
             R.id.nav_settings_scan -> {
                 toolbarTitle.text = getString(R.string.menu_privacy_settings)
                 val transaction = supportFragmentManager.beginTransaction()
@@ -165,6 +207,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 transaction.addToBackStack(null)
                 transaction.commit()
             }
+
             R.id.nav_apps_info -> {
                 toolbarTitle.text = getString(R.string.menu_apps_info)
                 val transaction = supportFragmentManager.beginTransaction()
@@ -172,6 +215,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 transaction.addToBackStack(null)
                 transaction.commit()
             }
+
             R.id.nav_preferences -> {
                 toolbarTitle.text = getString(R.string.menu_preferences)
                 val transaction = supportFragmentManager.beginTransaction()
@@ -179,6 +223,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 transaction.addToBackStack(null)
                 transaction.commit()
             }
+
             R.id.nav_data_safety -> {
                 toolbarTitle.text = getString(R.string.menu_data_safety)
                 val transaction = supportFragmentManager.beginTransaction()
@@ -193,20 +238,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-    private fun enableAdmin() {
-
-        compName = ComponentName(this, ch.ictrust.pobya.utillies.AppAdminReceiver::class.java)
-        devicePolicyManager = getSystemService(DEVICE_POLICY_SERVICE) as DevicePolicyManager
-
-        val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
-        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, compName)
-
-        intent.putExtra(
-            DevicePolicyManager.EXTRA_ADD_EXPLANATION,
-            R.string.admin_perm_force_lock_desc
-        )
-        startActivityForResult(intent, RESULT_ENABLE)
-
+    override fun onDestroy() {
+        super.onDestroy()
+        val intent = Intent(applicationContext, MalwareScanService::class.java)
+        stopService(intent)
     }
 
 

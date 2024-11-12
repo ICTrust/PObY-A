@@ -1,9 +1,27 @@
+/*
+ * This file is part of PObY-A.
+ *
+ * Copyright (C) 2023 ICTrust Sàrl
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
 package ch.ictrust.pobya.models
 
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity
@@ -23,7 +41,8 @@ data class InstalledApplication(
     var flaggedAsThreat: Boolean = false,
     var flagReason: String? = null,
     var trusted: Boolean = false,
-
+    var lastHash: String? = null,
+    var inScan: Boolean = false
 ) : Parcelable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -43,24 +62,10 @@ data class InstalledApplication(
         if (uninstalled != other.uninstalled) return false
         if (uninstallDate != other.uninstallDate) return false
         if (trusted != other.trusted) return false
+        if (lastHash != other.lastHash) return false
+        if (inScan != other.inScan) return false
 
         return true
-    }
-
-    override fun hashCode(): Int {
-        var result = name.hashCode()
-        result = 31 * result + packageName.hashCode()
-        result = 31 * result + (versionCode?.hashCode() ?: 0)
-        result = 31 * result + icon.contentHashCode()
-        result = 31 * result + isSystemApp
-        result = 31 * result + applicationState.hashCode()
-        result = 31 * result + enabled.hashCode()
-        result = 31 * result + installedDate.hashCode()
-        result = 31 * result + updateDate.hashCode()
-        result = 31 * result + uninstalled.hashCode()
-        result = 31 * result + uninstallDate.hashCode()
-        result = 31 * result + trusted.hashCode()
-        return result
     }
 
 }

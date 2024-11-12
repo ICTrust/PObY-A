@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="130dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center|center_vertical|center_horizontal"
     android:outlineProvider="bounds"
@@ -16,7 +16,7 @@
     android:layout_marginLeft="20dp"
     android:layout_marginBottom="10dp"
     android:elevation="20dp"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:paddingTop="10dp">
     <!--   android:background="@drawable/shape_elevation"-->
     <!--<androidx.constraintlayout.widget.ConstraintLayout
@@ -70,10 +70,12 @@
             android:id="@+id/cvDahboardIconMenu"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_gravity="center_vertical"
             android:foreground="@drawable/menu_round_shadow_shape"
             android:elevation="20dp"
-            android:textAlignment="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20dp"
             app:cardPreventCornerOverlap="false"
             app:cardCornerRadius="50dp">
             <ImageView
@@ -86,25 +88,42 @@
                 android:textAlignment="center" />
         </androidx.cardview.widget.CardView>
 
-
-    <TextView
-        android:id="@+id/tvDashboardItemName"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center|center_horizontal|center_vertical"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="10dp"
-        android:gravity="center|center_horizontal|center_vertical"
-        android:text="Applications"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivMenuIcon" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tvDashboardItemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_horizontal|center_vertical"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:text="Applications"
+            android:textColor="@android:color/white"
+            android:foregroundGravity=""
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivMenuIcon" />
+        <TextView
+            android:id="@+id/tvDashboardItemDescription"
+            android:layout_width="match_parent"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:layout_height="wrap_content"
+            android:text="Menu description"
+            />
+
+    </LinearLayout>
+
+
 
 
 </LinearLayout>

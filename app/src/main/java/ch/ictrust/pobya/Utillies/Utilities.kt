@@ -1,25 +1,49 @@
+/*
+ * This file is part of PObY-A.
+ *
+ * Copyright (C) 2023 ICTrust Sàrl
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
 package ch.ictrust.pobya.utillies
 
 import android.app.Application
 import android.content.Context
-import android.content.Context.CONNECTIVITY_SERVICE
-import android.content.pm.PackageManager
 import android.icu.lang.UCharacter
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
 import android.util.Log
-import androidx.core.app.ActivityCompat
-import ch.ictrust.pobya.clam.ParseCVD
-import ch.ictrust.pobya.clam.models.ClamDbType
+import ch.ictrust.pobya.cvd.ParseCVD
+import ch.ictrust.pobya.cvd.models.CVDType
+import ch.ictrust.pobya.cvd.repositroy.CVDVersionRepository
 import ch.ictrust.pobya.models.Malware
 import ch.ictrust.pobya.models.MalwareCert
-import ch.ictrust.pobya.clam.repositroy.ClamVersionRepository
+import ch.ictrust.pobya.models.SysSettings
 import ch.ictrust.pobya.repository.MalwareCertRepository
 import ch.ictrust.pobya.repository.MalwareRepository
+import ch.ictrust.pobya.repository.SysSettingsRepository
 import com.google.gson.Gson
-import kotlinx.coroutines.*
-import okhttp3.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import okio.BufferedSink
 import okio.buffer
 import okio.sink
@@ -30,247 +54,288 @@ import java.io.InputStream
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
+data class MalwareResponse(
+    val certs: List<MalwareCert>,
+    val malware: List<Malware>,
+    val version: List<Version>
+)
+
+data class VersionCVDResponse(
+    val daily: Int,
+    val main: Int
+)
+
+data class Version(
+    val latest_version: Int
+)
 
 object Utilities {
 
+
+    private const val TAG = "Utilities"
+
+    private val _dbUpdateStatus = MutableStateFlow("Idle")
+
     var dbJob = Job()
     var dbScope: CoroutineScope = CoroutineScope(GlobalScope.coroutineContext + dbJob)
-    private const val TAG = "Utilities"
+
+    var scanAppJob = Job()
+    var scanAppScope: CoroutineScope = CoroutineScope(GlobalScope.coroutineContext + scanAppJob)
 
     var populateDBJob = Job()
     var populateScope: CoroutineScope = CoroutineScope(GlobalScope.coroutineContext + populateDBJob)
 
+
     /**
-     * Check user permission
+     * Update PObY-A malware Database
      *
      * @param context
      * Application context
-     * @param permissions
-     * List of permissions
-     * @return true if has permission
      */
-    fun hasPermissions(context: Context?, vararg permissions: String): Boolean {
-        if (context != null) {
-            for (permission in permissions) {
-                if (ActivityCompat.checkSelfPermission(
-                        context,
-                        permission
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    return false
-                }
-            }
-        }
-        return true
+    fun updateMalwareDB(context: Context): Boolean {
+        _dbUpdateStatus.value = "Updating"
+        updatePObYADB(context)
+        updateCVD(context, CVDType.MAIN)
+        updateCVD(context, CVDType.DAILY)
+
+        return _dbUpdateStatus.value == "Success"
     }
 
-    /**
-     * Update PObY-A malware DB
-     *
-     * @param context
-     * Application context
-     * @param testedURLs
-     * Number of tested URLs (codeberg, github)
-     */
-    fun updateMalwareDB(context: Context, testedURLs: Int = 1) {
+
+    private fun updatePObYADB(context: Context, testedURL: Int = 1) {
         var malwarePackages: List<Malware>
         var malwareCerts: List<MalwareCert>
-        var response: Response
-        val currentMalwareDbVersion = Prefs.getInstance(context)?.malwareDbVersion
+        val currentMalwareDbVersion = Prefs.getInstance(context)?.pobyDbVersion
+        var response: Response? = null
         dbScope.launch {
-
             val client = OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS)
                 .build()
-            var version = 0
-            val baseURL = Prefs.getInstance(context)?.baseURL
 
-            val versionRequest = Request.Builder()
-                .url(baseURL + Prefs.getInstance(context)?.malwareVersionDatabaseUrl.toString())
-                .build()
+            var version = 0
+            val baseURL = Prefs.getURLs().first()
+
+            val param: String
+
+            val malwareListSize = MalwareRepository.getInstance(context.applicationContext as Application).getAllMalware().size
+
+            if (currentMalwareDbVersion == 0 || malwareListSize == 0) {
+                param = "?fresh=true"
+            } else {
+                param = "?version=$currentMalwareDbVersion"
+            }
 
             val retrieveNewMalwareDB = Request.Builder()
-                .url(baseURL + Prefs.getInstance(context)?.malwareDatabaseUrlPrefs.toString())
+                .url(baseURL + param)
                 .build()
-
             try {
-                response = client.newCall(versionRequest).execute()
-                println(response)
-                if (response.isSuccessful) {
-                    version = response.body?.string()?.strip()?.toInt()!!
-                    val currentDB = MalwareRepository.getInstance(context as Application).getAllMalware()
-                    if (version == currentMalwareDbVersion && currentDB != null && currentDB.size > 0) {
-                        Log.i("Utilities", "Database up-to-date")
-                        response.body?.close()
-                        response.close()
-                        return@launch
-                    }
-                    Prefs.getInstance(context)?.malwareDbVersion = version
-                } else {
-                    throw Exception("Retry")
-                }
-
                 response = client.newCall(retrieveNewMalwareDB).execute()
-                if (response.isSuccessful) {
-                    val jsonString = response.body?.string()
+                if (response!!.isSuccessful) {
+                    val jsonString = response!!.body?.string()
                     malwarePackages =
-                        Gson().fromJson(jsonString, Array<Malware>::class.java).asList()
+                        Gson().fromJson(jsonString, MalwareResponse::class.java).malware
+                    version = Gson().fromJson(
+                        jsonString,
+                        MalwareResponse::class.java
+                    ).version[0].latest_version
+                    malwareCerts = Gson().fromJson(jsonString, MalwareResponse::class.java).certs
 
                     MalwareRepository.getInstance(context.applicationContext as Application)
                         .insertList(malwarePackages)
-                    Prefs.getInstance(context)?.malwareDbVersion = version
-                }
-                val retrieveNewMalwareCertDB = Request.Builder()
-                    .url(baseURL + Prefs.getInstance(context)?.certsDatabaseURLPrefs.toString())
-                    .build()
-
-                response = client.newCall(retrieveNewMalwareCertDB).execute()
-                if (response.isSuccessful) {
-                    val jsonString = response.body?.string()
-                    malwareCerts =
-                        Gson().fromJson(jsonString, Array<MalwareCert>::class.java).asList()
                     MalwareCertRepository.getInstance(
                         context.applicationContext as Application
                     ).insertList(malwareCerts)
-                }
 
+                    Prefs.getInstance(context)?.pobyDbVersion = version
+
+                    MalwareRepository.getInstance(context.applicationContext as Application)
+                        .deleteDeprecated()
+                    MalwareCertRepository.getInstance(context.applicationContext as Application)
+                        .deleteDeprecated()
+                }
+                _dbUpdateStatus.value = "Success"
             } catch (ex: Exception) {
-                Log.e("Utilities", ex.message.toString())
-                // TODO: Remove hadcoded value (2)
-                if (testedURLs > 2) {
-                    //TODO: Show error message after trying all URLs
+                Log.e(TAG, ex.message.toString())
+                Prefs.getInstance(context)?.pobyDbVersion = 1
+
+                if (testedURL > Prefs.URLs.size) {
+                    _dbUpdateStatus.value = "Failed"
                     return@launch
                 } else {
-                    val indexURL = Prefs.getMalDbURLs()
+                    _dbUpdateStatus.value = "Retry"
+                    val indexURL = Prefs.getURLs()
                         .filter { it != Prefs.getInstance(context)!!.baseURL }
 
                     withContext(Dispatchers.Main) {
                         Prefs.getInstance(context)!!.mPrefs?.edit()
                             ?.putString(Prefs.BASE_URL, indexURL[0])!!.apply()
                     }
-                    Log.i(
-                        "Utilities", "Switching database URL to: " +
-                                Prefs.getInstance(context)?.baseURL
-                    )
-                    updateMalwareDB(context, testedURLs + 1)
+                    Log.i(TAG, "Switching URL to: " + Prefs.getInstance(context)?.baseURL)
+                    updatePObYADB(context, testedURL + 1)
                 }
+            } finally {
+                response?.close()
             }
         }
     }
 
-    /**
-     * Check if device has internet connection
-     *
-     * @param context
-     * Application context
-     * @param testedURLs
-     * Number of tested URLs (codeberg, github)
-     * @return true if device has internet connection
-     */
-    fun hasInternetConnection(context: Context): Boolean {
-        val connectivityManager =
-            context.applicationContext.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-
-        if (connectivityManager.activeNetworkInfo != null) {
-            val network: Network? = connectivityManager.activeNetwork
-            val capabilities = connectivityManager
-                .getNetworkCapabilities(network)
-            return (capabilities != null
-                    && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED))
-        }
-        return false
-    }
-
 
     /**
-     * Download CVD (ClamAV Virus Database) file
+     * Update CVD (ClamAV Virus Database) file
      *
      * @param context
      * Application context
      * @param type
-     * ClamDbType of CVD file: ClamDbType.MAIN, ClamDbType.DAILY or ClamDbType.BYTECODE
+     * CVDType of CVD file: CVDType.MAIN, CVDType.DAILY or CVDType.BYTECODE
+     *
      */
-    fun downloadCVD(context: Context, type: ClamDbType) {
+    fun updateCVD(context: Context, type: CVDType) {
+        _dbUpdateStatus.value = "Updating"
         val internalFolderPath = context.filesDir.path
         val client = OkHttpClient()
 
-        // TODO: create a mirror
-        val mainCVDRequest = Request.Builder()
+        val requestVersion = Request.Builder()
+            .url(Prefs.getInstance(context)?.baseClamURL!! + "versions")
+            .build()
+
+        val requestDlCVD = Request.Builder()
             .url(Prefs.getInstance(context)?.baseClamURL!! + type.value)
             .header("User-Agent", "CVDUPDATE/0")
             .build()
 
-        val query = client.newCall(mainCVDRequest)
+        val query = client.newCall(requestDlCVD)
+        var currentCVDversion = 0L
 
-        val lastClamDBVersion = try {
-            ClamVersionRepository.getInstance(context as Application).getLast().version
-        } catch (ex: Exception) {
-            Log.e(TAG, "No version found in db")
-            -1L
-        }
+
+        val pathExtractedCVD = context.filesDir.path + "/" +
+                type.value.split(".")[0]
+
+        val pathFileCVD =
+            context.filesDir.path + File.separator.toString() + type.value
 
         val countDownLatch = CountDownLatch(1)
 
         try {
-            client.newCall(mainCVDRequest).enqueue(object : Callback {
+            currentCVDversion = CVDVersionRepository.getInstance(context as Application)
+                .getLast(type).version
+        } catch (ex: Exception) {
+            Log.e(TAG, "No version found in db")
+        }
+
+        try {
+            val responseVersion = client.newCall(requestVersion).execute()
+            if (responseVersion.isSuccessful) {
+                val jsonString = responseVersion.body?.string()
+                val version = Gson().fromJson(jsonString, VersionCVDResponse::class.java)
+                    .let {
+                        if (type == CVDType.MAIN) {
+                            it.main
+                        } else {
+                            it.daily
+                        }
+                    }
+                if (currentCVDversion.toInt() == version) {
+                    Log.i(TAG, " CVD is ${type} up to date")
+                    return
+                }
+            }
+
+            client.newCall(requestDlCVD).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     Log.e(TAG, "Failed to connect: " + e.message)
                     countDownLatch.countDown()
+                    client.connectionPool.evictAll()
                 }
 
                 override fun onResponse(call: Call, response: Response) {
-
-
-                            if (response.code == 200) {
-                                val cvdFile = File(internalFolderPath, type.value)
-                                val sink: BufferedSink = cvdFile.sink().buffer()
-                                val source = response.body?.source()
-                                while (!source?.exhausted()!!) {
-                                    sink.write(source.buffer.readByteString())
-                                    sink.flush()
-                                }
-                                /*sink.writeAll(response.body!!.source())
-                                sink.flush()*/
-
-                                val versionHeader = cvdFile.readLines()[0].split(":")[3]
-
-                                if (!versionHeader.equals(lastClamDBVersion)) {
-                                    val pathExtractedCVD = context.filesDir.path + "/" +
-                                            type.value.split(".")[0]
-                                    val pathFileCVD = context.filesDir.path + File.separator.toString() + type.value
-                                    val pathHSB =
-                                        "${context.filesDir.path}/${type.value.split('.')[0]}/${
-                                            type.value.split('.')[0]
-                                        }.hsb"
-                                    val pathInfo =
-                                        "${context.filesDir.path}/${type.value.split(".")[0]}/${
-                                            type.value.split('.')[0]
-                                        }.info"
-
-                                    ArchiveHelper().extractCVD(pathExtractedCVD, pathFileCVD)
-
-                                    ParseCVD(context).parseInfoCVD(pathInfo, type)
-                                    ParseCVD(context).parseHSB(pathHSB)
-
-                                } else {
-                                    Log.i(TAG, "Clam DB is up to date")
-                                }
-                            }
-                            countDownLatch.countDown()
+                    if (response.code == 200) {
+                        Log.i(TAG, " CVD downloaded successfully")
+                        val cvdFile = File(internalFolderPath, type.value)
+                        val sink: BufferedSink = cvdFile.sink().buffer()
+                        val source = response.body?.source()
+                        while (!source?.exhausted()!!) {
+                            sink.write(source.buffer.readByteString())
+                            sink.flush()
                         }
 
+                        val versionHeader =
+                            cvdFile.bufferedReader().use { it.readLine().split(":")[3] }
 
+                        if (!versionHeader.equals(currentCVDversion.toString())) {
+                            val pathHSB =
+                                "${context.filesDir.path}/${type.value.split('.')[0]}/${
+                                    type.value.split('.')[0]
+                                }.hsb"
+                            val pathHDB =
+                                "${context.filesDir.path}/${type.value.split('.')[0]}/${
+                                    type.value.split('.')[0]
+                                }.hdb"
+                            val pathHDU =
+                                "${context.filesDir.path}/${type.value.split('.')[0]}/${
+                                    type.value.split('.')[0]
+                                }.hdu"
+                            val pathHSU =
+                                "${context.filesDir.path}/${type.value.split('.')[0]}/${
+                                    type.value.split('.')[0]
+                                }.hsu"
+                            val pathNDB =
+                                "${context.filesDir.path}/${type.value.split('.')[0]}/${
+                                    type.value.split('.')[0]
+                                }.ndb"
+                            val pathInfo =
+                                "${context.filesDir.path}/${type.value.split(".")[0]}/${
+                                    type.value.split('.')[0]
+                                }.info"
+
+                            ArchiveHelper().extractCVD(pathExtractedCVD, pathFileCVD)
+
+                            ParseCVD(context).parseInfoCVD(pathInfo, type)
+                            try {
+                                ParseCVD(context).parseHSB(pathHSB)
+                            } catch (ex: Exception) {
+                                Log.e(TAG, ex.message.toString())
+                            }
+                            try {
+                                ParseCVD(context).parseNDB(pathNDB)
+                            } catch (ex: Exception) {
+                                Log.e(TAG, ex.message.toString())
+                            }
+                            try {
+                                ParseCVD(context).parseHSB(pathHDB)
+                            } catch (ex: Exception) {
+                                Log.e(TAG, ex.message.toString())
+                            }
+                            try {
+                                ParseCVD(context).parseHSB(pathHSU)
+                            } catch (ex: Exception) {
+                                Log.e(TAG, ex.message.toString())
+                            }
+
+                        } else {
+                            Log.i(TAG, " CVD is up to date")
+                        }
+                        sink.close()
+                    } else {
+                        Log.e(TAG, "Failed to download CVD: " + response.code)
+                    }
+
+                    response.close()
+                    countDownLatch.countDown()
+                }
             })
             countDownLatch.await()
 
         } catch (ex: Exception) {
             Log.e(TAG, ex.message.toString())
+            _dbUpdateStatus.value = "Failed"
             ex.printStackTrace().toString()
         } finally {
             query.cancel()
+            client.connectionPool.evictAll()
         }
-
+        // Remove temporary files
+        deleteFilesInDir(pathExtractedCVD)
     }
 
     fun readFile(filePath: String): ArrayList<String> {
@@ -283,7 +348,6 @@ object Utilities {
         } catch (ex: FileNotFoundException) {
             Log.e(TAG, "File $filePath not found")
         }
-
         return lines
     }
 
@@ -300,4 +364,27 @@ object Utilities {
         fileOrDirectory.delete()
     }
 
+    fun insertSettingsScope(context: Context, sysSettings: ArrayList<SysSettings>) {
+        dbScope.launch {
+            val sysSettingsRepository = SysSettingsRepository(context)
+            sysSettingsRepository.insertAll(sysSettings)
+
+        }
+    }
+
+    fun deleteFilesInDir(dirPath: String) {
+        val dir = File(dirPath)
+        if (dir.exists()) {
+            val contents = dir.listFiles()
+            if (contents != null) {
+                for (content in contents) {
+                    if (content.isDirectory) {
+                        deleteFilesInDir(content.absolutePath)
+                    } else {
+                        content.delete()
+                    }
+                }
+            }
+        }
+    }
 }

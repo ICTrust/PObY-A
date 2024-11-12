@@ -1,3 +1,21 @@
+/*
+ * This file is part of PObY-A.
+ *
+ * Copyright (C) 2023 ICTrust Sàrl
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
 package ch.ictrust.pobya.fragment
 
 import android.os.Bundle
@@ -11,7 +29,7 @@ import ch.ictrust.pobya.R
 import ch.ictrust.pobya.activity.AppDetailActivity
 import ch.ictrust.pobya.models.InstalledApplication
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 
 
 class AppInfosFragment : Fragment() {
@@ -31,23 +49,23 @@ class AppInfosFragment : Fragment() {
 
         val view: View = inflater.inflate(R.layout.fragment_app_infos, container, false)
 
-        val appDetailPackageNameTV = view.findViewById(R.id.appDetailPackageName) as TextView
+        val appDetailPackageNameTV: TextView = view.findViewById(R.id.appDetailPackageName)
         appDetailPackageNameTV.text = app.packageName
 
-        val appDetailStatusTV = view.findViewById(R.id.appDetailAppStatus) as TextView
+        val appDetailStatusTV: TextView = view.findViewById(R.id.appDetailAppStatus)
         appDetailStatusTV.text = app.applicationState.toString()
 
-        val appDetailInstallDateTV = view.findViewById(R.id.appDetailInstallDate) as TextView
+        val appDetailInstallDateTV: TextView = view.findViewById(R.id.appDetailInstallDate)
         val installDate = Date(app.installedDate)
 
         appDetailInstallDateTV.text = dateFormat.format(installDate)
 
-        val appDetailUpdateDateTV = view.findViewById(R.id.appDetailUpdateDate) as TextView
+        val appDetailUpdateDateTV: TextView = view.findViewById(R.id.appDetailUpdateDate)
         val updateDate = Date(app.updateDate)
         appDetailUpdateDateTV.text = dateFormat.format(updateDate)
 
-        val appDetailUninstallDate = view.findViewById(R.id.appDetailUninstallDate) as TextView
-        val rlUninstallDate = view.findViewById(R.id.rlUninstallDate) as RelativeLayout
+        val appDetailUninstallDate: TextView = view.findViewById(R.id.appDetailUninstallDate)
+        val rlUninstallDate: RelativeLayout = view.findViewById(R.id.rlUninstallDate)
         rlUninstallDate.visibility = View.GONE
 
         if (app.uninstalled) {

@@ -1,6 +1,25 @@
+/*
+ * This file is part of PObY-A.
+ *
+ * Copyright (C) 2023 ICTrust Sàrl
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
 package ch.ictrust.pobya.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,11 +65,15 @@ class SliderAdapter(var context: Context) : PagerAdapter() {
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         layoutInflater = LayoutInflater.from(context) as LayoutInflater
         val view = layoutInflater.inflate(R.layout.slide_layout, container, false)
-        val slideImageView = view.findViewById(R.id.iv_image_icon) as ImageView
-        val slideHeading = view.findViewById(R.id.tv_heading) as TextView
-        val slideDescription = view.findViewById(R.id.tv_description) as TextView
+        val slideImageView: ImageView = view.findViewById(R.id.iv_image_icon)
+        val slideHeading: TextView = view.findViewById(R.id.tv_heading)
+        val slideDescription: TextView = view.findViewById(R.id.tv_description)
+
+        Log.d("SliderAdapter", "instantiateItem called for position: $position")
 
         slideImageView.setImageResource(slideImages[position])
+        slideImageView.visibility = View.VISIBLE
+        slideImageView.contentDescription = slideHeadings[position]
         slideHeading.text = slideHeadings[position]
         slideDescription.text = slideDescriptions[position]
         container.addView(view)

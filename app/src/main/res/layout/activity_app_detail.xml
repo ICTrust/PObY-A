@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.AppDetailActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".activity.AppDetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
@@ -18,17 +17,17 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:navigationIcon="?attr/homeAsUpIndicator">
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <TextView
+                android:id="@+id/appInfoToolbarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="@android:color/white"
-                android:id="@+id/appInfoToolbarTitle"
                 android:text="Applications"
-                android:textSize="20sp"/>
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -38,107 +37,139 @@
         android:id="@+id/flMainContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:elevation="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="15dp">
+
+        <TextView
+            android:id="@+id/tvMalwareDetection"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="20dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:rotation="-30"
+            android:text="THREAT"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="60dp"
+
+            android:visibility="visible">
+
+        </TextView>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/llAppDetailsHeader"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="0dp"
+                android:background="@android:color/transparent"
                 android:orientation="vertical">
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="120dp"
                     android:id="@+id/appDetailIcon"
+                    android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:textColor="@android:color/white"
-                    android:textSize="80sp"
-                    android:gravity="center"
-                    android:textStyle="bold"
+                    android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:layout_marginTop="02dp"
                     android:layout_marginBottom="5dp"
-                    app:contentPaddingTop="-6dp"
+                    android:background="@color/colorPrimary"
+                    android:cropToPadding="true"
+                    android:gravity="center"
+                    android:scaleType="centerCrop"
+                    android:textColor="@android:color/white"
+                    android:textSize="80sp"
+                    android:textStyle="bold"
                     app:contentPaddingBottom="-6dp"
-                    app:strokeColor="@null"
                     app:contentPaddingLeft="-6dp"
                     app:contentPaddingRight="-6dp"
-                    android:cropToPadding="true"
+                    app:contentPaddingTop="-6dp"
                     app:shapeAppearance="@style/roundedImageViewAppDetails"
-                    android:background="@color/colorPrimary"
-                    android:layout_centerInParent="true"
-                    android:scaleType="centerCrop" />
+                    app:strokeColor="@null" />
 
-            <LinearLayout
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/open_app_settings"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_row="0"
-                    android:layout_column="0"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/rounded_corner_button"
-                    android:elevation="10dp"
-                    android:shadowColor="@color/secondColor"
-                    android:text="@string/settings"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp"
-                    android:layout_marginRight="10dp"/>
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/uninstall"
-                    android:layout_width="150dp"
+                    <Button
+                        android:id="@+id/open_app_settings"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_row="0"
+                        android:layout_column="0"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/rounded_corner_button"
+                        android:elevation="10dp"
+                        android:shadowColor="@color/secondColor"
+                        android:text="@string/settings"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/uninstall"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/rounded_corner_button"
+                        android:elevation="10dp"
+                        android:shadowColor="@color/secondColor"
+                        android:text="@string/uninstall"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvThreatName"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/uninstall"
-                    android:elevation="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:shadowColor="@color/secondColor"
-                    android:background="@drawable/rounded_corner_button"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
-
-
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="signaturedsds"
+                    android:visibility="invisible"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
     </FrameLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="15dp"
+
         android:orientation="vertical">
 
+
         <com.google.android.material.tabs.TabLayout
-            android:elevation="8dp"
             android:id="@+id/tab_layout_app_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabIndicatorColor="@color/colorPrimaryDark"
-            app:tabRippleColor="@color/colorPrimaryDark"
             android:background="@drawable/side_nav_bar"
+            android:elevation="8dp"
             app:tabGravity="fill"
-            app:tabMode="fixed" />
+            app:tabIndicatorColor="@color/colorPrimaryDark"
+            app:tabMode="fixed"
+            app:tabRippleColor="@color/colorPrimaryDark" />
+
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/appDetailsPager"
             android:layout_width="match_parent"
-            android:background="@color/calendar_divider"
             android:layout_height="match_parent"
-            android:nestedScrollingEnabled="true"
-            android:scrollbars="vertical"
+            android:background="@android:color/transparent"
             android:isScrollContainer="true"
-            >
+            android:nestedScrollingEnabled="true"
+            android:scrollbars="vertical">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvTabAppDetails"
                 android:layout_width="match_parent"

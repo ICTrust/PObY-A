@@ -1,24 +1,36 @@
+/*
+ * This file is part of PObY-A.
+ *
+ * Copyright (C) 2023 ICTrust Sàrl
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
 package ch.ictrust.pobya.utillies;
 
-import android.Manifest;
-import android.app.Activity;
 import android.app.KeyguardManager;
 import android.app.admin.DevicePolicyManager;
-import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.autofill.AutofillManager;
 
-import androidx.core.app.ActivityCompat;
-
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 import ch.ictrust.pobya.R;
 import ch.ictrust.pobya.models.SysSettings;
@@ -27,10 +39,10 @@ import ch.ictrust.pobya.models.SysSettings;
 public class SettingsHelper {
 
     private final String TAG = "SettingsHelper";
-    private Context context;
-    private ArrayList<SysSettings> sysSettings;
-    private DevicePolicyManager dpm;
-    private ComponentName compName;
+    private final Context context;
+    private final ArrayList<SysSettings> sysSettings;
+    private final DevicePolicyManager dpm;
+    private final ComponentName compName;
 
     public SettingsHelper(Context context) {
         this.context = context;
@@ -90,6 +102,9 @@ public class SettingsHelper {
                 "disableLocation", "go to location settings and disable the following if not needed" +
                 " : \n Emergency Location Service, google Location accuracy, Google Location History"));*/
 
+        // Insert SysSettings into database
+        Utilities.INSTANCE.insertSettingsScope(context, sysSettings);
+
         return sysSettings;
     }
 
@@ -130,8 +145,7 @@ public class SettingsHelper {
 
     public boolean screenLockTimeoutEnabled() {
 
-        if (dpm.getMaximumTimeToLock(compName) > 60000) return false;
-        return true;
+        return dpm.getMaximumTimeToLock(compName) <= 60000;
     }
 
     public boolean setScreenLockTimeoutEnabled() {
@@ -338,8 +352,7 @@ public class SettingsHelper {
 
     public boolean disableLocation() {
         try {
-            Intent intent = new Intent("com.android.settings");
-            intent.setClassName("com.android.settings", "com.android.settings.Settings$LocationSettingsActivity");
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 
             context.startActivity(intent);
         } catch (Exception ex) {
@@ -351,7 +364,8 @@ public class SettingsHelper {
 
 
     public boolean isVoiceAssistanceEnabled() {
-        /** TODO: case of OnePlus that use "oneplus_default_voice_assist_picker_service" instead
+        /**
+         * TODO: case of OnePlus that use "oneplus_default_voice_assist_picker_service" instead
          *        of "voice_interaction_service" and "assistant"
          */
 
@@ -359,13 +373,19 @@ public class SettingsHelper {
             return true;
         }
 
-        if (android.provider.Settings.Secure.getString(context.getContentResolver(), "voice_interaction_service") != null && !android.provider.Settings.Secure.getString(context.getContentResolver(), "voice_interaction_service").isEmpty())
-            return true;
-
-        return false;
+        return Settings.Secure.getString(context.getContentResolver(), "voice_interaction_service") != null && !Settings.Secure.getString(context.getContentResolver(), "voice_interaction_service").isEmpty();
     }
 
     public boolean setVoiceAssistance() {
+
+        try {
+            Intent intent = new Intent(Settings.ACTION_VOICE_INPUT_SETTINGS);
+            context.startActivity(intent);
+        } catch (Exception ex) {
+            Log.e(TAG, ex.getMessage());
+            return false;
+        }
+        /*
         try {
             Intent intent = new Intent("com.android.settings");
             intent.setClassName("com.android.settings", "com.android.settings.Settings$ManageAssistActivity");
@@ -374,7 +394,7 @@ public class SettingsHelper {
         } catch (Exception ex) {
             Log.e(TAG, ex.getMessage());
             return false;
-        }
+        }*/
         return true;
     }
 
@@ -383,10 +403,7 @@ public class SettingsHelper {
         if (!android.provider.Settings.Secure.getString(context.getContentResolver(), "enabled_notification_policy_access_packages").isEmpty())
             return false;
 
-        if (!android.provider.Settings.Secure.getString(context.getContentResolver(), "enabled_notification_assistant").isEmpty())
-            return false;
-
-        return true;
+        return Settings.Secure.getString(context.getContentResolver(), "enabled_notification_assistant").isEmpty();
     }
 
     public boolean isAutofillServiceEnabled() {
@@ -395,24 +412,44 @@ public class SettingsHelper {
             return afm.isEnabled();
         }
 
-        if (android.provider.Settings.Secure.getString(context.getContentResolver(), "autofill_service") != null && !android.provider.Settings.Secure.getString(context.getContentResolver(), "autofill_service").isEmpty())
-            return true;
-
-        return false;
+        return Settings.Secure.getString(context.getContentResolver(), "autofill_service") != null && !Settings.Secure.getString(context.getContentResolver(), "autofill_service").isEmpty();
     }
 
 
     public boolean autofillSettings() {
         try {
-            Intent intent = new Intent("com.android.settings");
+            Intent intent = new Intent(Settings.ACTION_INPUT_METHOD_SETTINGS);
+            //Intent intent = new Intent("com.android.settings");
+            //intent.setClassName("com.android.settings", "com.android.settings.Settings$LanguageAndInputSettingsActivity");
+            context.startActivity(intent);
+            return true;
+            /*if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                Intent intent = new Intent(Settings.ACTION_REQUEST_SET_AUTOFILL_SERVICE);
+                context.startActivity(intent);
+            } else {
+                Intent intent = new Intent("com.android.settings");
+                intent.setClassName("com.android.settings", "com.android.settings.Settings$LanguageAndInputSettingsActivity");
+                context.startActivity(intent);
+            }
+            Intent intent = new Intent("com.google.settings");
             intent.setClassName("com.android.settings", "com.android.settings.Settings$LanguageAndInputSettingsActivity");
+            //intent.setClassName("com.android.settings", "com.android.settings.Settings$InputMethodAndLanguageSettingsActivity");
 
             context.startActivity(intent);
+            return true;*/
         } catch (Exception ex) {
             Log.e(TAG, ex.getMessage());
-            return false;
         }
-        return true;
+
+        try {
+            context.startActivity(new Intent(Settings.ACTION_INPUT_METHOD_SETTINGS));
+            return true;
+        } catch (Exception ex) {
+            Log.e(TAG, ex.getMessage());
+        }
+
+
+        return false;
     }
 
     public boolean isBluetoothOn() {
@@ -426,31 +463,13 @@ public class SettingsHelper {
     }
 
     public boolean disableBluetooth() {
+        //try {
+
         try {
-            BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-            String[] perms = {
-                    Manifest.permission.BLUETOOTH,
-                    Manifest.permission.BLUETOOTH_ADMIN,
-                    Manifest.permission.BLUETOOTH_SCAN,
-                    Manifest.permission.BLUETOOTH_CONNECT
-            };
-            if (!Utilities.INSTANCE.hasPermissions(context, perms)) {
-                ActivityCompat.requestPermissions((Activity) context, perms, PackageManager.PERMISSION_GRANTED);
-            }
-            if (mBluetoothAdapter.isEnabled() && ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions((Activity) context, perms, PackageManager.PERMISSION_GRANTED);
-            }
-
-            mBluetoothAdapter.cancelDiscovery();
-            mBluetoothAdapter.disable();
-
-            // Revoke Bluetooth permissions
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                context.revokeSelfPermissionsOnKill(Arrays.asList(perms));
-            }
-
-        } catch (Exception ex) {
-            Log.e(TAG, ex.getMessage());
+            Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
+            context.startActivity(intent);
+        } catch (Exception exception) {
+            Log.e(TAG, exception.getMessage());
             return false;
         }
         return true;
@@ -480,7 +499,6 @@ public class SettingsHelper {
 
     // TODO
     public void usbConnectionSettings() {
-        return;
     }
 
     public boolean isWifiEnabled() {
@@ -536,10 +554,13 @@ public class SettingsHelper {
 
     public void disableAlwaysWifiScan() {
 
-        Intent intent = new Intent("com.android.settings");
-        intent.setClassName("com.android.settings", "com.android.settings.Settings$ScanningSettingsActivity");
+        try{
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 
-        context.startActivity(intent);
+            context.startActivity(intent);
+        } catch (Exception ex) {
+            Log.e(TAG, ex.getMessage());
+        }
     }
 
 
@@ -565,11 +586,19 @@ public class SettingsHelper {
     }
 
     public void disableAlwaysBleScan() {
-        Intent intent = new Intent("com.android.settings");
+        try{
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            //intent.setClassName("com.android.settings", "com.android.settings.Settings$ScanningSettingsActivity");
+
+            context.startActivity(intent);
+        } catch (Exception ex) {
+            Log.e(TAG, ex.getMessage());
+        }
+        /*Intent intent = new Intent("com.android.settings");
 
         intent.setClassName("com.android.settings", "com.android.settings.Settings$LocationSettingsActivity");
 
-        context.startActivity(intent);
+        context.startActivity(intent);*/
     }
 
     public boolean isDefaultInstallLocationChanged() {

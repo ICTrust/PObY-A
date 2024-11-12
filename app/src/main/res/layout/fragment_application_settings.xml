@@ -21,8 +21,56 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             >
-
             <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:id="@+id/llDeepScanPrefContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="70dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvPreferenceDeepScan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+
+                        android:layout_marginTop="0dp"
+                        android:layout_marginEnd="12dp"
+                        android:text="@string/preferences_deep_scan_advanced"
+                        android:textColor="@color/mainTextColor"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvDeepScanDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="@string/preferences_deep_scan_advanced_desc"
+                        android:textColor="@color/mainTextColor"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/toggleButtonDeepScan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginLeft="-50dp"
+                    android:layout_toRightOf="@id/llDeepScanPrefContainer"
+                    android:button="@drawable/dashboard_card_poby"
+                    app:thumbTint="@drawable/untoggle_preferences"
+                    app:trackTint="@drawable/toggle_preferences" />
+
+
+            </RelativeLayout>
+
+           <!-- <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="16dp">
@@ -70,6 +118,7 @@
 
 
             </RelativeLayout>
+            -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -100,7 +149,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="Include system's applications during threat scan may take time and result some false positives"
+                        android:text="@string/preferences_system_apps_scan_desc"
                         android:textColor="@color/mainTextColor"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -118,7 +167,7 @@
 
 
             </RelativeLayout>
-            <RelativeLayout
+            <!--<RelativeLayout
                 android:layout_width="match_parent"
                 android:padding="16dp"
                 android:layout_height="wrap_content">
@@ -161,7 +210,7 @@
                     </FrameLayout>
 
                 </LinearLayout>
-            </RelativeLayout>
+            </RelativeLayout>-->
 
         </LinearLayout>
 

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="malware_scan_description">Scan for known threats within installed applications</string>
+</resources>
