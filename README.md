@@ -26,7 +26,7 @@ Malware scan is offline and based on two databases:
 ## Supported Android versions
 **8.0 (API 26) to 13 (API 34)**
 
-## Needed permissions
+## Required permissions
 - Write system settings
 - "force-lock" admin permission
 - External Storage
