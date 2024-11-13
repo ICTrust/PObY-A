@@ -9,6 +9,13 @@
     <string name="menu_data_safety">Data Safety</string>
     <string name="menu_preferences">Preferences</string>
 
+    <string name="malware_scan_description">Scan for known threats within installed applications</string>
+
+    <string name="applications_settings_description">Review the installed applications and their permissions</string>
+    <string name="privacy_settings_description">Enhance privacy settings based on best practices</string>
+    <string name="preference_settings_description">PObY-A preferences</string>
+    <string name="data_safety_description">PObY-A privacy policy </string>
+
 
     <!-- Permissions -->
     <string name="admin_perm_force_lock_desc">This permission is required to set the screen lock policy (timeout, display notifications)</string>
@@ -88,7 +95,7 @@
     <!--   Bluetooth -->
     <string name="bluetooth_on_desc">Bluetooth is enabled</string>
     <string name="bluetooth_on_info">Leaving Bluetooth on can open your device to potential security risks.</string>
-    <string name="bluetooth_on_action">This action will disable Bluetooth</string>
+    <string name="bluetooth_on_action">You will be redirected to Bluetooth settings</string>
 
     <!--   Wi-Fi -->
     <string name="wifi_on_desc">Wi-Fi is enabled</string>
@@ -151,6 +158,9 @@
     <string name="uninstalled">Uninstalled</string>
     <string name="uninstall">Uninstall</string>
     <string name="uninstall_date">Uninstall date</string>
+    <string name="malware">Threat</string>
+    <string name="trust_app">Trust</string>
+    <string name="untrust_app">Untrust</string>
 
     <!-- monitoring -->
     <string name="monitoring_service_title">Monitoring Service</string>
@@ -160,13 +170,15 @@
     <string name="auto_time_action">You will be redirected to \"Date and time\" settings: \n    - Enable \"Use network-provided time\"\n    - Enable \"Use network-provided time zone\".</string>
     <string name="malware_found">Threats found</string>
 
-
     <!-- Preferences -->
     <string name="prefrences_monitoring_name">Live monitoring</string>
     <string name="prefrences_monitoring_desc">Enable realtime monitoring</string>
     <string name="prefrences_database_url_name">Database URL</string>
     <string name="prefrences_database_url_desc">Domain from where the threats database will be downloaded.</string>
-
+    <string name="preferences_deep_scan_advanced">Deep Scan (Advanced scan)</string>
+    <string name="preferences_deep_scan_advanced_desc">Enable deep scan for advanced threats detection. This type of scan may require resources and time depending on number of application installed.</string>
+    <string name="preferences_system_apps_scan_desc">Include system\'s applications during threat scan may take time and result some false positives</string>
+    <string name="threat">THREAT</string>
 
 
 </resources>

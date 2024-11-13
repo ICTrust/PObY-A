@@ -7,15 +7,14 @@
 
     <ImageView
         android:id="@+id/iv_image_icon"
-        android:src="@drawable/outline_admin_panel_settings_24"
-        android:scaleType="centerCrop"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintRight_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.6"
+        android:scaleType="centerCrop"
+        android:src="@drawable/outline_admin_panel_settings_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:tint="#ffffff" />
 
     <TextView
@@ -23,27 +22,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Heading"
-        app:layout_constraintTop_toBottomOf="@id/iv_image_icon"
-        app:layout_constraintRight_toLeftOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"
-        android:layout_marginTop="30dp"
         android:textAllCaps="false"
+        android:textColor="#ffffff"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="#ffffff"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_image_icon" />
 
     <TextView
         android:id="@+id/tv_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta, justo sed porta auctor, odio ipsum convallis diam, sit amet cursus risus tortor eget magna. Mauris in lobortis nulla. Suspendisse potenti."
-        app:layout_constraintTop_toBottomOf="@id/tv_heading"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintRight_toLeftOf="parent"
-        android:textAlignment="center"
-        android:layout_marginTop="10dp"
         android:padding="25dp"
-        android:textColor="#ffffff" />
+        android:text="Suspendisse potenti."
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_heading" />
 
 
 

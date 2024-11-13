@@ -52,7 +52,7 @@
     <!-- Bluetooth -->
     <string name="bluetooth_on_desc">Bluetooth est activé</string>
     <string name="bluetooth_on_info">Laisser Bluetooth activé peut ouvrir votre appareil à des risques potentiels de sécurité.</string>
-    <string name="bluetooth_on_action">Cette action désactivera Bluetooth</string>.
+    <string name="bluetooth_on_action">Vous serez redirigés aux paramètres Bluetooth</string>.
 
     <!-- Wi-Fi -->
     <string name="wifi_on_desc">Wi-Fi est activé</string>
@@ -123,5 +123,17 @@
     <string name="prefrences_database_url_desc">Le nom de domaine utilisé pour le téléchargement de la base de données des menaces</string>
     <string name="monitoring_service_title">Service de contrôle</string>
     <string name="threats_found">Possible menaces trouvées</string>
+    <string name="malware_scan_description">Scan des menaces dans les applications installées</string>
+    <string name="malware">Menace</string>
+    <string name="applications_settings_description">Vérifier les application installées et leures permissons</string>
+    <string name="privacy_settings_description">"Renforcer les pramètres de protection système "</string>
+    <string name="preference_settings_description">Paramètrage PObY-A</string>
+    <string name="data_safety_description">Politique de confidentialité</string>
+    <string name="preferences_deep_scan_advanced">Scan avancé</string>
+    <string name="preferences_deep_scan_advanced_desc">Le scan avancé pour plus de détection. Ce scan demande plus de temps et de ressources.</string>
+    <string name="preferences_system_apps_scan_desc">L\'inclusion des applications du système lors de l\'analyse des menaces peut prendre du temps et donner lieu à des faux positifs.</string>
+    <string name="trust_app">Se fier</string>
+    <string name="untrust_app">Méfiance</string>
+    <string name="threat">MENACE</string>
 
 </resources>

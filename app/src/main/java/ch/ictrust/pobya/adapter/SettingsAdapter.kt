@@ -1,3 +1,21 @@
+/*
+ * This file is part of PObY-A.
+ *
+ * Copyright (C) 2023 ICTrust Sàrl
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
 package ch.ictrust.pobya.adapter
 
 import android.app.AlertDialog
@@ -15,6 +33,14 @@ import java.lang.reflect.Method
 
 class SettingsAdapter(private var items: MutableList<SysSettings>, private var context: Context) :
     RecyclerView.Adapter<SettingsViewHolder>() {
+
+    // sort items where expectedValue != currentValue
+    init {
+        items = items.sortedWith(
+            compareBy({ it.currentValue == it.expectedValue },
+                { it.testDescription })
+        ).toMutableList()
+    }
 
 
     override fun onBindViewHolder(holder: SettingsViewHolder, pos: Int) {
@@ -40,10 +66,19 @@ class SettingsAdapter(private var items: MutableList<SysSettings>, private var c
                     holder.currentView.context.getString(R.string.settings_action_start)
                 ) { _, _ ->
                     val obj = SettingsHelper(context)
-                    val method: Method = obj.javaClass.getMethod(sysSetting.functionName)
-                    method.invoke(obj)
-                    val settingsList = SettingsHelper(context).scan()
+                    try {
+                        val method: Method = obj.javaClass.getMethod(sysSetting.functionName)
+                        method.invoke(obj)
+                    } catch (e: NoSuchMethodException) {
+                        e.printStackTrace()
+                    }
+
                     items = SettingsHelper(holder.currentView.context).scan()
+                    // sort items by: expectedValue != currentValue
+                    items = items.sortedWith(
+                        compareBy({ it.currentValue == it.expectedValue },
+                            { it.testDescription })
+                    ).toMutableList()
                     notifyDataSetChanged()
                     // TODO: Refresh Recycler view if operation succeeded
                 }
@@ -52,7 +87,6 @@ class SettingsAdapter(private var items: MutableList<SysSettings>, private var c
                     null
                 )
                 .show()
-
         }
     }
 

@@ -2,5 +2,5 @@
     android:shape="rectangle">
     <solid android:color="#FFFFFF"/>
     <stroke android:width="2dp" android:color="#70304FFE"/>
-    <corners android:radius="2dp"/>
+    <corners android:radius="23dp"/>
 </shape>

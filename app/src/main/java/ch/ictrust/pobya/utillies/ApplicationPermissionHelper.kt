@@ -1,9 +1,31 @@
+/*
+ * This file is part of PObY-A.
+ *
+ * Copyright (C) 2023 ICTrust Sàrl
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
 package ch.ictrust.pobya.utillies
 
 import android.app.Application
 import android.content.Context
-import android.content.pm.*
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.content.pm.PackageManager.NameNotFoundException
+import android.content.pm.PermissionGroupInfo
+import android.content.pm.PermissionInfo
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
@@ -15,6 +37,7 @@ import ch.ictrust.pobya.models.ApplicationPermissionCrossRef
 import ch.ictrust.pobya.models.ApplicationState
 import ch.ictrust.pobya.models.InstalledApplication
 import ch.ictrust.pobya.models.PermissionModel
+import ch.ictrust.pobya.repository.ApplicationPermissionRepository
 import ch.ictrust.pobya.repository.ApplicationRepository
 import ch.ictrust.pobya.repository.PermissionRepository
 import kotlinx.coroutines.CoroutineScope
@@ -35,65 +58,65 @@ class ApplicationPermissionHelper(ctx: Context, dumpSysApps: Boolean) {
     private var tag: String = "ApplicationPermissionHelper"
 
     var dbJob = Job()
-
     var dbScope: CoroutineScope = CoroutineScope(GlobalScope.coroutineContext + dbJob)
-
 
     fun getListApps(fresh: Boolean): List<InstalledApplication> {
 
         val apps: List<InstalledApplication>
-        var appPermissionList: ArrayList<ApplicationPermissionCrossRef> = ArrayList()
+        val appPermissionList: ArrayList<ApplicationPermissionCrossRef> = ArrayList()
         if (!fresh) {
             apps = ApplicationRepository.getInstance(context.applicationContext as Application)
                 .getAllApps().value as ArrayList<InstalledApplication>
-            if (apps.isNotEmpty())
-                return apps
+            if (apps.isNotEmpty()) return apps
         }
 
         permissions = getAllperms()
-        packageManager.packageInstaller.allSessions
+        // packageManager.packageInstaller.allSessions
         listApps = ArrayList()
         installedPackages = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             val packages = packageManager.getInstalledPackages(
-                (PackageManager.GET_PERMISSIONS or PackageManager.GET_META_DATA
-                        or PackageManager.GET_SIGNING_CERTIFICATES)
+                (PackageManager.GET_PERMISSIONS or PackageManager.GET_META_DATA or PackageManager.GET_SIGNING_CERTIFICATES)
             )
             packages
         } else {
             packageManager.getInstalledPackages(
-                (PackageManager.GET_PERMISSIONS or PackageManager.GET_META_DATA
-                        or PackageManager.GET_SIGNATURES)
+                (PackageManager.GET_PERMISSIONS or PackageManager.GET_META_DATA or PackageManager.GET_SIGNATURES)
             )
         }
 
         for (pInfo: PackageInfo in (installedPackages as MutableList<PackageInfo>)) {
             val permissionsList: MutableList<PermissionModel> = ArrayList()
-            val reqPermissions = pInfo.requestedPermissions
+            val reqPermissions = pInfo.requestedPermissions?.copyOf()
+            val currentApp =
+                ApplicationRepository.getInstance(context.applicationContext as Application)
+                    .getAppByPackageName(pInfo.packageName)
 
             if (!dumpSystemApps && isSystemPackage(pInfo) == 1) {
                 continue
             }
+
             if (reqPermissions != null) {
-                for (i in pInfo.requestedPermissions.indices) {
-                    if ((pInfo.requestedPermissionsFlags[i] and PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0) {
+                for (i in pInfo.requestedPermissions!!.indices) {
+                    if ((pInfo.requestedPermissionsFlags!![i] and PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0) {
                         val temp: PermissionModel? =
-                            getPermissionByName(pInfo.requestedPermissions[i])
+                            getPermissionByName(pInfo.requestedPermissions!![i])
                         if (temp != null)
                             permissionsList.add(temp)
-                        else
+                        else {
                             permissionsList.add(
                                 PermissionModel(
                                     "",
                                     "",
                                     "",
                                     "",
-                                    pInfo.requestedPermissions[i],
+                                    pInfo.requestedPermissions!![i] ?: continue,
                                     "",
                                     "",
                                     context.getString(R.string.no_desc_perm),
                                     0
                                 )
                             )
+                        }
                     }
                 }
             }
@@ -102,65 +125,69 @@ class ApplicationPermissionHelper(ctx: Context, dumpSysApps: Boolean) {
                 val stream = ByteArrayOutputStream()
                 icon.compress(Bitmap.CompressFormat.JPEG, 100, stream)
                 val bitmapData = stream.toByteArray()
+
                 var app: InstalledApplication
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     app = InstalledApplication(
-                        pInfo.applicationInfo.loadLabel(packageManager).toString(),
+                        pInfo.applicationInfo?.loadLabel(packageManager).toString(),
                         pInfo.packageName.toString(),
                         pInfo.longVersionCode,
                         bitmapData,
                         isSystemPackage(pInfo),
                         getAppConfidence(pInfo),
-                        pInfo.applicationInfo.enabled,
+                        pInfo.applicationInfo?.enabled ?: false,
                         pInfo.firstInstallTime,
                         pInfo.lastUpdateTime
                     )
-                    if (pInfo.permissions != null)
-                        pInfo.permissions.forEach {
-                            appPermissionList.add(
-                                ApplicationPermissionCrossRef(app.packageName, it.name)
-                            )
-                        }
+
+                    pInfo.permissions?.forEach {
+                        appPermissionList.add(
+                            ApplicationPermissionCrossRef(app.packageName, it.name)
+                        )
+                    }
                 } else {
                     app = InstalledApplication(
-                        pInfo.applicationInfo.loadLabel(packageManager).toString(),
+                        pInfo.applicationInfo?.loadLabel(packageManager).toString(),
                         pInfo.packageName,
-                        (pInfo.versionCode as Number).toLong(),
+                        pInfo.versionCode.toLong(),
                         bitmapData,
                         isSystemPackage(pInfo),
                         getAppConfidence(pInfo),
-                        pInfo.applicationInfo.enabled,
+                        pInfo.applicationInfo?.enabled ?: false,
                         pInfo.firstInstallTime,
                         pInfo.lastUpdateTime
                     )
-                    if (pInfo.permissions != null)
-                        pInfo.permissions.forEach {
-                            appPermissionList.add(
-                                ApplicationPermissionCrossRef(app.packageName, it.name)
-                            )
-                        }
+                    pInfo.permissions?.forEach {
+                        appPermissionList.add(
+                            ApplicationPermissionCrossRef(app.packageName, it.name)
+                        )
+                    }
                 }
 
+                if (currentApp != null) {
+                    app.flagReason = currentApp.flagReason
+                    app.flaggedAsThreat = currentApp.flaggedAsThreat
+                    app.trusted = currentApp.trusted
+                    app.applicationState = currentApp.applicationState
+                    app.lastHash = currentApp.lastHash
+                }
                 listApps.add(app)
             } catch (e: NameNotFoundException) {
                 e.printStackTrace()
             }
-
         }
+        dbScope.launch {
+            ApplicationRepository.getInstance(context.applicationContext as Application)
+                .insertApps(listApps)
+            ApplicationPermissionRepository(context).insertAll(appPermissionList)
 
-
-        ApplicationRepository.getInstance(context.applicationContext as Application)
-            .insertApps(listApps)
-        /*for (perm in appPermissionList)
-                ApplicationPermissionRepository(context).insert(perm)*/
-
-
-
+            for (perm in appPermissionList) ApplicationPermissionRepository(context).insert(perm)
+        }
         return listApps
     }
 
     private fun isSystemPackage(pkgInfo: PackageInfo): Int {
-        return (if (((pkgInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0)) 1 else 0)
+        return (if ((((pkgInfo.applicationInfo?.flags ?: 0) and ApplicationInfo.FLAG_SYSTEM) != 0)) 1 else 0)
     }
 
     private fun drawableToBitmap(drawable: Drawable): Bitmap {
@@ -173,15 +200,11 @@ class ApplicationPermissionHelper(ctx: Context, dumpSysApps: Boolean) {
 
         if (drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0) {
             bitmap = Bitmap.createBitmap(
-                1,
-                1,
-                Bitmap.Config.ARGB_8888
+                1, 1, Bitmap.Config.ARGB_8888
             )
         } else {
             bitmap = Bitmap.createBitmap(
-                drawable.intrinsicWidth,
-                drawable.intrinsicHeight,
-                Bitmap.Config.ARGB_8888
+                drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888
             )
         }
         val canvas = Canvas(bitmap)
@@ -190,44 +213,37 @@ class ApplicationPermissionHelper(ctx: Context, dumpSysApps: Boolean) {
         return bitmap
     }
 
-    private fun getAppConfidence(pInfo: PackageInfo): ApplicationState {
+    internal fun getAppConfidence(pInfo: PackageInfo): ApplicationState {
         var state: ApplicationState = ApplicationState.NORMAL
-        if (pInfo.requestedPermissions == null || pInfo.requestedPermissions.isEmpty())
+
+        if (pInfo.requestedPermissions == null || pInfo.requestedPermissions?.isEmpty() == true)
             return state
 
-        for (i in pInfo.requestedPermissions.indices) {
-            if ((pInfo.requestedPermissionsFlags[i] and PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0) {
+        val requesPermission = pInfo.requestedPermissions?.copyOf()
+        val requestedPrmissionsFlags = pInfo.requestedPermissionsFlags?.copyOf()
+        for (i in requesPermission?.indices!!) {
+            if ((requestedPrmissionsFlags!!.get(i)
+                    .or(0) and PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0
+            ) {
                 try {
                     val pi = packageManager.getPermissionInfo(
-                        pInfo.requestedPermissions[i],
-                        PackageManager.GET_META_DATA
+                        requesPermission[i], PackageManager.GET_META_DATA
                     )
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        when (pi.protection) {
-                            PermissionInfo.PROTECTION_DANGEROUS -> {
-                                if (state.ordinal != ApplicationState.DANGEROUS.ordinal) {
-                                    state = ApplicationState.DANGEROUS
-                                }
+                        if (pi.protection == PermissionInfo.PROTECTION_DANGEROUS) {
+                            if (state != ApplicationState.DANGEROUS) {
+                                state = ApplicationState.DANGEROUS
+                                return ApplicationState.DANGEROUS
                             }
-                            /*
-                            PermissionInfo.PROTECTION_DANGEROUS or PermissionInfo.PROTECTION_FLAG_RUNTIME_ONLY -> {
-                                if (state.ordinal != AppState.DANGEROUS.ordinal) {
-                                    state = AppState.DANGEROUS
-                                }
-                            }
-                            PermissionInfo.PROTECTION_DANGEROUS or PermissionInfo.PROTECTION_FLAG_INSTANT -> {
-                                if (state.ordinal != AppState.DANGEROUS.ordinal) {
-                                    state = AppState.DANGEROUS
-                                }
-                            }*/
                         }
+
+
                     } else {
-                        when (pi.protectionLevel) {
-                            PermissionInfo.PROTECTION_DANGEROUS -> {
-                                if (state.ordinal != ApplicationState.DANGEROUS.ordinal) {
-                                    state = ApplicationState.DANGEROUS
-                                }
-                            }
+                        if (pi.protectionLevel == PermissionInfo.PROTECTION_DANGEROUS) {
+                            state = ApplicationState.DANGEROUS
+                            return ApplicationState.DANGEROUS
+
+
                         }
                     }
                 } catch (e: NameNotFoundException) {
@@ -246,8 +262,7 @@ class ApplicationPermissionHelper(ctx: Context, dumpSysApps: Boolean) {
             val name = permissionGroup.name
             try {
                 for (pInfo: PermissionInfo in packageManager.queryPermissionsByGroup(
-                    name.toString(),
-                    PackageManager.GET_META_DATA
+                    name.toString(), PackageManager.GET_META_DATA
                 )) {
                     try {
                         val permissionGroupName =
@@ -265,11 +280,10 @@ class ApplicationPermissionHelper(ctx: Context, dumpSysApps: Boolean) {
                         val permissionPackageName =
                             (if (pInfo.packageName == null) "" else pInfo.packageName)
                         val permissionLabel = pInfo.loadLabel(packageManager).toString()
-                        val permissionDesc =
-                            (if (pInfo.loadDescription(packageManager) == null) ""
-                            else pInfo.loadDescription(
-                                packageManager
-                            ).toString())
+                        val permissionDesc = (if (pInfo.loadDescription(packageManager) == null) ""
+                        else pInfo.loadDescription(
+                            packageManager
+                        ).toString())
                         val perm = PermissionModel(
                             permissionGroupName,
                             permissionGroupPackageName,
@@ -311,11 +325,13 @@ class ApplicationPermissionHelper(ctx: Context, dumpSysApps: Boolean) {
 
     fun getAppByPackageName(packageName: String): InstalledApplication? {
         try {
-            val pkgInfo: PackageInfo =
-                context.packageManager.getPackageInfo(
-                    packageName,
-                    PackageManager.GET_PERMISSIONS or PackageManager.GET_META_DATA
-                )
+            val pkgInfo: PackageInfo = context.packageManager.getPackageInfo(
+                packageName, PackageManager.GET_PERMISSIONS or PackageManager.GET_META_DATA
+            )
+
+            if (pkgInfo == null) {
+                return null
+            }
 
             val icon = this.drawableToBitmap(packageManager.getApplicationIcon(pkgInfo.packageName))
             val stream = ByteArrayOutputStream()
@@ -331,7 +347,7 @@ class ApplicationPermissionHelper(ctx: Context, dumpSysApps: Boolean) {
                     bitmapByteArray,
                     isSystemPackage(pkgInfo),
                     getAppConfidence(pkgInfo),
-                    pkgInfo.applicationInfo.enabled,
+                    pkgInfo.applicationInfo?.enabled ?: false,
                     pkgInfo.firstInstallTime,
                     pkgInfo.lastUpdateTime
                 )
@@ -343,7 +359,7 @@ class ApplicationPermissionHelper(ctx: Context, dumpSysApps: Boolean) {
                     bitmapByteArray,
                     isSystemPackage(pkgInfo),
                     getAppConfidence(pkgInfo),
-                    pkgInfo.applicationInfo.enabled,
+                    pkgInfo.applicationInfo?.enabled ?: false,
                     pkgInfo.firstInstallTime,
                     pkgInfo.lastUpdateTime
                 )
@@ -359,51 +375,62 @@ class ApplicationPermissionHelper(ctx: Context, dumpSysApps: Boolean) {
 
     fun getAppPermissions(packageName: String): List<PermissionModel> {
         getAllperms()
-        val pkgInfo: PackageInfo =
-            packageManager.getPackageInfo(
-                packageName,
-                PackageManager.GET_PERMISSIONS or PackageManager.GET_META_DATA
+        val pkgInfo: PackageInfo
+        try {
+            pkgInfo = packageManager.getPackageInfo(
+                packageName, PackageManager.GET_PERMISSIONS or PackageManager.GET_META_DATA
             )
+
+        } catch (e: NameNotFoundException) {
+            Log.e(tag, e.stackTrace.toString())
+            return ArrayList()
+        }
+        if (pkgInfo == null) {
+            return ArrayList()
+        }
         val appPerms: ArrayList<PermissionModel> = ArrayList()
-        if (pkgInfo.requestedPermissions != null && pkgInfo.requestedPermissions.isNotEmpty()) {
-            for (i in pkgInfo.requestedPermissions.indices) {
-                val permission = pkgInfo.requestedPermissions[i]
-                val sysPerm = getPermissionByName(pkgInfo.requestedPermissions[i])
-                if ((permission == null) || (sysPerm == null)) {
-                    continue
-                }
 
-                if ((pkgInfo.requestedPermissionsFlags[i]
-                            and PackageInfo.REQUESTED_PERMISSION_GRANTED) == 0
+        if (pkgInfo.requestedPermissions != null) {
+            for (i in pkgInfo.requestedPermissions!!.indices) {
+                if ((pkgInfo.requestedPermissionsFlags!![i] and PackageInfo.REQUESTED_PERMISSION_GRANTED) != 0
                 ) {
-                    continue
-                }
+                    val temp: PermissionModel? = getPermissionByName(
+                        pkgInfo.requestedPermissions!![i])
+                    if (packageName == "ch.ictrust.pobya") {
+                        Log.d(tag, "Permission: ${pkgInfo.requestedPermissions!![i]}")
+                    }
 
-                val permModel = PermissionModel(
-                    sysPerm.group, sysPerm.group_package,
-                    sysPerm.group_label, sysPerm.group_description,
-                    sysPerm.permission, sysPerm.package_name,
-                    sysPerm.label, sysPerm.description,
-                    sysPerm.protectionLevel
-                )
-                appPerms.add(permModel)
+                    if (temp != null) appPerms.add(temp)
+                    /*else appPerms.add(
+                        PermissionModel(
+                            "",
+                            "",
+                            "",
+                            "",
+                            pkgInfo.requestedPermissions!![i],
+                            "",
+                            pkgInfo.requestedPermissions!![i],
+                            context.getString(R.string.no_desc_perm),
+                            0
+                        )
+                    )*/
+                }
             }
         }
-
         return appPerms
     }
 
     fun getAppCert(packageName: String): ByteArray {
         val sigs = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             packageManager.getPackageInfo(
-                packageName,
-                PackageManager.GET_SIGNING_CERTIFICATES
-            ).signingInfo.apkContentsSigners[0].toByteArray()
+                packageName, PackageManager.GET_SIGNING_CERTIFICATES
+            ).signingInfo?.apkContentsSigners?.firstOrNull()?.toByteArray() ?: ByteArray(0)
         } else {
+            @Suppress("DEPRECATION")
             context.packageManager.getPackageInfo(
                 packageName,
                 PackageManager.GET_SIGNATURES
-            ).signatures[0].toByteArray()
+            ).signatures?.firstOrNull()?.toByteArray() ?: ByteArray(0)
         }
         return sigs
     }

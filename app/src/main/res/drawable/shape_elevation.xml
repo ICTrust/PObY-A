@@ -7,7 +7,7 @@
         android:startColor="#577AEA"
         android:type="linear" />-->
     <gradient android:startColor="@android:color/white" android:centerColor="@android:color/white" android:endColor="@android:color/white"></gradient>
-    <stroke android:width="2dp" android:color="@android:color/transparent"/>
-    <corners android:radius="5dp"/>
+    <stroke android:width="1dp" android:color="@android:color/transparent"/>
+    <corners android:radius="15dp"/>
     <padding android:left="0dip" android:top="0dip" android:right="0dip" android:bottom="0dip" />
 </shape>
