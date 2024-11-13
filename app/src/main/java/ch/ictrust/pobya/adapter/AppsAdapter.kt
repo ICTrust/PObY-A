@@ -96,7 +96,12 @@ class AppsAdapter(ctx: Context) : ListAdapter<InstalledApplication, AppsAdapter.
             listener.onItemClick(currentApp)
         }
 
-        holder.btnAppTrust.text = if (currentApp.trusted) "Untrust" else "Trust"
+        holder.btnAppTrust.text =
+            if (currentApp.trusted)
+                context.resources.getString(R.string.untrust_app)
+            else
+                context.resources.getString(R.string.trust_app)
+
         // Trust action
         holder.btnAppTrust.setOnClickListener {
             if (currentApp.trusted) {
@@ -127,7 +132,7 @@ class AppsAdapter(ctx: Context) : ListAdapter<InstalledApplication, AppsAdapter.
                         .update(currentApp)
                 }
                 holder.tvState.text = currentApp.applicationState.toString()
-                holder.btnAppTrust.text = "Trust"
+                holder.btnAppTrust.text = context.getString(R.string.trust_app)
 
                 notifyItemChanged(position)
             } else {
@@ -140,8 +145,8 @@ class AppsAdapter(ctx: Context) : ListAdapter<InstalledApplication, AppsAdapter.
                     ApplicationRepository.getInstance(context.applicationContext as Application)
                         .update(currentApp)
                 }
-                holder.tvState.text = "Trusted"
-                holder.btnAppTrust.text = "Untrust"
+                holder.tvState.text = context.resources.getString(R.string.trust_app)
+                holder.btnAppTrust.text = context.resources.getString(R.string.untrust_app)
                 notifyItemChanged(position)
             }
         }
@@ -170,7 +175,7 @@ class AppsAdapter(ctx: Context) : ListAdapter<InstalledApplication, AppsAdapter.
         val status = ApplicationPermissionHelper(context, (currentApp.isSystemApp == 1))
                             .getAppConfidence(context.packageManager.getPackageInfo(currentApp.packageName, PackageManager.GET_PERMISSIONS or PackageManager.GET_META_DATA))
 
-        if (currentApp.applicationState != status) {
+        if (currentApp.applicationState != status && !currentApp.applicationState.equals(ApplicationState.MALWARE)) {
             currentApp.applicationState = status
             Utilities.scanAppScope.launch {
                 ApplicationRepository.getInstance(context.applicationContext as Application)

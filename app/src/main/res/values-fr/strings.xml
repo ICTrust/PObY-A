@@ -131,5 +131,9 @@
     <string name="data_safety_description">Politique de confidentialité</string>
     <string name="preferences_deep_scan_advanced">Scan avancé</string>
     <string name="preferences_deep_scan_advanced_desc">Le scan avancé pour plus de détection. Ce scan demande plus de temps et de ressources.</string>
+    <string name="preferences_system_apps_scan_desc">L\'inclusion des applications du système lors de l\'analyse des menaces peut prendre du temps et donner lieu à des faux positifs.</string>
+    <string name="trust_app">Se fier</string>
+    <string name="untrust_app">Méfiance</string>
+    <string name="threat">MENACE</string>
 
 </resources>

@@ -48,7 +48,7 @@
             android:elevation="20dp"
             android:gravity="center_horizontal|center_vertical"
             android:rotation="-30"
-            android:text="THREAT"
+            android:text="@string/threat"
             android:textColor="@android:color/holo_red_dark"
             android:textSize="60dp"
 
