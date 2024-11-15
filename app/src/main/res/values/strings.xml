@@ -161,6 +161,8 @@
     <string name="malware">Threat</string>
     <string name="trust_app">Trust</string>
     <string name="untrust_app">Untrust</string>
+    <string name="trusted_app">Trusted</string>
+    <string name="suspicious">Suspicious</string>
 
     <!-- monitoring -->
     <string name="monitoring_service_title">Monitoring Service</string>
@@ -179,6 +181,9 @@
     <string name="preferences_deep_scan_advanced_desc">Enable deep scan for advanced threats detection. This type of scan may require resources and time depending on number of application installed.</string>
     <string name="preferences_system_apps_scan_desc">Include system\'s applications during threat scan may take time and result some false positives</string>
     <string name="threat">THREAT</string>
+    <string name="updating">Updating</string>
+    <string name="failed">Failed</string>
+    <string name="success">Success</string>
 
 
 </resources>

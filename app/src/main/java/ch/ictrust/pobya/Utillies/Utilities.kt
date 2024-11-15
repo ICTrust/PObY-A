@@ -22,6 +22,7 @@ import android.app.Application
 import android.content.Context
 import android.icu.lang.UCharacter
 import android.util.Log
+import ch.ictrust.pobya.R
 import ch.ictrust.pobya.cvd.ParseCVD
 import ch.ictrust.pobya.cvd.models.CVDType
 import ch.ictrust.pobya.cvd.repositroy.CVDVersionRepository
@@ -93,12 +94,12 @@ object Utilities {
      * Application context
      */
     fun updateMalwareDB(context: Context): Boolean {
-        _dbUpdateStatus.value = "Updating"
+        _dbUpdateStatus.value = context.getString(R.string.updating)
         updatePObYADB(context)
         updateCVD(context, CVDType.MAIN)
         updateCVD(context, CVDType.DAILY)
 
-        return _dbUpdateStatus.value == "Success"
+        return _dbUpdateStatus.value == context.getString(R.string.success)
     }
 
 
@@ -154,13 +155,13 @@ object Utilities {
                     MalwareCertRepository.getInstance(context.applicationContext as Application)
                         .deleteDeprecated()
                 }
-                _dbUpdateStatus.value = "Success"
+                _dbUpdateStatus.value = context.getString(R.string.success)
             } catch (ex: Exception) {
                 Log.e(TAG, ex.message.toString())
                 Prefs.getInstance(context)?.pobyDbVersion = 1
 
                 if (testedURL > Prefs.URLs.size) {
-                    _dbUpdateStatus.value = "Failed"
+                    _dbUpdateStatus.value = context.getString(R.string.failed)
                     return@launch
                 } else {
                     _dbUpdateStatus.value = "Retry"
@@ -191,7 +192,7 @@ object Utilities {
      *
      */
     fun updateCVD(context: Context, type: CVDType) {
-        _dbUpdateStatus.value = "Updating"
+        _dbUpdateStatus.value = context.getString(R.string.updating)
         val internalFolderPath = context.filesDir.path
         val client = OkHttpClient()
 
@@ -328,7 +329,7 @@ object Utilities {
 
         } catch (ex: Exception) {
             Log.e(TAG, ex.message.toString())
-            _dbUpdateStatus.value = "Failed"
+            _dbUpdateStatus.value = context.getString(R.string.failed)
             ex.printStackTrace().toString()
         } finally {
             query.cancel()
