@@ -121,6 +121,8 @@
     <string name="prefrences_monitoring_desc">"Activer le mode de contrôle en direct "</string>
     <string name="prefrences_database_url_name">Adresse de la base de données</string>
     <string name="prefrences_database_url_desc">Le nom de domaine utilisé pour le téléchargement de la base de données des menaces</string>
+    <string name="trusted_app">Confiance</string>
+    <string name="suspicious">Suspecte</string>
     <string name="monitoring_service_title">Service de contrôle</string>
     <string name="threats_found">Possible menaces trouvées</string>
     <string name="malware_scan_description">Scan des menaces dans les applications installées</string>
@@ -135,5 +137,8 @@
     <string name="trust_app">Se fier</string>
     <string name="untrust_app">Méfiance</string>
     <string name="threat">MENACE</string>
+    <string name="updating">Actualisation</string>
+    <string name="failed">Echec</string>
+    <string name="success">Succès</string>
 
 </resources>

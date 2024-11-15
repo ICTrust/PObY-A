@@ -185,12 +185,12 @@ class AppsAdapter(ctx: Context) : ListAdapter<InstalledApplication, AppsAdapter.
         // Application Status
         when (currentApp.applicationState) {
             ApplicationState.TRUSTED -> {
-                holder.tvState.text = "Trusted" //context.getString(R.string.trusted)
+                holder.tvState.text = context.getString(R.string.trusted_app)
                 holder.tvState.setTextColor(context.resources.getColor(R.color.doneColor))
             }
 
             ApplicationState.MALWARE -> {
-                holder.tvState.text = "Malware"//context.getString(R.string.malware)
+                holder.tvState.text = context.getString(R.string.threat)
                 holder.tvState.setTextColor(context.resources.getColor(R.color.purple))
                 holder.tvThreatDetails.text = currentApp.flagReason
             }
@@ -214,7 +214,7 @@ class AppsAdapter(ctx: Context) : ListAdapter<InstalledApplication, AppsAdapter.
             }
 
             ApplicationState.SUSPICIOUS -> {
-                holder.tvState.text = "Suspicious" //context.getString(R.string.unknown)
+                holder.tvState.text = context.getString(R.string.suspicious)
                 holder.tvThreatDetails.text = currentApp.flagReason
                 holder.tvState.setTextColor(context.resources.getColor(R.color.warningColor))
 
