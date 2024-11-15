@@ -22,6 +22,24 @@ android {
             }
         }
     }
+
+
+    // disable PNG crunching:
+    aaptOptions {
+        cruncherEnabled = false
+    }
+    // disable generating PNGs from vector drawables:
+    defaultConfig {
+        vectorDrawables.generatedDensities = []
+    }
+
+    dependenciesInfo {
+        // Disables dependency metadata when building APKs.
+        includeInApk = false
+        // Disables dependency metadata when building Android App Bundles.
+        includeInBundle = false
+    }
+
     buildTypes {
         release {
             minifyEnabled false
