@@ -135,5 +135,6 @@
     <string name="trust_app">Se fier</string>
     <string name="untrust_app">Méfiance</string>
     <string name="threat">MENACE</string>
+    <string name="suspicious">Suspecte</string>
 
 </resources>

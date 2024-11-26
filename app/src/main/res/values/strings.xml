@@ -151,7 +151,7 @@
     <string name="package_name">Package name</string>
     <string name="app_install_date">Install date</string>
     <string name="app_update_date">Update date</string>
-    <string name="settings">Settings</string>
+    <string name="settings">Settings</string>w
     <string name="no_permission_granted">No permission granted</string>
     <string name="third_party_apps">Third Parties</string>
     <string name="system_apps">System</string>
@@ -179,6 +179,7 @@
     <string name="preferences_deep_scan_advanced_desc">Enable deep scan for advanced threats detection. This type of scan may require resources and time depending on number of application installed.</string>
     <string name="preferences_system_apps_scan_desc">Include system\'s applications during threat scan may take time and result some false positives</string>
     <string name="threat">THREAT</string>
+    <string name="suspicious">Suspicious</string>
 
 
 </resources>
