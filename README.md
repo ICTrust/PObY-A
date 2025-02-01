@@ -28,7 +28,7 @@ Malware scan is offline and based on two databases:
 
 
 ## Threat scan :
-### dHow it works 
+### How it works 
 Default threat scan use hash database from CVD (HDB) and PObY-A database with malware packages names and certificate.
 
 If the option "Deep Scan" is enabled the CVD NDB database will be used in addition to the previous ones.
