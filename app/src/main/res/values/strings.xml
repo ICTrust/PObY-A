@@ -151,7 +151,7 @@
     <string name="package_name">Package name</string>
     <string name="app_install_date">Install date</string>
     <string name="app_update_date">Update date</string>
-    <string name="settings">Settings</string>
+    <string name="settings">Settings</string>w
     <string name="no_permission_granted">No permission granted</string>
     <string name="third_party_apps">Third Parties</string>
     <string name="system_apps">System</string>
