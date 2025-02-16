@@ -175,7 +175,10 @@ class AppsAdapter(ctx: Context) : ListAdapter<InstalledApplication, AppsAdapter.
         val status = ApplicationPermissionHelper(context, (currentApp.isSystemApp == 1))
                             .getAppConfidence(context.packageManager.getPackageInfo(currentApp.packageName, PackageManager.GET_PERMISSIONS or PackageManager.GET_META_DATA))
 
-        if (currentApp.applicationState != status && !currentApp.applicationState.equals(ApplicationState.MALWARE)) {
+        if (currentApp.applicationState != status &&
+            ! (currentApp.applicationState.equals(ApplicationState.MALWARE) ||
+                    currentApp.applicationState.equals(ApplicationState.SUSPICIOUS))
+            ){
             currentApp.applicationState = status
             Utilities.scanAppScope.launch {
                 ApplicationRepository.getInstance(context.applicationContext as Application)

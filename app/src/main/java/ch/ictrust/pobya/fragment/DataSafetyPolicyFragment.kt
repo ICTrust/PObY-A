@@ -32,11 +32,6 @@ class DataSafetyPolicyFragment : Fragment() {
 
     lateinit var wvDataSafetyPolicyFragment: WebView
 
-    companion object
-    {
-        var flag: Boolean = false
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,7 +43,6 @@ class DataSafetyPolicyFragment : Fragment() {
 
             wvDataSafetyPolicyFragment = view.findViewById(R.id.wvDataSafetyPolicy)
             try {
-                wvDataSafetyPolicyFragment.settings.javaScriptEnabled = true
                 wvDataSafetyPolicyFragment.loadUrl("file:///android_res/raw/policy.html")
             } catch (e: Exception) {
                 e.printStackTrace()
